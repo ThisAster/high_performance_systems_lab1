@@ -1,0 +1,15 @@
+GET http://localhost:8089/download/asdf.txt
+GET http://localhost:8089/download/Gnome8V1.ogg
+
+POST http://localhost:8089/upload
+    in body choose form-data
+    input file , choose path for file
+
+DELETE http://localhost:8089/delete/asdf.txt
+DELETE http://localhost:8089/delete/Gnome8V1.ogg
+
+
+
+
+docker exec -it lab2_rus_fork-kafka1-1 bash
+kafka-topics.sh --describe --topic patient-notifications --bootstrap-server localhost:9093

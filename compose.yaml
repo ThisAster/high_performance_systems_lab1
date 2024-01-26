@@ -9,8 +9,8 @@ services:
     ports:
       - '5433:5432'
     healthcheck:
-      test: "pg_isready -d clinic_db -U clinic"
-      interval: 5s
+      test: "pg_isready -: 5sd clinic_db -U clinic"
+      interval
       timeout: 2s
       retries: 5
     volumes:
@@ -94,7 +94,6 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-
   config:
     build: ./config
     volumes:
@@ -118,7 +117,6 @@ services:
       timeout: 5s
       retries: 5
       start_period: 10s
-
   gateway:
     build: ./gateway
     ports:
@@ -149,7 +147,6 @@ services:
       DB_PORT: 5432
       DB_USER: auth
       DB_PASSWORD: auth
-
   analysis:
     build:
       context: ./analysis
@@ -170,7 +167,6 @@ services:
       DB_PORT: 5432
       DB_USER: analysis
       DB_PASSWORD: analysis
-
   doctor:
     build: ./doctor
     depends_on:
@@ -186,7 +182,6 @@ services:
       DB_PORT: 5432
       DB_USER: doctor
       DB_PASSWORD: doctor
-
   document:
     build: ./document
     depends_on:
@@ -204,7 +199,6 @@ services:
       DB_PORT: 5432
       DB_USER: document
       DB_PASSWORD: document
-
   mail:
     build: ./mail
     depends_on:
@@ -215,7 +209,6 @@ services:
     environment:
       EUREKA_URL: http://eureka:8761/eureka/
       CONFIG_URL: http://config:8800
-
   appointment:
     build: ./appointment
     depends_on:
@@ -233,7 +226,6 @@ services:
       DB_PORT: 5432
       DB_USER: appointment
       DB_PASSWORD: appointment
-
   timetable:
     build: ./timetable
     depends_on:
@@ -244,7 +236,6 @@ services:
     environment:
       EUREKA_URL: http://eureka:8761/eureka/
       CONFIG_URL: http://config:8800
-
   patient:
     build: ./patient
     depends_on:
@@ -262,7 +253,6 @@ services:
       DB_PORT: 5432
       DB_USER: patient
       DB_PASSWORD: patient
-
   billing:
     build: ./billing
     depends_on:
@@ -273,7 +263,6 @@ services:
     environment:
       EUREKA_URL: http://eureka:8761/eureka/
       CONFIG_URL: http://config:8800
-
   recipe:
     build: ./recipe
     depends_on:
@@ -287,6 +276,45 @@ services:
       EUREKA_URL: http://eureka:8761/eureka/
       CONFIG_URL: http://config:8800
       DB_HOST: postgres-db
-      DB_NAME: recipe
+      DB_NAME: recipe_db
+      DB_PORT: 5432
+      DB_USER: recipe
+      DB_PASSWORD: recipe
+
+#      нз нз подумай еще
+  minio:
+    image: minio/minio:latest
+    container_name: minio
+#    depends_on:
+#      eureka:
+#        condition: service_healthy
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadminsecret
+      EUREKA_URL: http://eureka:8761/eureka/
+      CONFIG_URL: http://config:8800
+    command: server --console-address ":9001" /data
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - ./minio_storage:/data
+
+  minio-eureka-service:
+    build: ./minio
+    ports:
+      - "8089:8089"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadminsecret
+#      EUREKA_URL: http://eureka:8761/eureka/
+#      CONFIG_URL: http://config:8800
+#    depends_on:
+#      eureka:
+#        condition: service_healthy
+    volumes:
+      - ./minio_storage:/data
+
+
 volumes:
   postgres_data:

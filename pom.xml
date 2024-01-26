@@ -32,6 +32,7 @@
         <module>common</module>
         <module>auth</module>
         <module>code-coverage</module>
+        <module>minio</module>
     </modules>
 
     <build>
