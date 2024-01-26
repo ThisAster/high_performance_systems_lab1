@@ -24,6 +24,10 @@ server:
 api:
   prefix: /api/v1
 
+springdoc:
+  swagger-ui.path: /api/v1/auth/docs/swagger-ui
+  api-docs.path: /api/v1/auth/docs/v3/api-docs
+
 eureka:
   client:
     serviceUrl:

@@ -3,7 +3,7 @@ package com.example.clinic.analysis.controller;
 import com.example.clinic.analysis.dto.AnalysisCreationDto;
 import com.example.clinic.analysis.dto.AnalysisDto;
 import com.example.clinic.analysis.mapper.AnalysisMapper;
-import com.example.clinic.model.PageArgument;
+import com.example.clinic.analysis.model.PageArgument;
 import com.example.clinic.analysis.service.AnalysisService;
 import com.example.clinic.analysis.util.HeaderUtils;
 import jakarta.validation.Valid;

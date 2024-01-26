@@ -1,4 +1,3 @@
-/*
 package com.example.clinic.mail.service;
 
 import com.example.clinic.mail.dto.EmailDto;
@@ -23,7 +22,7 @@ import static org.mockito.Mockito.*;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 @ActiveProfiles("test")
 class SenderTest {
-    @Autowired
+    /*@Autowired
     private WebTestClient webClient;
 
     @MockBean
@@ -49,5 +48,5 @@ class SenderTest {
                 .expectStatus().isOk();
 
         verify(sender, times(1)).sendEmail(testEmail);
-    }
-}*/
+    }*/
+}

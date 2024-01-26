@@ -9,3 +9,7 @@ spring:
     username: ${DB_USER:postgres}
   flyway:
     locations: classpath:db/migration,classpath:/db/testmigration
+
+springdoc:
+  swagger-ui.path: /api/recipes/docs/swagger-ui
+  api-docs.path: /api/recipes/docs/v3/api-docs

@@ -12,18 +12,38 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class AuthService {
+
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
     private final UserDetailsService userDetailsService;
     private final RoleService roleService;
     private final UserService userService;
+    private final KafkaProducerAuthService kafkaProducerAuthService;
 
     public String logIn(UserDTO userDTO) {
         var user = userDetailsService.loadUserByUsername(userDTO.getLogin());
+
         if (!passwordEncoder.matches(userDTO.getPass(), user.getPassword())) {
-            throw new BadCredentialsException("Invalid user or password");
+            // Отправка сообщения при неверной авторизации
+            try {
+                kafkaProducerAuthService.sendMessage("auth-notifications", "Неверный пользователь или пароль");
+            } catch (Exception e) {
+                System.err.println("Ошибка при отправке сообщения в Kafka: " + e.getMessage());
+            }
+            throw new BadCredentialsException("Неверный пользователь или пароль");
         }
-        return jwtService.generateToken(user);
+
+        // Успешная авторизация
+        String jwt = jwtService.generateToken(user);
+        String message = "Пользователь " + userDTO.getLogin() + " успешно авторизован";
+
+        try {
+            kafkaProducerAuthService.sendMessage("auth-notifications", message);
+        } catch (Exception e) {
+            System.err.println("Ошибка при отправке сообщения в Kafka: " + e.getMessage());
+        }
+
+        return jwt;
     }
 
     public void registerUser(UserDTO userDTO) {

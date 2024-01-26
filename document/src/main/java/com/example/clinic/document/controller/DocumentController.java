@@ -4,7 +4,7 @@ import com.example.clinic.document.dto.DocumentCreationDTO;
 import com.example.clinic.document.dto.DocumentDto;
 import com.example.clinic.document.entity.Document;
 import com.example.clinic.document.mapper.DocumentMapper;
-import com.example.clinic.model.PageArgument;
+import com.example.clinic.document.model.PageArgument;
 import com.example.clinic.document.service.DocumentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

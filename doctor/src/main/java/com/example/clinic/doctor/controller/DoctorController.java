@@ -4,7 +4,7 @@ import com.example.clinic.doctor.dto.DoctorCreationDTO;
 import com.example.clinic.doctor.dto.DoctorDto;
 import com.example.clinic.doctor.entity.Doctor;
 import com.example.clinic.doctor.mapper.DoctorMapper;
-import com.example.clinic.model.PageArgument;
+import com.example.clinic.doctor.model.PageArgument;
 import com.example.clinic.doctor.service.DoctorService;
 import com.example.clinic.doctor.util.HeaderUtils;
 import jakarta.validation.Valid;
@@ -47,9 +47,9 @@ public class DoctorController {
     }
 
     @DeleteMapping("/{id}")
-    public Mono<ResponseEntity<String>> deleteDoctor(@PathVariable Long id) {
-        return doctorService.deleteDoctor(id)
-                .thenReturn(ResponseEntity.ok("Doctor with id " + id + " successfully deleted."));
+    public ResponseEntity<String> deleteDoctor(@PathVariable Long id) {
+        doctorService.deleteDoctor(id);
+        return ResponseEntity.ok("Doctor with id " + id + " successfully deleted.");
     }
 
     @GetMapping("/{id}")

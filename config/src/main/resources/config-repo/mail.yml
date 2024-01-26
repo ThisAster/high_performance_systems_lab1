@@ -6,8 +6,8 @@ spring:
   jackson.property-naming-strategy: SNAKE_CASE
 
 springdoc:
-  api-docs.path: /api-docs
-  swagger-ui.path: /swagger-ui
+  swagger-ui.path: /api/mail/docs/swagger-ui
+  api-docs.path: /api/mail/docs/v3/api-docs
 
 server:
   port: 8888

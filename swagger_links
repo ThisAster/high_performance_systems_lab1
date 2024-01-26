@@ -1,0 +1,25 @@
+auth - http://localhost:8080/api/v1/auth/docs/swagger-ui
+
+————————————————————————————-
+
+*analysis - http://localhost:8080/api/analyses/docs/swagger-ui
+
+appointment - http://localhost:8080/api/appointments/docs/swagger-ui
+
+billing - http://localhost:8080/api/billing/docs/swagger-ui
+
+doctor - http://localhost:8080/api/doctors/docs/swagger-ui
+
+document - http://localhost:8080/api/documents/docs/swagger-ui
+
+*gateway - http://localhost:8080/api/gateway/docs/swagger-ui
+
+mail - http://localhost:8080/api/mail/docs/swagger-ui
+
+patient - http://localhost:8080/api/patients/docs/swagger-ui
+
+recipe - http://localhost:8080/api/recipes/docs/swagger-ui
+
+timetable - http://localhost:8080/api/timetable/docs/swagger-ui
+
+* значит не работает

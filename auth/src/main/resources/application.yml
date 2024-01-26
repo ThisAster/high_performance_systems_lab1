@@ -14,6 +14,14 @@ spring:
         multiplier: 2
         max-attempts: 10
 
+  kafka:
+    bootstrap-servers: kafka1:9093,kafka2:9095,kafka3:9097
+    consumer:
+      group-id: auth-group
+      auth-group: auth-group
+      auto-offset-reset: earliest
+
+
 eureka:
   client:
     serviceUrl:

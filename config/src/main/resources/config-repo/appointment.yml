@@ -18,9 +18,9 @@ spring:
   devtools.restart.enabled: true
   jackson.property-naming-strategy: SNAKE_CASE
 
-springdoc.api-docs.path: /api-docs
-
-springdoc.swagger-ui.path: /api
+springdoc:
+  swagger-ui.path: /api/appointments/docs/swagger-ui
+  api-docs.path: /api/appointments/docs/v3/api-docs
 
 server:
   port: 8888

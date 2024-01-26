@@ -143,3 +143,7 @@ resilience4j:
         base-config: clinic
       timetableCB:
         base-config: clinic
+
+springdoc:
+  swagger-ui.path: /api/gateway/docs/swagger-ui
+  api-docs.path: /api/gateway/docs/v3/api-docs

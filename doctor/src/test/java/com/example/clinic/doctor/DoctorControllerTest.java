@@ -164,7 +164,7 @@ public class DoctorControllerTest {
                 .get("/api/doctors")
                 .then()
                 .statusCode(200)
-                .body("[0].name", equalTo("Dr. Bob Lee"))
+                .body("[0].name", equalTo("Dr. Alice Brown"))
                 .body("size()", is(size));
     }
 }

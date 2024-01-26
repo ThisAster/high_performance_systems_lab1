@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 
 @Data
 public class ConsultationDTO {
-    private Long patient;
+    private PatientDto patient;
     private DoctorDto doctor;
     private BigDecimal price;
 }

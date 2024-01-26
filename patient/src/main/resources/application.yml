@@ -14,6 +14,13 @@ spring:
         multiplier: 2
         max-attempts: 10
 
+  kafka:
+    bootstrap-servers: kafka1:9093,kafka2:9095,kafka3:9097
+    consumer:
+      group-id: patient-group
+      patient-group: patient-group
+      auto-offset-reset: earliest
+
 eureka:
   client:
     serviceUrl:
