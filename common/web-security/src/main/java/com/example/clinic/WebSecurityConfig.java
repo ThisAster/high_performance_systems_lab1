@@ -21,6 +21,7 @@ public class WebSecurityConfig extends BaseSecurityConfiguration {
         http.csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/patients/ws/**").permitAll()
                         .requestMatchers("/api/*/docs/**").permitAll()
                         .anyRequest().authenticated()
                 )

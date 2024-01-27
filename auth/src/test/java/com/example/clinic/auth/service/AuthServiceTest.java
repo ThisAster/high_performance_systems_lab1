@@ -12,8 +12,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
+import org.testcontainers.containers.KafkaContainer;
 import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.utility.DockerImageName;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -24,18 +27,30 @@ class AuthServiceTest {
 
     static UserDTO userDTO;
     static User user;
+
+    // Контейнер PostgreSQL
+    @Container
     static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:latest");
+
+    // Контейнер Kafka с 1 брокером
+    @Container
+    static KafkaContainer kafka = new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:latest"));
+
     @Autowired
     JwtService jwtService;
+
     @Autowired
     private AuthService authService;
+
     @Autowired
     private UserRepository userRepository;
+
     @Autowired
     private RoleRepository roleRepository;
 
     @DynamicPropertySource
     static void configureProperties(DynamicPropertyRegistry registry) {
+        // Настройка PostgreSQL
         postgres.start();
         registry.add("spring.datasource.url", postgres::getJdbcUrl);
         registry.add("spring.datasource.username", postgres::getUsername);
@@ -43,11 +58,14 @@ class AuthServiceTest {
         registry.add("spring.flyway.url", postgres::getJdbcUrl);
         registry.add("spring.flyway.user", postgres::getUsername);
         registry.add("spring.flyway.password", postgres::getPassword);
+
+        // Настройка Kafka
+        kafka.start();
+        registry.add("spring.kafka.bootstrap-servers", kafka::getBootstrapServers);
     }
 
     @BeforeEach
     void beforeEach() {
-
         userDTO = new UserDTO(0, "login", "login@test.ru", "test", "USER");
         user = userDTO.toUser();
         userRepository.deleteAll();

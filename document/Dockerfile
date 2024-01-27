@@ -1,6 +1,5 @@
-FROM openjdk:17-jdk-alpine
+FROM eclipse-temurin:17
 WORKDIR /app
-RUN apk --no-cache add curl
 
 # Copy the built JAR file from the builder stage
 COPY ./target/*.jar app.jar

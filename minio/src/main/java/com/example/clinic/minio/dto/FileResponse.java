@@ -1,5 +1,10 @@
 package com.example.clinic.minio.dto;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class FileResponse {
     private String fileName;
     private String content;
@@ -9,19 +14,4 @@ public class FileResponse {
         this.content = content;
     }
 
-    public String getFileName() {
-        return fileName;
-    }
-
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
 }

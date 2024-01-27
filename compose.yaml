@@ -9,8 +9,8 @@ services:
     ports:
       - '5433:5432'
     healthcheck:
-      test: "pg_isready -: 5sd clinic_db -U clinic"
-      interval
+      test: "pg_isready -d clinic_db -U clinic"
+      interval: 5s
       timeout: 2s
       retries: 5
     volumes:
@@ -238,6 +238,8 @@ services:
       CONFIG_URL: http://config:8800
   patient:
     build: ./patient
+    ports:
+      - "8801:8888"
     depends_on:
       eureka:
         condition: service_healthy
@@ -281,13 +283,9 @@ services:
       DB_USER: recipe
       DB_PASSWORD: recipe
 
-#      нз нз подумай еще
   minio:
     image: minio/minio:latest
     container_name: minio
-#    depends_on:
-#      eureka:
-#        condition: service_healthy
     environment:
       MINIO_ROOT_USER: minioadmin
       MINIO_ROOT_PASSWORD: minioadminsecret
@@ -304,17 +302,18 @@ services:
     build: ./minio
     ports:
       - "8089:8089"
+    depends_on:
+      kafka1:
+        condition: service_started
+      kafka2:
+        condition: service_started
+      kafka3:
+        condition: service_started
     environment:
       MINIO_ROOT_USER: minioadmin
       MINIO_ROOT_PASSWORD: minioadminsecret
-#      EUREKA_URL: http://eureka:8761/eureka/
-#      CONFIG_URL: http://config:8800
-#    depends_on:
-#      eureka:
-#        condition: service_healthy
     volumes:
       - ./minio_storage:/data
-
 
 volumes:
   postgres_data:

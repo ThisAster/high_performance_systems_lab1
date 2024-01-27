@@ -21,8 +21,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
+import org.testcontainers.containers.KafkaContainer;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.utility.DockerImageName;
 
 import static io.restassured.RestAssured.given;
 
@@ -33,21 +35,31 @@ class AuthControllerTest {
     static UserDTO userDTO;
     static User user;
     static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:latest");
+
+    // Контейнер Kafka с 1 брокером
+    static KafkaContainer kafka = new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:latest"));
+
     @Autowired
     JwtService jwtService;
+
     @Value("${auth-service.token}")
     String token;
+
     @Autowired
     private AuthService authService;
+
     @Autowired
     private UserRepository userRepository;
+
     @Autowired
     private RoleRepository roleRepository;
+
     @LocalServerPort
     private Integer port;
 
     @DynamicPropertySource
     static void configureProperties(DynamicPropertyRegistry registry) {
+        // Настройка PostgreSQL
         postgres.start();
         registry.add("spring.datasource.url", postgres::getJdbcUrl);
         registry.add("spring.datasource.username", postgres::getUsername);
@@ -55,6 +67,10 @@ class AuthControllerTest {
         registry.add("spring.flyway.url", postgres::getJdbcUrl);
         registry.add("spring.flyway.user", postgres::getUsername);
         registry.add("spring.flyway.password", postgres::getPassword);
+
+        // Настройка Kafka
+        kafka.start();
+        registry.add("spring.kafka.bootstrap-servers", kafka::getBootstrapServers);
     }
 
     @BeforeAll
@@ -71,7 +87,6 @@ class AuthControllerTest {
 
     @BeforeEach
     void beforeEach() {
-
         RestAssured.baseURI = "http://localhost:" + port;
 
         userDTO = new UserDTO(0, "login", "login@test.ru", "test", "USER");

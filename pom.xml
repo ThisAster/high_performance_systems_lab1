@@ -25,14 +25,14 @@
         <module>patient</module>
         <module>recipe</module>
         <module>timetable</module>
-
+        <module>minio</module>
         <module>eureka</module>
         <module>config</module>
         <module>gateway</module>
         <module>common</module>
         <module>auth</module>
         <module>code-coverage</module>
-        <module>minio</module>
+
     </modules>
 
     <build>

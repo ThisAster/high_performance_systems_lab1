@@ -17,7 +17,7 @@ public class KafkaTopicMinioController implements CommandLineRunner {
     }
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args){
         kafkaTopicMinioService.createMinioTopic("minio-notifications", 3, (short) 3);
         System.out.println("Default Kafka topics created");
     }

@@ -1,25 +1,9 @@
-#spring:
-#  config:
-#    import: configserver:${CONFIG_URL:http://localhost:8800}/
-#  application:
-#    name: minio
-#  cloud:
-#    config:
-#      name: ${spring.application.name}
-#      uri: ${CONFIG_URL}
-#      fail-fast: true
-#      retry:
-#        initial-interval: 2000
-#        max-interval: 10000
-#        multiplier: 2
-#        max-attempts: 10
-#
-#eureka:
-#  client:
-#    serviceUrl:
-#      defaultZone: ${EUREKA_URL:http://eureka:8761/eureka/}
 server:
   port: 8089
+
+springdoc:
+  swagger-ui.path: /api/minio/docs/swagger-ui
+  api-docs.path: /api/minio/docs/v3/api-docs
 
 minio:
   endpoint: http://minio:9000

@@ -12,8 +12,6 @@ doctor - http://localhost:8080/api/doctors/docs/swagger-ui
 
 document - http://localhost:8080/api/documents/docs/swagger-ui
 
-*gateway - http://localhost:8080/api/gateway/docs/swagger-ui
-
 mail - http://localhost:8080/api/mail/docs/swagger-ui
 
 patient - http://localhost:8080/api/patients/docs/swagger-ui
@@ -21,5 +19,7 @@ patient - http://localhost:8080/api/patients/docs/swagger-ui
 recipe - http://localhost:8080/api/recipes/docs/swagger-ui
 
 timetable - http://localhost:8080/api/timetable/docs/swagger-ui
+
+minio - http://localhost:8089/api/minio/docs/swagger-ui
 
 * значит не работает

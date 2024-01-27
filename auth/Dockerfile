@@ -14,12 +14,12 @@ COPY . .
 RUN --mount=type=cache,target=/root/.m2 mvn clean package -DskipTests
 
 # Stage 2: Run the application
-FROM openjdk:17-jdk-alpine
+FROM eclipse-temurin:17
 WORKDIR /app
 
 # Copy the built JAR file from the builder stage
-COPY --from=builder /app/target/*.jar app.jar
 
+COPY --from=builder /app/target/*.jar app.jar
 EXPOSE 8800
 
 ENTRYPOINT ["java", "-jar", "app.jar"]

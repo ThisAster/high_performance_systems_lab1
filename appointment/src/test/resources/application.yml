@@ -36,5 +36,5 @@ springdoc:
     path: /api
 
 doctor.service.url: http://locahost:8080/api/doctor
-patient.service.url: http://locahost:8080/api/patients
+patient.service.url: http://locahost:8080/api/patient
 mail.service.url: http://locahost:8080/api/mail

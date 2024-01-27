@@ -9,7 +9,7 @@ DELETE http://localhost:8089/delete/asdf.txt
 DELETE http://localhost:8089/delete/Gnome8V1.ogg
 
 
-
-
 docker exec -it lab2_rus_fork-kafka1-1 bash
 kafka-topics.sh --describe --topic patient-notifications --bootstrap-server localhost:9093
+kafka-topics.sh --describe --topic auth-notifications --bootstrap-server localhost:9093
+kafka-topics.sh --describe --topic minio-notifications --bootstrap-server localhost:9093

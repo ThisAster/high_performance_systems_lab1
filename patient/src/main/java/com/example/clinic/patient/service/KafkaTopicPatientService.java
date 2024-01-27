@@ -3,8 +3,10 @@ package com.example.clinic.patient.service;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.springframework.kafka.core.KafkaAdmin;
 import org.springframework.stereotype.Service;
+import org.springframework.context.annotation.Profile;
 
 @Service
+@Profile("!test") // Загружать только в профилях, отличных от "test"
 public class KafkaTopicPatientService {
 
     private final KafkaAdmin kafkaAdmin;
