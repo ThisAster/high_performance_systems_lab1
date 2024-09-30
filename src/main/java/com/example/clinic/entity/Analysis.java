@@ -10,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -17,16 +18,17 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "analyses")
 @NoArgsConstructor
-public class Аnalysis {
+@AllArgsConstructor
+public class Analysis {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "analysis_type", nullable = false)
+    @Column(name = "type", nullable = false)
     private String type;
 
     @Column(name = "sample_date", nullable = false)
-    private LocalDate date;
+    private LocalDate sampleDate;
 
     @Column(name = "result", length = 200)
     private String result;
@@ -35,17 +37,10 @@ public class Аnalysis {
     private String status;
 
     @ManyToOne
-    @JoinColumn(name = "doctor_id")
+    @JoinColumn(name = "doctor_id", nullable = false)
     private Doctor doctor;
 
     @ManyToOne
-    @JoinColumn(name = "patient_id")
+    @JoinColumn(name = "patient_id", nullable = false)
     private Patient patient;
-
-    public Аnalysis(String type, LocalDate date, String result, String status) {
-        this.type = type;
-        this.date = date;
-        this.result = result;
-        this.status = status;
-    }
 }
