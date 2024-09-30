@@ -12,6 +12,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -19,8 +20,8 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "appointments")
 @NoArgsConstructor
+@AllArgsConstructor
 public class Appointment {
-    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -41,9 +42,4 @@ public class Appointment {
 
     @OneToOne(mappedBy = "appointment", cascade = CascadeType.ALL, orphanRemoval = true)
     private Recipe recipe;
-
-    public Appointment(LocalDate appointmentDate, String description) {
-        this.appointmentDate = appointmentDate;
-        this.description = description;
-    }
 }

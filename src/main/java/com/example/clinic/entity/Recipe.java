@@ -12,6 +12,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -19,6 +20,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "recipes")
 @NoArgsConstructor
+@AllArgsConstructor
 public class Recipe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,12 +48,6 @@ public class Recipe {
 
     @OneToOne
     @MapsId
+    @JoinColumn(name = "appointment_id")
     private Appointment appointment;
-
-    public Recipe(LocalDate recipeDate, String medication, String dose, String duration) {
-        this.recipeDate = recipeDate;
-        this.medication = medication;
-        this.dose = dose;
-        this.duration = duration;
-    }
 }
