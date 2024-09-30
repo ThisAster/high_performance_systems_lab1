@@ -1,30 +1,51 @@
 package com.example.clinic.entity;
 
-import java.io.Serializable;
+import java.time.LocalDate;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
-@ToString
+@Data
 @Entity
-@Table(name = "document")
-public class Document implements Serializable {
+@Table(name = "documents")
+@NoArgsConstructor
+public class Document {
     @Id
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="document_sequence")
-    @SequenceGenerator(name="document_sequence", sequenceName="document_sequence", allocationSize=100)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
+    @Column(name = "document_type", nullable = false)
+    private String type;
+
+    @Column(name = "creation_date", nullable = false)
+    private LocalDate date;
+
+    @Column(name = "content", length = 500)
+    private String content;
+
+    @Column(name = "status", nullable = false)
+    private String status;
+
+    @ManyToOne
+    @JoinColumn(name = "doctor_id")
+    private Doctor doctor;
+
+    @ManyToOne
+    @JoinColumn(name = "patient_id")
+    private Patient patient;
+
+    public Document(String type, LocalDate date, String content, String status) {
+        this.type = type;
+        this.date = date;
+        this.content = content;
+        this.status = status;
+    }
 }

@@ -2,7 +2,6 @@ package com.example.clinic.entity;
 
 import java.time.LocalDate;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -10,26 +9,30 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @Entity
-@Table(name = "appointments")
+@Table(name = "analyses")
 @NoArgsConstructor
-public class Appointment {
-    
+public class Аnalysis {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "appointment_date", nullable = false)
-    private LocalDate appointmentDate;
+    @Column(name = "analysis_type", nullable = false)
+    private String type;
 
-    @Column(name = "description", length = 200)
-    private String description;
+    @Column(name = "sample_date", nullable = false)
+    private LocalDate date;
+
+    @Column(name = "result", length = 200)
+    private String result;
+
+    @Column(name = "status", nullable = false)
+    private String status;
 
     @ManyToOne
     @JoinColumn(name = "doctor_id")
@@ -39,11 +42,10 @@ public class Appointment {
     @JoinColumn(name = "patient_id")
     private Patient patient;
 
-    @OneToOne(mappedBy = "appointment", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Recipe recipe;
-
-    public Appointment(LocalDate appointmentDate, String description) {
-        this.appointmentDate = appointmentDate;
-        this.description = description;
+    public Аnalysis(String type, LocalDate date, String result, String status) {
+        this.type = type;
+        this.date = date;
+        this.result = result;
+        this.status = status;
     }
 }
