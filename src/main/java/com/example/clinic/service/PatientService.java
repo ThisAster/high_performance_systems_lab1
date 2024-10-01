@@ -1,6 +1,7 @@
 package com.example.clinic.service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,17 +31,18 @@ public class PatientService {
         return patientRepository.findById(id);
     }
 
-    public Optional<Patient> getPatientByName(String name) {
+    public List<Patient> getPatientByName(String name) {
         return patientRepository.findByName(name);
     }
-
-    public Optional<Patient> getPatientsByDateOfBirth(LocalDate dateOfBirth) {
+    
+    public List<Patient> getPatientsByDateOfBirth(LocalDate dateOfBirth) {
         return patientRepository.findByDateOfBirth(dateOfBirth);
     }
 
-    public Optional<List<Patient>> getAllPatients() {
-        List<Patient> patients = (List<Patient>) patientRepository.findAll();
-        return patients.isEmpty() ? Optional.empty() : Optional.of(patients);
+    public List<Patient> getAllPatients() {
+        List<Patient> patients = new ArrayList<>();
+        patientRepository.findAll().forEach(patients::add);
+        return patients;
     }
 
     @Transactional
