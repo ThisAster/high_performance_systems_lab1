@@ -23,7 +23,7 @@ public interface DocumentRepository extends CrudRepository<Document, Long> {
     
     List<Document> findByDoctorId(Long doctorId);
     
-    List<Document> findByStatus(Long id, String status);
+    List<Document> findByStatus(String status);
     
     List<Document> findByType(String type);
 }
