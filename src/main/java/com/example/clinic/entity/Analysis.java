@@ -24,7 +24,7 @@ public class Analysis {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "type", nullable = false)
+    @Column(name = "analysis_type", nullable = false)
     private String type;
 
     @Column(name = "sample_date", nullable = false)
