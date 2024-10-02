@@ -17,8 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.clinic.dto.AnalysisDto;
-import com.example.clinic.dto.DoctorDto;
-import com.example.clinic.dto.PatientDto;
 import com.example.clinic.entity.Analysis;
 import com.example.clinic.entity.Doctor;
 import com.example.clinic.entity.Patient;
@@ -30,7 +28,19 @@ import jakarta.transaction.Transactional;
 public class AnalysisService {
 
     private AnalysisRepository analysisRepository;
+    private PatientService patientService;
+    private DoctorService doctorService;
     private ModelMapper analysisMapper;
+
+    @Autowired
+    public void setDoctorService(DoctorService doctorService) {
+        this.doctorService = doctorService;
+    }
+
+    @Autowired
+    public void setPatientService(PatientService patientService) {
+        this.patientService = patientService;
+    }
 
     @Autowired
     public void setAnalysisRepository(AnalysisRepository analysisRepository) {
@@ -43,25 +53,32 @@ public class AnalysisService {
     }
 
     @Transactional
-    public AnalysisDto createAnalysis(AnalysisDto analysisDto, PatientDto patientDto, DoctorDto doctorDto) {
+    public AnalysisDto createAnalysis(AnalysisDto analysisDto, Long patientId, Long doctorId) {
         Analysis analysis = analysisMapper.map(analysisDto, Analysis.class);
-        Patient patient = analysisMapper.map(patientDto, Patient.class);
-        Doctor doctor = analysisMapper.map(doctorDto, Doctor.class);
+
+        Patient patient = patientService.getPatientById(patientId)
+                .orElseThrow(() -> new IllegalArgumentException("Patient with id " + patientId + " not found"));
+        
+        Doctor doctor = doctorService.getDoctorById(doctorId)
+                .orElseThrow(() -> new IllegalArgumentException("Doctor with id " + doctorId + " not found"));
+
         analysis.setPatient(patient);
         analysis.setDoctor(doctor);
+
         Analysis savedAnalysis = analysisRepository.save(analysis);
+
         return analysisMapper.map(savedAnalysis, AnalysisDto.class);
     }
 
     public List<AnalysisDto> getAllAnalyses() {
         return ((List<Analysis>) analysisRepository.findAll()).stream()
-                .map(analysis -> analysisMapper.map(analysis, AnalysisDto.class))  // Explicit mapping
+                .map(analysis -> analysisMapper.map(analysis, AnalysisDto.class))  
                 .collect(Collectors.toList());
     }
 
     public AnalysisDto getAnalysisById(Long id) {
         return analysisRepository.findById(id)
-                .map(analysis -> analysisMapper.map(analysis, AnalysisDto.class))  // Explicit mapping
+                .map(analysis -> analysisMapper.map(analysis, AnalysisDto.class)) 
                 .orElseThrow(() -> new IllegalArgumentException("Analysis with id " + id + " not found"));
     }
 
@@ -88,10 +105,15 @@ public class AnalysisService {
     }
 
     public List<AnalysisDto> findByPatientId(Long patientId) {
-        return analysisRepository.findByPatientId(patientId).stream()
+        List<Analysis> analyses = analysisRepository.findByPatientId(patientId);
+        if (analyses.isEmpty()) {
+            throw new IllegalArgumentException("No analyses found for patient with id " + patientId);
+        }
+        return analyses.stream()
                 .map(analysis -> analysisMapper.map(analysis, AnalysisDto.class))
                 .collect(Collectors.toList());
     }
+    
 
     public List<AnalysisDto> findByDoctorId(Long doctorId) {
         return analysisRepository.findByDoctorId(doctorId).stream()

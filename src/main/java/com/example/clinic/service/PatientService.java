@@ -14,8 +14,8 @@ import com.example.clinic.repository.PatientRepository;
 
 import jakarta.transaction.Transactional;
 
-/* TODO: add other dependensies (appointments, recipes, document, analysis) 
- * create repositories on which this depends
+/* TODO: add other dependensies (appointments, recipes, document, analysis) edit create and update
+ * create repositories on which this depends 
 */
 @Service
 public class PatientService {

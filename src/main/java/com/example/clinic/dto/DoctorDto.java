@@ -10,9 +10,9 @@ package com.example.clinic.dto;
  * @author thisaster
  */
 
-public record DoctorDto(
-    Long id,
-    String name,
-    String speciality,
-    Double consultationCost
-) {}
+ public record DoctorDto(
+     Long id,
+     String name,
+     String speciality,
+     Double consultationCost
+ ) {}

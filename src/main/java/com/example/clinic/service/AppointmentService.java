@@ -1,8 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-
 package com.example.clinic.service;
 
 import java.util.List;
@@ -14,25 +9,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.clinic.dto.AppointmentDto;
-import com.example.clinic.dto.DoctorDto;
-import com.example.clinic.dto.PatientDto;
 import com.example.clinic.entity.Appointment;
 import com.example.clinic.entity.Doctor;
 import com.example.clinic.entity.Patient;
+import com.example.clinic.entity.Recipe;
 import com.example.clinic.repository.AppointmentRepository;
+import com.example.clinic.repository.DoctorRepository;
+import com.example.clinic.repository.PatientRepository;
+import com.example.clinic.repository.RecipeRepository;
 
 import jakarta.transaction.Transactional;
 
-/**
- *
- * @author thisaster
- */
+// TODO : need fix
 @Service
 public class AppointmentService {
 
     private AppointmentRepository appointmentRepository;
-
-    private ModelMapper appointmentMapper;
+    private DoctorRepository doctorRepository;
+    private PatientRepository patientRepository;
+    private RecipeRepository recipeRepository;
+    private ModelMapper modelMapper;
 
     @Autowired
     public void setAppointmentRepository(AppointmentRepository appointmentRepository) {
@@ -40,53 +36,75 @@ public class AppointmentService {
     }
 
     @Autowired
-    public void setAppoinmentMapper(ModelMapper appoinmentMapper) {
-        this.appointmentMapper = appoinmentMapper;
+    public void setDoctorRepository(DoctorRepository doctorRepository) {
+        this.doctorRepository = doctorRepository;
+    }
+
+    @Autowired
+    public void setPatientRepository(PatientRepository patientRepository) {
+        this.patientRepository = patientRepository;
+    }
+
+    @Autowired
+    public void setRecipeRepository(RecipeRepository recipeRepository) {
+        this.recipeRepository = recipeRepository;
+    }
+
+    @Autowired
+    public void setModelMapper(ModelMapper modelMapper) {
+        this.modelMapper = modelMapper;
     }
 
     @Transactional
-    public AppointmentDto createAppointment(AppointmentDto appointmentDto, PatientDto patientDto, DoctorDto doctorDto) {
-        Appointment appointment = appointmentMapper.map(appointmentDto, Appointment.class);
-        Patient patient = appointmentMapper.map(patientDto, Patient.class);
-        Doctor doctor = appointmentMapper.map(doctorDto, Doctor.class);
-        appointment.setPatient(patient);
-        appointment.setDoctor(doctor);
+    public Optional<AppointmentDto> createAppointment(AppointmentDto appointmentDto) {
+        Appointment appointment = new Appointment();
+        modelMapper.map(appointmentDto, appointment);
+
+            Doctor doctor = doctorRepository.findById(appointmentDto.doctorId()).orElse(null);
+            appointment.setDoctor(doctor);
+
+            Patient patient = patientRepository.findById(appointmentDto.patientId()).orElse(null);
+            appointment.setPatient(patient);
+
+            Recipe recipe = recipeRepository.findById(appointmentDto.recipeId()).orElse(null);
+            appointment.setRecipe(recipe);
+
         Appointment savedAppointment = appointmentRepository.save(appointment);
-        return appointmentMapper.map(savedAppointment, AppointmentDto.class);
+        return Optional.of(modelMapper.map(savedAppointment, AppointmentDto.class));
     }
 
     public List<AppointmentDto> getAllAppointments() {
         return ((List<Appointment>) appointmentRepository.findAll()).stream()
-                .map(appointment -> appointmentMapper.map(appointment, AppointmentDto.class))
+                .map(appointment -> modelMapper.map(appointment, AppointmentDto.class))
                 .collect(Collectors.toList());
     }
 
-    public AppointmentDto getAppointmentById(Long id) {
-        Optional<Appointment> appointmentOpt = appointmentRepository.findById(id);
-        if (appointmentOpt.isEmpty()) {
-            throw new IllegalArgumentException("Appointment with id " + id + " not found");
-        }
-        return appointmentMapper.map(appointmentOpt.get(), AppointmentDto.class);
+    public Optional<Appointment> getAppointmentById(Long id) {
+        return appointmentRepository.findById(id);
     }
 
     @Transactional
-    public AppointmentDto updateAppointment(Long id, AppointmentDto appointmentDto) {
-        Optional<Appointment> appointmentOpt = appointmentRepository.findById(id);
-        if (appointmentOpt.isEmpty()) {
-            throw new IllegalArgumentException("Appointment with id " + id + " not found");
-        }
-        Appointment appointment = appointmentOpt.get();
-        appointment.setAppointmentDate(appointmentDto.appointmentDate());
-        appointment.setDescription(appointmentDto.description());
-        Appointment updatedAppointment = appointmentRepository.save(appointment);
-        return appointmentMapper.map(updatedAppointment, AppointmentDto.class);
+    public Optional<AppointmentDto> updateAppointment(Long id, AppointmentDto appointmentDto) {
+        return appointmentRepository.findById(id).map(appointment -> {
+            appointment.setAppointmentDate(appointmentDto.appointmentDate());
+            appointment.setDescription(appointmentDto.description());
+    
+                Doctor doctor = doctorRepository.findById(appointmentDto.doctorId()).orElse(null);
+                appointment.setDoctor(doctor);
+
+                Patient patient = patientRepository.findById(appointmentDto.patientId()).orElse(null);
+                appointment.setPatient(patient);
+    
+                Recipe recipe = recipeRepository.findById(appointmentDto.recipeId()).orElse(null);
+                appointment.setRecipe(recipe);
+    
+            Appointment updatedAppointment = appointmentRepository.save(appointment);
+            return modelMapper.map(updatedAppointment, AppointmentDto.class);
+        });
     }
 
     @Transactional
     public void deleteAppointment(Long id) {
-        if (!appointmentRepository.existsById(id)) {
-            throw new IllegalArgumentException("Appointment with id " + id + " not found");
-        }
         appointmentRepository.deleteById(id);
     }
 }
