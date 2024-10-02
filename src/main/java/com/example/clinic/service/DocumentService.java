@@ -8,7 +8,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.clinic.dto.DoctorDto;
 import com.example.clinic.dto.DocumentDto;
+import com.example.clinic.dto.PatientDto;
 import com.example.clinic.entity.Doctor;
 import com.example.clinic.entity.Document;
 import com.example.clinic.entity.Patient;
@@ -33,7 +35,7 @@ public class DocumentService {
     }
 
     @Transactional
-    public DocumentDto createDocument(DocumentDto documentDto, Patient patientDto, Doctor doctorDto) {
+    public DocumentDto createDocument(DocumentDto documentDto, PatientDto patientDto, DoctorDto doctorDto) {
         Document document = documentMapper.map(documentDto, Document.class);
         Patient patient = documentMapper.map(patientDto, Patient.class);
         Doctor doctor = documentMapper.map(doctorDto, Doctor.class);
