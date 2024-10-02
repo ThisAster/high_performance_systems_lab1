@@ -20,6 +20,8 @@ import com.example.clinic.repository.RecipeRepository;
 
 import jakarta.transaction.Transactional;
 
+//TODO : edit create and update
+
 @Service
 public class RecipeService {
 
@@ -55,12 +57,8 @@ public class RecipeService {
                 .collect(Collectors.toList());
     }
 
-    public RecipeDto getRecipeById(Long id) {
-        Optional<Recipe> recipeOpt = recipeRepository.findById(id);
-        if (recipeOpt.isEmpty()) {
-            throw new IllegalArgumentException("Recipe with id " + id + " not found");
-        }
-        return recipeMapper.map(recipeOpt.get(), RecipeDto.class);
+    public Optional<Recipe> getRecipeById(Long id) {
+        return recipeRepository.findById(id);
     }
 
     @Transactional
