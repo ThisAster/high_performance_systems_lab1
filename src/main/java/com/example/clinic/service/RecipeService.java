@@ -8,6 +8,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.clinic.dto.AppointmentDto;
+import com.example.clinic.dto.DoctorDto;
+import com.example.clinic.dto.PatientDto;
 import com.example.clinic.dto.RecipeDto;
 import com.example.clinic.entity.Appointment;
 import com.example.clinic.entity.Doctor;
@@ -34,7 +37,7 @@ public class RecipeService {
     }
 
     @Transactional
-    public RecipeDto createRecipe(RecipeDto recipeDto, Patient patientDto, Doctor doctorDto, Appointment appointmentDto) {
+    public RecipeDto createRecipe(RecipeDto recipeDto, PatientDto patientDto, DoctorDto doctorDto, AppointmentDto appointmentDto) {
         Recipe recipe = recipeMapper.map(recipeDto, Recipe.class);
         Patient patient = recipeMapper.map(patientDto, Patient.class);
         Doctor doctor = recipeMapper.map(doctorDto, Doctor.class);

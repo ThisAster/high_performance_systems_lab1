@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.clinic.dto.AppointmentDto;
+import com.example.clinic.dto.DoctorDto;
+import com.example.clinic.dto.PatientDto;
 import com.example.clinic.entity.Appointment;
 import com.example.clinic.entity.Doctor;
 import com.example.clinic.entity.Patient;
@@ -43,7 +45,7 @@ public class AppointmentService {
     }
 
     @Transactional
-    public AppointmentDto createAppointment(AppointmentDto appointmentDto, Patient patientDto, Doctor doctorDto) {
+    public AppointmentDto createAppointment(AppointmentDto appointmentDto, PatientDto patientDto, DoctorDto doctorDto) {
         Appointment appointment = appointmentMapper.map(appointmentDto, Appointment.class);
         Patient patient = appointmentMapper.map(patientDto, Patient.class);
         Doctor doctor = appointmentMapper.map(doctorDto, Doctor.class);
