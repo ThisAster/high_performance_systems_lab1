@@ -36,7 +36,7 @@ public class PatientService {
     private final PatientMapper patientMapper;
 
     @Transactional
-    public Optional<PatientDto> createPatient(PatientDto patientDto) {
+    public Optional<Patient> createPatient(PatientDto patientDto) {
         Patient patient = patientMapper.patientDtoToEntity(patientDto);
 
         List<Appointment> appointments = appointmentRepository.findByPatientId(patientDto.id());
@@ -58,7 +58,7 @@ public class PatientService {
 
         Patient savedPatient = patientRepository.save(patient);
         
-        return Optional.of(patientMapper.entityToPatientDto(savedPatient));
+        return Optional.of(savedPatient);
     }
 
     @Transactional
