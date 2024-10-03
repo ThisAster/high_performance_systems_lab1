@@ -1,19 +1,39 @@
 package com.example.clinic.mapper;
 
-import org.mapstruct.InjectionStrategy;
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.springframework.stereotype.Component;
 
 import com.example.clinic.dto.AnalysisDto;
 import com.example.clinic.entity.Analysis;
 
-@Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR, nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-public interface AnalysisMapper {
+@Component
+public class AnalysisMapper {
 
-    Analysis analysisDtoToEntity(AnalysisDto analysisDto);
+    public AnalysisDto entityToAnalysisDto(Analysis analysis) {
+        if (analysis == null) {
+            return null;
+        }
+        
+        return new AnalysisDto(
+            analysis.getId(),
+            analysis.getType(),
+            analysis.getSampleDate(),
+            analysis.getResult(),
+            analysis.getStatus()
+        );
+    }
 
-    void updateEntityFromDto(@MappingTarget Analysis entity, AnalysisDto dto);
+    public Analysis analysisDtoToEntity(AnalysisDto analysisDto) {
+        if (analysisDto == null) {
+            return null;
+        }
 
-    AnalysisDto entityToAnalysisDto(Analysis entity);
+        Analysis analysis = new Analysis();
+        analysis.setId(analysisDto.id());
+        analysis.setType(analysisDto.type());
+        analysis.setSampleDate(analysisDto.sampleDate());
+        analysis.setResult(analysisDto.result());
+        analysis.setStatus(analysisDto.status());
+
+        return analysis;
+    }
 }

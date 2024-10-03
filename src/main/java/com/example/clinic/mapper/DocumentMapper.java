@@ -1,28 +1,37 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
- */
-
 package com.example.clinic.mapper;
 
-import org.mapstruct.InjectionStrategy;
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.springframework.stereotype.Component;
 
 import com.example.clinic.dto.DocumentDto;
 import com.example.clinic.entity.Document;
 
-/**
- *
- * @author thisaster
- */
-@Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR, nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-public interface DocumentMapper {
+@Component
+public class DocumentMapper {
 
-    Document documentDtoToEntity(DocumentDto documentDto);
+    public DocumentDto entityToDocumentDto(Document document) {
+        if (document == null) {
+            return null;
+        }
+        return new DocumentDto(
+            document.getId(),
+            document.getType(),
+            document.getDate(),
+            document.getContent(),
+            document.getStatus()
+        );
+    }
 
-    void updateEntityFromDto(@MappingTarget Document entity, DocumentDto dto);
-
-    DocumentDto entityToDocumentDto(Document entity);
+    public Document documentDtoToEntity(DocumentDto documentDto) {
+        if (documentDto == null) {
+            return null;
+        }
+        Document document = new Document();
+        document.setId(documentDto.id());
+        document.setType(documentDto.type());
+        document.setDate(documentDto.date());
+        document.setContent(documentDto.content());
+        document.setStatus(documentDto.status());
+        
+        return document;
+    }
 }
