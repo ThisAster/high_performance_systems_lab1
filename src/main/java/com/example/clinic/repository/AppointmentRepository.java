@@ -9,27 +9,25 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.example.clinic.entity.Appointment;
-import com.example.clinic.entity.Doctor;
-import com.example.clinic.entity.Patient;
 
 /**
  *
  * @author thisaster
  */
 @Repository
-public interface AppointmentRepository extends CrudRepository<Appointment, Long> {
+public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
     
     List<Appointment> findByAppointmentDate(LocalDate appointmentDate);
 
-    List<Appointment> findByDoctor(Doctor doctor);
+    List<Appointment> findByDoctorId(Long doctorId);
 
-    List<Appointment> findByPatient(Patient patient);
+    List<Appointment> findByPatientId(Long patientId);
 
-    List<Appointment> findByPatientAndDoctor(Patient patient, Doctor doctor);
+    List<Appointment> findByPatientIdAndDoctorId(Long patientId, Long doctorId);
 
-    Optional<Appointment> findByAppointmentDateAndPatientAndDoctor(LocalDate appointmentDate, Patient patient, Doctor doctor);
+    Optional<Appointment> findByAppointmentDateAndPatientIdAndDoctorId(LocalDate appointmentDate, Long patientId, Long doctorId);
 }

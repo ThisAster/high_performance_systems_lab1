@@ -7,7 +7,7 @@ package com.example.clinic.repository;
 
 import java.util.List;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.example.clinic.entity.Analysis;
@@ -17,7 +17,7 @@ import com.example.clinic.entity.Analysis;
  * @author thisaster
  */
 @Repository
-public interface AnalysisRepository extends CrudRepository<Analysis, Long> {
+public interface AnalysisRepository extends JpaRepository<Analysis, Long> {
     
     List<Analysis> findByPatientId(Long patientId);
     
