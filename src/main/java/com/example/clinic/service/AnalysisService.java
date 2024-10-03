@@ -5,10 +5,7 @@
 
 package com.example.clinic.service;
 
-/**
- *
- * @author thisaster
- */
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -16,12 +13,11 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import com.example.clinic.dto.AnalysisDto;
-import com.example.clinic.dto.PatientDto;
 import com.example.clinic.entity.Analysis;
 import com.example.clinic.entity.Patient;
 import com.example.clinic.mapper.AnalysisMapper;
-import com.example.clinic.mapper.PatientMapper;
 import com.example.clinic.repository.AnalysisRepository;
+import com.example.clinic.repository.PatientRepository;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -31,34 +27,35 @@ import lombok.AllArgsConstructor;
 public class AnalysisService {
 
     private final AnalysisRepository analysisRepository;
-    private final PatientService patientService;
+    private final PatientRepository patientRepository;
     private final AnalysisMapper analysisMapper;
-    private final PatientMapper patientMapper;
 
     @Transactional
-    public Optional<AnalysisDto> createAnalysis(AnalysisDto analysisDto, Long patientId) {
+    public Optional<Analysis> createAnalysis(AnalysisDto analysisDto, Long patientId) {
         Analysis analysis = analysisMapper.analysisDtoToEntity(analysisDto);
-        PatientDto patientDto = patientService.getPatientById(patientId)
+        Patient patient = patientRepository.findById(patientId)
                 .orElseThrow(() -> new IllegalArgumentException("Patient with id " + patientId + " not found"));
-
-
-        Patient patient = patientMapper.patientDtoToEntity(patientDto);
 
         analysis.setPatient(patient);
 
         Analysis savedAnalysis = analysisRepository.save(analysis);
 
-        return Optional.of(analysisMapper.entityToAnalysisDto(savedAnalysis));
+        return Optional.of(savedAnalysis);
     }   
 
     @Transactional
-    public Optional<AnalysisDto> updateAnalysis(Long id, AnalysisDto analysisDto) {
-        return analysisRepository.findById(id)
-            .map(analysis -> {
-                analysisMapper.updateEntityFromDto(analysis, analysisDto);
-                Analysis updatedAnalysis = analysisRepository.save(analysis);
-                return analysisMapper.entityToAnalysisDto(updatedAnalysis);
-            });
+    public Optional<Analysis> updateAnalysis(Long id, AnalysisDto analysisDto) {
+        Analysis analysis = analysisRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Analysis with id " + id + " not found"));
+
+        analysis.setType(analysisDto.type());
+        analysis.setSampleDate(analysisDto.sampleDate());
+        analysis.setResult(analysisDto.result());
+        analysis.setStatus(analysisDto.status());
+
+        Analysis updatedAnalysis = analysisRepository.save(analysis);
+    
+        return Optional.of(updatedAnalysis);
     }
 
     @Transactional
@@ -66,33 +63,28 @@ public class AnalysisService {
         analysisRepository.deleteById(id);
     }
 
-    public List<AnalysisDto> getAllAnalyses() {
-        return ((List<Analysis>) analysisRepository.findAll()).stream()
-                .map(analysisMapper::entityToAnalysisDto)
+    public List<Analysis> getAllAnalyses() {
+        return ((Collection<Analysis>) analysisRepository.findAll()).stream()
                 .collect(Collectors.toList());
     }
 
-    public Optional<AnalysisDto> getAnalysisById(Long id) {
-        return analysisRepository.findById(id)
-                .map(analysisMapper::entityToAnalysisDto);
+    public Optional<Analysis> getAnalysisById(Long id) {
+        return analysisRepository.findById(id);
     }
 
-    public List<AnalysisDto> getByPatientId(Long patientId) {
+    public List<Analysis> getByPatientId(Long patientId) {
         List<Analysis> analyses = analysisRepository.findByPatientId(patientId);
         return analyses.stream()
-                .map(analysisMapper::entityToAnalysisDto)
                 .collect(Collectors.toList());
     }
 
-    public List<AnalysisDto> getByType(String type) {
+    public List<Analysis> getByType(String type) {
         return analysisRepository.findByType(type).stream()
-                .map(analysisMapper::entityToAnalysisDto)
                 .collect(Collectors.toList());
     }
 
-    public List<AnalysisDto> getByStatus(String status) {
+    public List<Analysis> getByStatus(String status) {
         return analysisRepository.findByStatus(status).stream()
-                .map(analysisMapper::entityToAnalysisDto)
                 .collect(Collectors.toList());
     }
 }
