@@ -21,8 +21,6 @@ public interface AnalysisRepository extends CrudRepository<Analysis, Long> {
     
     List<Analysis> findByPatientId(Long patientId);
     
-    List<Analysis> findByDoctorId(Long doctorId);
-    
     List<Analysis> findByType(String type);
     
     List<Analysis> findByStatus(String status);

@@ -37,10 +37,6 @@ public class Document {
     private String status;
 
     @ManyToOne
-    @JoinColumn(name = "doctor_id")
-    private Doctor doctor;
-
-    @ManyToOne
     @JoinColumn(name = "patient_id")
     private Patient patient;
 }

@@ -1,106 +1,104 @@
 package com.example.clinic.service;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.clinic.dto.AppointmentDto;
+import com.example.clinic.dto.DoctorDto;
+import com.example.clinic.dto.PatientDto;
 import com.example.clinic.entity.Appointment;
 import com.example.clinic.entity.Doctor;
 import com.example.clinic.entity.Patient;
-import com.example.clinic.entity.Recipe;
+import com.example.clinic.mapper.AppointmentMapper;
+import com.example.clinic.mapper.DoctorMapper;
+import com.example.clinic.mapper.PatientMapper;
 import com.example.clinic.repository.AppointmentRepository;
-import com.example.clinic.repository.DoctorRepository;
-import com.example.clinic.repository.PatientRepository;
-import com.example.clinic.repository.RecipeRepository;
 
 import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
 
-// TODO : need fix
 @Service
+@AllArgsConstructor
 public class AppointmentService {
 
-    private AppointmentRepository appointmentRepository;
-    private DoctorRepository doctorRepository;
-    private PatientRepository patientRepository;
-    private RecipeRepository recipeRepository;
-    private ModelMapper modelMapper;
+    private final AppointmentRepository appointmentRepository;
+    private final PatientService patientService;
+    private final DoctorService doctorService;
 
-    @Autowired
-    public void setAppointmentRepository(AppointmentRepository appointmentRepository) {
-        this.appointmentRepository = appointmentRepository;
-    }
-
-    @Autowired
-    public void setDoctorRepository(DoctorRepository doctorRepository) {
-        this.doctorRepository = doctorRepository;
-    }
-
-    @Autowired
-    public void setPatientRepository(PatientRepository patientRepository) {
-        this.patientRepository = patientRepository;
-    }
-
-    @Autowired
-    public void setRecipeRepository(RecipeRepository recipeRepository) {
-        this.recipeRepository = recipeRepository;
-    }
-
-    @Autowired
-    public void setModelMapper(ModelMapper modelMapper) {
-        this.modelMapper = modelMapper;
-    }
+    private final AppointmentMapper appointmentMapper;
+    private final PatientMapper patientMapper;
+    private final DoctorMapper doctorMapper;
 
     @Transactional
-    public Optional<AppointmentDto> createAppointment(AppointmentDto appointmentDto) {
-        Appointment appointment = new Appointment();
-        modelMapper.map(appointmentDto, appointment);
+    public Optional<AppointmentDto> createAppointment(AppointmentDto appointmentDto, Long patientId, Long doctorId) {
+        Appointment appointment = appointmentMapper.appointmentDtoToEntity(appointmentDto);
 
-            Doctor doctor = doctorRepository.findById(appointmentDto.doctorId()).orElse(null);
-            appointment.setDoctor(doctor);
+        PatientDto patientDto = patientService.getPatientById(patientId)
+                .orElseThrow(() -> new IllegalArgumentException("Recipe with id " + patientId + " not found"));
 
-            Patient patient = patientRepository.findById(appointmentDto.patientId()).orElse(null);
-            appointment.setPatient(patient);
+        DoctorDto doctorDto = doctorService.getDoctorById(doctorId)
+                .orElseThrow(() -> new IllegalArgumentException("Doctor with id " + doctorId + " not found"));
 
-            Recipe recipe = recipeRepository.findById(appointmentDto.recipeId()).orElse(null);
-            appointment.setRecipe(recipe);
+        Patient patient = patientMapper.patientDtoToEntity(patientDto);
+        Doctor doctor = doctorMapper.doctorDtoToEntity(doctorDto);
 
+        appointment.setPatient(patient);
+        appointment.setDoctor(doctor);
+        
         Appointment savedAppointment = appointmentRepository.save(appointment);
-        return Optional.of(modelMapper.map(savedAppointment, AppointmentDto.class));
+
+        return Optional.of(appointmentMapper.entityToAppointmentDto(savedAppointment));
     }
 
     public List<AppointmentDto> getAllAppointments() {
-        return ((List<Appointment>) appointmentRepository.findAll()).stream()
-                .map(appointment -> modelMapper.map(appointment, AppointmentDto.class))
+        return ((Collection<Appointment>) appointmentRepository.findAll()).stream()
+                .map(appointmentMapper::entityToAppointmentDto)
                 .collect(Collectors.toList());
     }
 
-    public Optional<Appointment> getAppointmentById(Long id) {
-        return appointmentRepository.findById(id);
+    public Optional<AppointmentDto> getAppointmentById(Long id) {
+        return appointmentRepository.findById(id)
+                .map(appointmentMapper::entityToAppointmentDto);
     }
+    
 
     @Transactional
     public Optional<AppointmentDto> updateAppointment(Long id, AppointmentDto appointmentDto) {
         return appointmentRepository.findById(id).map(appointment -> {
-            appointment.setAppointmentDate(appointmentDto.appointmentDate());
-            appointment.setDescription(appointmentDto.description());
-    
-                Doctor doctor = doctorRepository.findById(appointmentDto.doctorId()).orElse(null);
-                appointment.setDoctor(doctor);
-
-                Patient patient = patientRepository.findById(appointmentDto.patientId()).orElse(null);
-                appointment.setPatient(patient);
-    
-                Recipe recipe = recipeRepository.findById(appointmentDto.recipeId()).orElse(null);
-                appointment.setRecipe(recipe);
-    
+            appointmentMapper.updateEntityFromDto(appointment, appointmentDto);
             Appointment updatedAppointment = appointmentRepository.save(appointment);
-            return modelMapper.map(updatedAppointment, AppointmentDto.class);
+            return appointmentMapper.entityToAppointmentDto(updatedAppointment);
         });
+    }
+
+    public List<AppointmentDto> getByDoctorId(Long doctorId) {
+        DoctorDto doctorDto = doctorService.getDoctorById(doctorId)
+                .orElseThrow(() -> new IllegalArgumentException("Doctor with id " + doctorId + " not found"));
+    
+        Doctor doctor = doctorMapper.doctorDtoToEntity(doctorDto);
+        
+        List<Appointment> appointments = appointmentRepository.findByDoctor(doctor);
+        
+        return appointments.stream()
+                .map(appointmentMapper::entityToAppointmentDto)
+                .collect(Collectors.toList());
+    }
+
+    public List<AppointmentDto> getByPatientId(Long patientId) {
+        PatientDto patientDto = patientService.getPatientById(patientId)
+                .orElseThrow(() -> new IllegalArgumentException("Patient with id " + patientId + " not found"));
+    
+        Patient patient = patientMapper.patientDtoToEntity(patientDto);
+        
+        List<Appointment> appointments = appointmentRepository.findByPatient(patient);
+        
+        return appointments.stream()
+                .map(appointmentMapper::entityToAppointmentDto)
+                .collect(Collectors.toList());
     }
 
     @Transactional

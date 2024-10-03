@@ -20,7 +20,6 @@ CREATE TABLE analyses (
     status VARCHAR(255) NOT NULL,
     doctor_id SERIAL,
     patient_id SERIAL,
-    CONSTRAINT fk_doctor FOREIGN KEY (doctor_id) REFERENCES doctors(id),
     CONSTRAINT fk_patient FOREIGN KEY (patient_id) REFERENCES patients(id)
 );
 
@@ -42,7 +41,6 @@ CREATE TABLE documents (
     status VARCHAR(255) NOT NULL,
     doctor_id SERIAL,
     patient_id SERIAL,
-    CONSTRAINT fk_doctor FOREIGN KEY (doctor_id) REFERENCES doctors(id),
     CONSTRAINT fk_patient FOREIGN KEY (patient_id) REFERENCES patients(id)
 );
 
