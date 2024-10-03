@@ -15,3 +15,4 @@ public interface PatientRepository extends CrudRepository<Patient, Long> {
 
     List<Patient> findByDateOfBirth(LocalDate dateOfBirth);
 }
+

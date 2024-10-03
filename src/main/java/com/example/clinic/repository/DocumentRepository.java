@@ -21,8 +21,6 @@ public interface DocumentRepository extends CrudRepository<Document, Long> {
     
     List<Document> findByPatientId(Long patientId);
     
-    List<Document> findByDoctorId(Long doctorId);
-    
     List<Document> findByStatus(String status);
     
     List<Document> findByType(String type);
