@@ -14,8 +14,6 @@ import com.example.clinic.entity.Doctor;
 import com.example.clinic.mapper.AppointmentMapper;
 import com.example.clinic.mapper.DoctorMapper;
 import com.example.clinic.mapper.RecipeMapper;
-import com.example.clinic.repository.DoctorRepository;
-
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 
