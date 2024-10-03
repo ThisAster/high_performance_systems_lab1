@@ -1,28 +1,33 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
- */
-
 package com.example.clinic.mapper;
 
-import org.mapstruct.InjectionStrategy;
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.springframework.stereotype.Component;
 
 import com.example.clinic.dto.PatientDto;
 import com.example.clinic.entity.Patient;
 
-/**
- *
- * @author thisaster
- */
-@Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR, nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-public interface PatientMapper {
+@Component
+public class PatientMapper {
 
-    Patient patientDtoToEntity(PatientDto patientDto);
+    public PatientDto entityToPatientDto(Patient patient) {
+        if (patient == null) {
+            return null;
+        }
+        return new PatientDto(
+            patient.getId(),
+            patient.getName(),
+            patient.getDateOfBirth()
+        );
+    }
 
-    void updateEntityFromDto(@MappingTarget Patient entity, PatientDto dto);
-
-    PatientDto entityToPatientDto(Patient entity);
+    public Patient patientDtoToEntity(PatientDto patientDto) {
+        if (patientDto == null) {
+            return null;
+        }
+        Patient patient = new Patient();
+        patient.setId(patientDto.id());
+        patient.setName(patientDto.name());
+        patient.setDateOfBirth(patientDto.dateOfBirth());
+        
+        return patient;
+    }
 }

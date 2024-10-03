@@ -1,19 +1,34 @@
 package com.example.clinic.mapper;
 
-import org.mapstruct.InjectionStrategy;
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.springframework.stereotype.Component;
 
 import com.example.clinic.dto.AppointmentDto;
 import com.example.clinic.entity.Appointment;
 
-@Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR, nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-public interface AppointmentMapper {
+@Component
+public class AppointmentMapper {
 
-    Appointment appointmentDtoToEntity(AppointmentDto appointmentDto);
+    public AppointmentDto entityToAppointmentDto(Appointment appointment) {
+        if (appointment == null) {
+            return null;
+        }
 
-    void updateEntityFromDto(@MappingTarget Appointment entity, AppointmentDto dto);
+        return new AppointmentDto(
+            appointment.getId(),
+            appointment.getAppointmentDate(), 
+            appointment.getDescription()
+        );
+    }
+ 
+    public Appointment appointmentDtoToEntity(AppointmentDto appointmentDto) {
+        if (appointmentDto == null) {
+            return null;
+        }
 
-    AppointmentDto entityToAppointmentDto(Appointment entity);
+        Appointment appointment = new Appointment();
+        appointment.setId(appointmentDto.id());
+        appointment.setAppointmentDate(appointmentDto.appointmentDate());
+        appointment.setDescription(appointmentDto.description());
+        return appointment;
+    }
 }
