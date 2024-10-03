@@ -22,17 +22,15 @@ public class RecipeMapper {
     }
 
     public Recipe recipeDtoToEntity(RecipeDto recipeDto) {
-        if (dto == null) {
+        if (recipeDto == null) {
             return null;
         }
         Recipe recipe = new Recipe();
-        recipe.setId(dto.id());
-        recipe.setRecipeDate(dto.recipeDate());
-        recipe.setMedication(dto.medication());
-        recipe.setDose(dto.dose());
-        recipe.setDuration(dto.duration());
-
-        // Обратите внимание: поля doctor, patient и appointment не присутствуют в DTO, поэтому мы их игнорируем
+        recipe.setId(recipeDto.id());
+        recipe.setRecipeDate(recipeDto.recipeDate());
+        recipe.setMedication(recipeDto.medication());
+        recipe.setDose(recipeDto.dose());
+        recipe.setDuration(recipeDto.duration());
         
         return recipe;
     }
