@@ -1,6 +1,6 @@
 package com.example.clinic.service;
 
-
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,44 +26,49 @@ public class BillingService {
 
     @Data
     public static class Invoice {
-        private String patientName;
-        private String dateOfBirth;
-        private List<Consultation> consultations;
+        private Long payerId;
+        private List<Consultation> consultations;  
         private double totalCost;
 
         @Data
         public static class Consultation {
             private String doctorName;
             private String speciality;
+            private String patientName;
+            private String patientDateOfBirth;
             private double consultationCost;
         }
     }
 
-    public Invoice generateInvoice(Long patientId) {
-        Patient patient = patientRepository.findById(patientId)
-                .orElseThrow(() -> new IllegalArgumentException("Patient with id " + patientId + " not found."));
-          
-        
-        List<Appointment> appointments = appointmentRepository.findByPatientId(patientId);
-        List<Invoice.Consultation> consultations = appointments.stream().map(appointment -> {
-            Doctor doctor = appointment.getDoctor();
-            Invoice.Consultation consultation = new Invoice.Consultation();
-            consultation.setDoctorName(doctor.getName());
-            consultation.setSpeciality(doctor.getSpeciality());
-            consultation.setConsultationCost(doctor.getConsultationCost());
-            return consultation;
-        }).collect(Collectors.toList());
+    public Invoice generateInvoice(List<Long> patientIds, Long userId) {
+        List<Invoice.Consultation> consultations = new ArrayList<>();
+        double totalCost = 0.0;
 
-        double totalCost = consultations.stream()
-                .mapToDouble(Invoice.Consultation::getConsultationCost)
-                .sum();
+        for (Long patientId : patientIds) {
+            Patient patient = patientRepository.findById(patientId)
+                    .orElseThrow(() -> new IllegalArgumentException("Patient with id " + patientId + " not found."));
+
+            List<Appointment> appointments = appointmentRepository.findByPatientId(patientId);
+            List<Invoice.Consultation> patientConsultations = appointments.stream().map(appointment -> {
+                Doctor doctor = appointment.getDoctor();
+                Invoice.Consultation consultation = new Invoice.Consultation();
+                consultation.setDoctorName(doctor.getName());
+                consultation.setSpeciality(doctor.getSpeciality());
+                consultation.setPatientName(patient.getName());
+                consultation.setPatientDateOfBirth(patient.getDateOfBirth().toString());
+                consultation.setConsultationCost(doctor.getConsultationCost());
+                return consultation;
+            }).collect(Collectors.toList());
+
+            consultations.addAll(patientConsultations); 
+            totalCost += patientConsultations.stream().mapToDouble(Invoice.Consultation::getConsultationCost).sum();
+        }
 
         Invoice invoice = new Invoice();
-        invoice.setPatientName(patient.getName());
-        invoice.setDateOfBirth(patient.getDateOfBirth().toString());
+        invoice.setPayerId(userId);
         invoice.setConsultations(consultations);
         invoice.setTotalCost(totalCost);
-        
+
         return invoice;
     }
 }

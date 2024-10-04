@@ -25,3 +25,7 @@ INSERT INTO recipes (recipe_date, medication, dose, duration, doctor_id, patient
 (DEFAULT, 'Парацетамол', '500 мг', '7 дней', 1, 1, 1),
 (DEFAULT, 'Ибупрофен', '400 мг', '5 дней', 2, 2, 2);
 
+INSERT INTO users (id, user_name, password) VALUES
+(1, 'admin', 'admin123'),
+(2, 'user', 'user123');
+
