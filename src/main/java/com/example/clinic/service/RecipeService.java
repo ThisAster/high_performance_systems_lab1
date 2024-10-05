@@ -1,9 +1,6 @@
 package com.example.clinic.service;
 
-import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -60,28 +57,5 @@ public class RecipeService {
     @Transactional
     public void deleteRecipe(Long id) {
         recipeRepository.deleteById(id);
-    }
-
-    public List<Recipe> getAllRecipes() {
-        return ((Collection<Recipe>) recipeRepository.findAll()).stream()
-                .collect(Collectors.toList());
-    }
-
-    public Optional<Recipe> getRecipeById(Long id) {
-        return recipeRepository.findById(id);
-    }
-
-    public List<Recipe> getByPatientId(Long patientId) {
-        return recipeRepository.findByPatientId(patientId).stream()
-                .collect(Collectors.toList());
-    }
-
-    public List<Recipe> getByDoctorId(Long doctorId) {
-        return recipeRepository.findByDoctorId(doctorId).stream()
-                .collect(Collectors.toList());
-    }
-
-    public Optional<Recipe> getByAppointmentId(Long appointmentId) {
-        return recipeRepository.findByAppointmentId(appointmentId);
     }
 }

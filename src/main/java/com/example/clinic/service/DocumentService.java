@@ -1,9 +1,6 @@
 package com.example.clinic.service;
 
-import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -52,29 +49,5 @@ public class DocumentService {
     @Transactional
     public void deleteDocument(Long id) {
         documentRepository.deleteById(id);
-    }
-
-    public List<Document> getAllDocuments() {
-        return ((Collection<Document>) documentRepository.findAll()).stream()
-                .collect(Collectors.toList());
-    }
-
-    public Optional<Document> getDocumentById(Long id) {
-        return documentRepository.findById(id);
-    }
-
-    public List<Document> getByPatientId(Long patientId) {
-        return documentRepository.findByPatientId(patientId).stream()
-                .collect(Collectors.toList());
-    }
-
-    public List<Document> getByStatus(String status) {
-        return documentRepository.findByStatus(status).stream()
-                .collect(Collectors.toList());
-    }
-
-    public List<Document> getByType(String type) {
-        return documentRepository.findByType(type).stream()
-                .collect(Collectors.toList());
     }
 }

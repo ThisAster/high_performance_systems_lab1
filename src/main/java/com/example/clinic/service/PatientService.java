@@ -1,7 +1,5 @@
 package com.example.clinic.service;
 
-import java.time.LocalDate;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -77,24 +75,5 @@ public class PatientService {
     @Transactional
     public void deletePatient(Long id) {
         patientRepository.deleteById(id);
-    }
-
-    public Optional<Patient> getPatientById(Long id) {
-        return patientRepository.findById(id);
-    }
-
-    public List<Patient> getPatientByName(String name) {
-        return patientRepository.findByName(name).stream()
-            .collect(Collectors.toList());
-    }
-    
-    public List<Patient> getPatientsByDateOfBirth(LocalDate dateOfBirth) {
-        return patientRepository.findByDateOfBirth(dateOfBirth).stream()
-            .collect(Collectors.toList());
-    }
-
-    public List<Patient> getAllPatients() {
-        return ((Collection<Patient>) patientRepository.findAll()).stream()
-        .collect(Collectors.toList());
     }
 }
