@@ -1,9 +1,6 @@
 package com.example.clinic.service;
 
-import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -46,16 +43,6 @@ public class AppointmentService {
         return Optional.of(appointmentMapper.entityToAppointmentDto(savedAppointment));
     }
 
-    public List<Appointment> getAllAppointments() {
-        return ((Collection<Appointment>) appointmentRepository.findAll()).stream()
-                .collect(Collectors.toList());
-    }
-
-    public Optional<Appointment> getAppointmentById(Long id) {
-        return appointmentRepository.findById(id);
-    }
-    
-
     @Transactional
     public Optional<Appointment> updateAppointment(Long id, AppointmentDto appointmentDto) {
         Appointment appointment = appointmentRepository.findById(id)
@@ -66,21 +53,6 @@ public class AppointmentService {
         Appointment updatedAppointment = appointmentRepository.save(appointment);
         return Optional.of(updatedAppointment);
     };
-    
-
-    public List<Appointment> getByDoctorId(Long doctorId) {
-        List<Appointment> appointments = appointmentRepository.findByDoctorId(doctorId);
-        
-        return appointments.stream()
-                .collect(Collectors.toList());
-    }
-
-    public List<Appointment> getByPatientId(Long patientId) {
-        List<Appointment> appointments = appointmentRepository.findByPatientId(patientId);
-        
-        return appointments.stream()
-                .collect(Collectors.toList());
-    }
 
     @Transactional
     public void deleteAppointment(Long id) {

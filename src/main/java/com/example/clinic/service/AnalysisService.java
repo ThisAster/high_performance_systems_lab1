@@ -5,10 +5,7 @@
 
 package com.example.clinic.service;
 
-import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -61,30 +58,5 @@ public class AnalysisService {
     @Transactional
     public void deleteAnalysis(Long id) {
         analysisRepository.deleteById(id);
-    }
-
-    public List<Analysis> getAllAnalyses() {
-        return ((Collection<Analysis>) analysisRepository.findAll()).stream()
-                .collect(Collectors.toList());
-    }
-
-    public Optional<Analysis> getAnalysisById(Long id) {
-        return analysisRepository.findById(id);
-    }
-
-    public List<Analysis> getByPatientId(Long patientId) {
-        List<Analysis> analyses = analysisRepository.findByPatientId(patientId);
-        return analyses.stream()
-                .collect(Collectors.toList());
-    }
-
-    public List<Analysis> getByType(String type) {
-        return analysisRepository.findByType(type).stream()
-                .collect(Collectors.toList());
-    }
-
-    public List<Analysis> getByStatus(String status) {
-        return analysisRepository.findByStatus(status).stream()
-                .collect(Collectors.toList());
     }
 }

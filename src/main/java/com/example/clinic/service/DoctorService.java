@@ -1,6 +1,5 @@
 package com.example.clinic.service;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -45,15 +44,6 @@ public class DoctorService {
     
         return Optional.of(savedDoctor);
     }
-    
-    public List<Doctor> getAllDoctors() {
-        return ((Collection<Doctor>) doctorRepository.findAll()).stream()
-                .collect(Collectors.toList());
-    }
-
-    public Optional<Doctor> getDoctorById(Long id) {
-        return doctorRepository.findById(id);
-    }
 
     @Transactional
     public Optional<Doctor> updateDoctor(Long id, DoctorDto doctorDto) {
@@ -70,15 +60,5 @@ public class DoctorService {
     @Transactional
     public void deleteDoctor(Long id) {
         doctorRepository.deleteById(id);
-    }
-    
-    public List<Doctor> findByName(String name) {
-        return doctorRepository.findByName(name).stream()
-                .collect(Collectors.toList());
-    }
-    
-    public List<Doctor> findBySpeciality(String speciality) {
-        return doctorRepository.findBySpeciality(speciality).stream()
-                .collect(Collectors.toList());
     }
 }
