@@ -9,8 +9,10 @@ import org.springframework.stereotype.Service;
 import com.example.clinic.entity.Appointment;
 import com.example.clinic.entity.Doctor;
 import com.example.clinic.entity.Patient;
+import com.example.clinic.exception.EntityNotFoundException;
 import com.example.clinic.repository.AppointmentRepository;
 import com.example.clinic.repository.PatientRepository;
+import com.example.clinic.repository.UserRepository;
 import com.example.clinic.service.BillingService.Invoice;
 import com.example.clinic.service.BillingService.Invoice.Consultation;
 import com.example.clinic.service.BillingService.Invoice.Consultation.DoctorInfo;
@@ -25,6 +27,7 @@ public class BillingService {
 
     private final PatientRepository patientRepository;
     private final AppointmentRepository appointmentRepository;
+    private final UserRepository userRepository;
 
     @Data
     public static class Invoice {
@@ -53,43 +56,44 @@ public class BillingService {
     }
 
     public Invoice generateInvoice(List<Long> patientIds, Long userId) {
+        userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User with id " + userId + " not found."));
+    
         List<Invoice.Consultation> consultations = new ArrayList<>();
         double totalCost = 0.0;
-
+    
         for (Long patientId : patientIds) {
             Patient patient = patientRepository.findById(patientId)
-                    .orElseThrow(() -> new IllegalArgumentException("Patient with id " + patientId + " not found."));
-
+                    .orElseThrow(() -> new EntityNotFoundException("Patient with id " + patientId + " not found."));
+    
             List<Appointment> appointments = appointmentRepository.findByPatientId(patientId);
             List<Invoice.Consultation> patientConsultations = appointments.stream().map(appointment -> {
                 Doctor doctor = appointment.getDoctor();
                 Invoice.Consultation consultation = new Invoice.Consultation();
                 
-                // Set patient information
                 consultation.setPatient(new Invoice.Consultation.PatientInfo());
                 consultation.getPatient().setName(patient.getName());
                 consultation.getPatient().setDateOfBirth(patient.getDateOfBirth().toString());
                 
-                // Set doctor information
                 consultation.setDoctor(new Invoice.Consultation.DoctorInfo());
                 consultation.getDoctor().setName(doctor.getName());
                 consultation.getDoctor().setSpeciality(doctor.getSpeciality());
                 
-                // Set consultation price
                 consultation.setPrice(doctor.getConsultationCost());
                 
                 return consultation;
             }).collect(Collectors.toList());
-
+    
             consultations.addAll(patientConsultations); 
             totalCost += patientConsultations.stream().mapToDouble(Invoice.Consultation::getPrice).sum();
         }
-
+    
         Invoice invoice = new Invoice();
         invoice.setPayerId(userId);
         invoice.setConsultations(consultations);
         invoice.setTotalCost(totalCost);
-
+    
         return invoice;
     }
+    
 }
