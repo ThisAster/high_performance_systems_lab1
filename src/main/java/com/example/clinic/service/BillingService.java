@@ -1,99 +1,48 @@
 package com.example.clinic.service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
+import com.example.clinic.dto.InvoiceDTO;
+import com.example.clinic.entity.Patient;
+import com.example.clinic.exception.EntityNotFoundException;
+import com.example.clinic.mapper.ConsultationMapper;
+import com.example.clinic.mapper.InvoiceMapper;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import com.example.clinic.entity.Appointment;
-import com.example.clinic.entity.Doctor;
-import com.example.clinic.entity.Patient;
-import com.example.clinic.exception.EntityNotFoundException;
 import com.example.clinic.repository.AppointmentRepository;
 import com.example.clinic.repository.PatientRepository;
 import com.example.clinic.repository.UserRepository;
-import com.example.clinic.service.BillingService.Invoice;
-import com.example.clinic.service.BillingService.Invoice.Consultation;
-import com.example.clinic.service.BillingService.Invoice.Consultation.DoctorInfo;
-import com.example.clinic.service.BillingService.Invoice.Consultation.PatientInfo;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
 
 @Service
 @AllArgsConstructor
 public class BillingService {
 
     private final PatientRepository patientRepository;
-    private final AppointmentRepository appointmentRepository;
-    private final UserRepository userRepository;
+    private final InvoiceMapper invoiceMapper;
 
-    @Data
-    public static class Invoice {
-        private Long payerId;
-        private List<Consultation> consultations;  
-        private double totalCost;
 
-        @Data
-        public static class Consultation {
-            private PatientInfo patient;    
-            private DoctorInfo doctor;       
-            private double price;      
-                  
-            @Data
-            public static class PatientInfo {
-                private String name;
-                private String dateOfBirth;
-            }
 
-            @Data
-            public static class DoctorInfo {
-                private String name;
-                private String speciality;
-            }
+    public InvoiceDTO generateInvoice(List<Long> patientIds) {
+
+        Set<Long> patientIdSet = new HashSet<>(patientIds);
+
+        Set<Patient> patients = patientRepository.findByIdInWithAppointments(patientIdSet);
+
+
+        patientIdSet.removeAll(patients.stream().map(Patient::getId).collect(Collectors.toSet()));
+
+        if (!patientIdSet.isEmpty()) {
+            throw new EntityNotFoundException(STR."Patients with ids \{StringUtils.join(patientIdSet, ',')} not found.");
         }
-    }
 
-    public Invoice generateInvoice(List<Long> patientIds, Long userId) {
-        userRepository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException("User with id " + userId + " not found."));
-    
-        List<Invoice.Consultation> consultations = new ArrayList<>();
-        double totalCost = 0.0;
-    
-        for (Long patientId : patientIds) {
-            Patient patient = patientRepository.findById(patientId)
-                    .orElseThrow(() -> new EntityNotFoundException("Patient with id " + patientId + " not found."));
-    
-            List<Appointment> appointments = appointmentRepository.findByPatientId(patientId);
-            List<Invoice.Consultation> patientConsultations = appointments.stream().map(appointment -> {
-                Doctor doctor = appointment.getDoctor();
-                Invoice.Consultation consultation = new Invoice.Consultation();
-                
-                consultation.setPatient(new Invoice.Consultation.PatientInfo());
-                consultation.getPatient().setName(patient.getName());
-                consultation.getPatient().setDateOfBirth(patient.getDateOfBirth().toString());
-                
-                consultation.setDoctor(new Invoice.Consultation.DoctorInfo());
-                consultation.getDoctor().setName(doctor.getName());
-                consultation.getDoctor().setSpeciality(doctor.getSpeciality());
-                
-                consultation.setPrice(doctor.getConsultationCost());
-                
-                return consultation;
-            }).collect(Collectors.toList());
-    
-            consultations.addAll(patientConsultations); 
-            totalCost += patientConsultations.stream().mapToDouble(Invoice.Consultation::getPrice).sum();
-        }
-    
-        Invoice invoice = new Invoice();
-        invoice.setPayerId(userId);
-        invoice.setConsultations(consultations);
-        invoice.setTotalCost(totalCost);
-    
-        return invoice;
+        List<Appointment> appointments = patients.stream().flatMap((patient) -> patient.getAppointments().stream()).collect(Collectors.toList());
+
+        return invoiceMapper.appointmentListToInvoice(appointments);
     }
     
 }
