@@ -26,36 +26,42 @@ public class AppointmentService {
     private final AppointmentMapper appointmentMapper;
 
     @Transactional
-    public Optional<AppointmentDto> createAppointment(AppointmentDto appointmentDto, Long patientId, Long doctorId) {
+    public Optional<Appointment> createAppointment(AppointmentDto appointmentDto, Long patientId, Long doctorId) {
         Appointment appointment = appointmentMapper.appointmentDtoToEntity(appointmentDto);
 
-        Patient patient = patientRepository.findById(patientId)
-                .orElseThrow(() -> new IllegalArgumentException("Recipe with id " + patientId + " not found"));
+        Optional<Patient> patient = patientRepository.findById(patientId);
+        Optional<Doctor> doctor = doctorRepository.findById(doctorId);
 
-        Doctor doctor = doctorRepository.findById(doctorId)
-                .orElseThrow(() -> new IllegalArgumentException("Doctor with id " + doctorId + " not found"));
+        if (patient.isPresent() && doctor.isPresent()) {
+            appointment.setPatient(patient.get());
+            appointment.setDoctor(doctor.get());
+            Appointment savedAppointment = appointmentRepository.save(appointment);
+            return Optional.of(savedAppointment);
+        }
 
-        appointment.setPatient(patient);
-        appointment.setDoctor(doctor);
-        
-        Appointment savedAppointment = appointmentRepository.save(appointment);
-
-        return Optional.of(appointmentMapper.entityToAppointmentDto(savedAppointment));
+        return Optional.empty();
     }
 
     @Transactional
     public Optional<Appointment> updateAppointment(Long id, AppointmentDto appointmentDto) {
-        Appointment appointment = appointmentRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Appointment with id " + id + " not found"));
+        Optional<Appointment> optionalAppointment = appointmentRepository.findById(id);
 
-        appointment.setAppointmentDate(appointmentDto.appointmentDate());
-        appointment.setDescription(appointmentDto.description());       
-        Appointment updatedAppointment = appointmentRepository.save(appointment);
-        return Optional.of(updatedAppointment);
-    };
+        if (optionalAppointment.isPresent()) {
+            Appointment appointment = optionalAppointment.get();
+            appointment.setAppointmentDate(appointmentDto.appointmentDate());
+            appointment.setDescription(appointmentDto.description());
+            return Optional.of(appointmentRepository.save(appointment));
+        }
+
+        return Optional.empty();
+    }
 
     @Transactional
     public void deleteAppointment(Long id) {
         appointmentRepository.deleteById(id);
     }
+
+    public Optional<Appointment> getAppointmentById(Long id) {
+        return appointmentRepository.findById(id);
+    } 
 }
