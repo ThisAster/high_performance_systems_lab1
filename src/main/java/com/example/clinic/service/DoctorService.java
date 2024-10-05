@@ -34,11 +34,9 @@ public class DoctorService {
         List<Appointment> appointments = appointmentRepository.findByDoctorId(doctor.getId());
         List<Recipe> recipes = recipeRepository.findByDoctorId(doctor.getId());
 
-        doctor.setAppointments(appointments.stream()
-            .collect(Collectors.toList()));
+        doctor.setAppointments(appointments);
 
-        doctor.setRecipes(recipes.stream()
-            .collect(Collectors.toList()));
+        doctor.setRecipes(recipes);
 
         Doctor savedDoctor = doctorRepository.save(doctor);
     

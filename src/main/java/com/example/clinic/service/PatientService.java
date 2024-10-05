@@ -2,7 +2,6 @@ package com.example.clinic.service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -33,6 +32,11 @@ public class PatientService {
     private final AnalysisRepository analysisRepository;
     private final PatientMapper patientMapper;
 
+
+    public boolean patientExists(Long userId) {
+        return patientRepository.existsById(userId);
+    }
+
     @Transactional
     public Optional<Patient> createPatient(PatientDto patientDto) {
         Patient patient = patientMapper.patientDtoToEntity(patientDto);
@@ -42,17 +46,13 @@ public class PatientService {
         List<Document> documents = documentRepository.findByPatientId(patientDto.id());
         List<Analysis> analyses = analysisRepository.findByPatientId(patientDto.id());
         
-        patient.setAppointments(appointments.stream()
-        .collect(Collectors.toList()));
+        patient.setAppointments(appointments);
 
-        patient.setRecipes(recipes.stream()
-            .collect(Collectors.toList()));
+        patient.setRecipes(recipes);
 
-        patient.setDocuments(documents.stream()
-            .collect(Collectors.toList()));
+        patient.setDocuments(documents);
 
-        patient.setAnalyses(analyses.stream()
-            .collect(Collectors.toList()));
+        patient.setAnalyses(analyses);
 
         Patient savedPatient = patientRepository.save(patient);
         
