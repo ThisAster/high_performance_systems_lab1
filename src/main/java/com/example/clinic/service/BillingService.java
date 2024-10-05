@@ -13,6 +13,8 @@ import com.example.clinic.repository.AppointmentRepository;
 import com.example.clinic.repository.PatientRepository;
 import com.example.clinic.service.BillingService.Invoice;
 import com.example.clinic.service.BillingService.Invoice.Consultation;
+import com.example.clinic.service.BillingService.Invoice.Consultation.DoctorInfo;
+import com.example.clinic.service.BillingService.Invoice.Consultation.PatientInfo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -32,11 +34,21 @@ public class BillingService {
 
         @Data
         public static class Consultation {
-            private String doctorName;
-            private String speciality;
-            private String patientName;
-            private String patientDateOfBirth;
-            private double consultationCost;
+            private PatientInfo patient;    
+            private DoctorInfo doctor;       
+            private double price;      
+                  
+            @Data
+            public static class PatientInfo {
+                private String name;
+                private String dateOfBirth;
+            }
+
+            @Data
+            public static class DoctorInfo {
+                private String name;
+                private String speciality;
+            }
         }
     }
 
@@ -52,16 +64,25 @@ public class BillingService {
             List<Invoice.Consultation> patientConsultations = appointments.stream().map(appointment -> {
                 Doctor doctor = appointment.getDoctor();
                 Invoice.Consultation consultation = new Invoice.Consultation();
-                consultation.setDoctorName(doctor.getName());
-                consultation.setSpeciality(doctor.getSpeciality());
-                consultation.setPatientName(patient.getName());
-                consultation.setPatientDateOfBirth(patient.getDateOfBirth().toString());
-                consultation.setConsultationCost(doctor.getConsultationCost());
+                
+                // Set patient information
+                consultation.setPatient(new Invoice.Consultation.PatientInfo());
+                consultation.getPatient().setName(patient.getName());
+                consultation.getPatient().setDateOfBirth(patient.getDateOfBirth().toString());
+                
+                // Set doctor information
+                consultation.setDoctor(new Invoice.Consultation.DoctorInfo());
+                consultation.getDoctor().setName(doctor.getName());
+                consultation.getDoctor().setSpeciality(doctor.getSpeciality());
+                
+                // Set consultation price
+                consultation.setPrice(doctor.getConsultationCost());
+                
                 return consultation;
             }).collect(Collectors.toList());
 
             consultations.addAll(patientConsultations); 
-            totalCost += patientConsultations.stream().mapToDouble(Invoice.Consultation::getConsultationCost).sum();
+            totalCost += patientConsultations.stream().mapToDouble(Invoice.Consultation::getPrice).sum();
         }
 
         Invoice invoice = new Invoice();
