@@ -18,7 +18,6 @@ CREATE TABLE analyses (
     sample_date TIMESTAMP DEFAULT now() NOT NULL,
     result VARCHAR(200),
     status VARCHAR(255) NOT NULL,
-    doctor_id SERIAL,
     patient_id SERIAL,
     CONSTRAINT fk_patient FOREIGN KEY (patient_id) REFERENCES patients(id)
 );
@@ -39,7 +38,6 @@ CREATE TABLE documents (
     creation_date TIMESTAMP DEFAULT now() NOT NULL,
     content VARCHAR(500),
     status VARCHAR(255) NOT NULL,
-    doctor_id SERIAL,
     patient_id SERIAL,
     CONSTRAINT fk_patient FOREIGN KEY (patient_id) REFERENCES patients(id)
 );
