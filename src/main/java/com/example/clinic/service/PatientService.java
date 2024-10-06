@@ -52,7 +52,7 @@ public class PatientService {
     @Transactional
     public Patient updatePatient(Long id, PatientDto patientDto) {
         Patient patient = patientRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Patient not found with id: " + id));
+                .orElseThrow(() -> new EntityNotFoundException("Patient not found with id: " + id));
     
         patient.setName(patientDto.name());
         patient.setDateOfBirth(patientDto.dateOfBirth());

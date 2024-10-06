@@ -24,7 +24,7 @@ public class DocumentService {
     @Transactional
     public Document createDocument(DocumentDto documentDto, Long patientId) {
         Patient patient = patientRepository.findById(patientId)
-                .orElseThrow(() -> new IllegalArgumentException("Patient with id " + patientId + " not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Patient with id " + patientId + " not found"));
 
         Document document = documentMapper.documentDtoToEntity(documentDto);
 
@@ -36,7 +36,7 @@ public class DocumentService {
     @Transactional
     public Document updateDocument(Long id, DocumentDto documentDto) {
         Document document = documentRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Document with id " + id + " not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Document with id " + id + " not found"));
                 
         document.setType(documentDto.type());
         document.setDate(documentDto.date());

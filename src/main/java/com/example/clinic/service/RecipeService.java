@@ -27,10 +27,10 @@ public class RecipeService {
     @Transactional
     public Recipe createRecipe(RecipeDto recipeDto, Long doctorId, Long patientId) {
         Doctor doctor = doctorRepository.findById(doctorId)
-                .orElseThrow(() -> new IllegalArgumentException("Doctor with id " + doctorId + " not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Doctor with id " + doctorId + " not found"));
 
         Patient patient = patientRepository.findById(patientId)
-                .orElseThrow(() -> new IllegalArgumentException("Patient with id " + patientId + " not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Patient with id " + patientId + " not found"));
         Recipe recipe = recipeMapper.recipeDtoToEntity(recipeDto);
         
         recipe.setDoctor(doctor);
@@ -42,7 +42,7 @@ public class RecipeService {
     @Transactional
     public Recipe updateRecipe(Long id, RecipeDto recipeDto) {
         Recipe recipe = recipeRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Recipe with id " + id + " not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Recipe with id " + id + " not found"));
         
         recipe.setRecipeDate(recipeDto.recipeDate());
         recipe.setMedication(recipeDto.medication());

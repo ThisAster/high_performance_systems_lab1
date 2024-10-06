@@ -42,7 +42,7 @@ public class DoctorService {
     @Transactional
     public Doctor updateDoctor(Long id, DoctorDto doctorDto) {
         Doctor doctor = doctorRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Doctor with id " + id + " not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Doctor with id " + id + " not found"));
 
         doctor.setName(doctorDto.name());
         doctor.setSpeciality(doctorDto.speciality());

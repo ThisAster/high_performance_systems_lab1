@@ -41,7 +41,7 @@ public class AnalysisService {
     @Transactional
     public Analysis updateAnalysis(Long id, AnalysisDto analysisDto) {
         Analysis analysis = analysisRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Analysis with id " + id + " not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Analysis with id " + id + " not found"));
 
         analysis.setType(analysisDto.type());
         analysis.setSampleDate(analysisDto.sampleDate());
