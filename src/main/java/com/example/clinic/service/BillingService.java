@@ -1,20 +1,19 @@
 package com.example.clinic.service;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
-import com.example.clinic.dto.InvoiceDTO;
-import com.example.clinic.entity.Patient;
-import com.example.clinic.exception.EntityNotFoundException;
-import com.example.clinic.mapper.ConsultationMapper;
-import com.example.clinic.mapper.InvoiceMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
+import com.example.clinic.dto.InvoiceDTO;
 import com.example.clinic.entity.Appointment;
-import com.example.clinic.repository.AppointmentRepository;
+import com.example.clinic.entity.Patient;
+import com.example.clinic.exception.EntityNotFoundException;
+import com.example.clinic.mapper.InvoiceMapper;
 import com.example.clinic.repository.PatientRepository;
-import com.example.clinic.repository.UserRepository;
 
 import lombok.AllArgsConstructor;
 
