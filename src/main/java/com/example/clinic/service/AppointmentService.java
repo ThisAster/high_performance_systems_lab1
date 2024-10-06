@@ -1,14 +1,13 @@
 package com.example.clinic.service;
 
-import java.util.Optional;
-
 import org.springframework.stereotype.Service;
 
 import com.example.clinic.dto.AppointmentDto;
 import com.example.clinic.entity.Appointment;
 import com.example.clinic.entity.Doctor;
 import com.example.clinic.entity.Patient;
-import com.example.clinic.mapper.AppointmentMapper;
+import com.example.clinic.exception.EntityNotFoundException;
+import com.example.clinic.mapper.AppointmentMapper; // Импортируйте ваше собственное исключение
 import com.example.clinic.repository.AppointmentRepository;
 import com.example.clinic.repository.DoctorRepository;
 import com.example.clinic.repository.PatientRepository;
@@ -26,42 +25,38 @@ public class AppointmentService {
     private final AppointmentMapper appointmentMapper;
 
     @Transactional
-    public Optional<Appointment> createAppointment(AppointmentDto appointmentDto, Long patientId, Long doctorId) {
+    public Appointment createAppointment(AppointmentDto appointmentDto, Long patientId, Long doctorId) {
+        Patient patient = patientRepository.findById(patientId)
+                .orElseThrow(() -> new EntityNotFoundException("Patient with id " + patientId + " not found"));
+        Doctor doctor = doctorRepository.findById(doctorId)
+                .orElseThrow(() -> new EntityNotFoundException("Doctor with id " + doctorId + " not found"));
+
         Appointment appointment = appointmentMapper.appointmentDtoToEntity(appointmentDto);
 
-        Optional<Patient> patient = patientRepository.findById(patientId);
-        Optional<Doctor> doctor = doctorRepository.findById(doctorId);
-
-        if (patient.isPresent() && doctor.isPresent()) {
-            appointment.setPatient(patient.get());
-            appointment.setDoctor(doctor.get());
-            Appointment savedAppointment = appointmentRepository.save(appointment);
-            return Optional.of(savedAppointment);
-        }
-
-        return Optional.empty();
+        appointment.setPatient(patient);
+        appointment.setDoctor(doctor);
+        return appointmentRepository.save(appointment);
     }
 
     @Transactional
-    public Optional<Appointment> updateAppointment(Long id, AppointmentDto appointmentDto) {
-        Optional<Appointment> optionalAppointment = appointmentRepository.findById(id);
+    public Appointment updateAppointment(Long id, AppointmentDto appointmentDto) {
+        Appointment appointment = this.getAppointmentById(id);
 
-        if (optionalAppointment.isPresent()) {
-            Appointment appointment = optionalAppointment.get();
-            appointment.setAppointmentDate(appointmentDto.appointmentDate());
-            appointment.setDescription(appointmentDto.description());
-            return Optional.of(appointmentRepository.save(appointment));
-        }
-
-        return Optional.empty();
+        appointment.setAppointmentDate(appointmentDto.appointmentDate());
+        appointment.setDescription(appointmentDto.description());
+        return appointmentRepository.save(appointment);
     }
 
     @Transactional
     public void deleteAppointment(Long id) {
+        if (!appointmentRepository.existsById(id)) {
+            throw new EntityNotFoundException("Appointment with id " + id + " not found");
+        }
         appointmentRepository.deleteById(id);
     }
 
-    public Optional<Appointment> getAppointmentById(Long id) {
-        return appointmentRepository.findById(id);
+    public Appointment getAppointmentById(Long id) {
+        return appointmentRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Appointment with id " + id + " not found"));
     } 
 }
