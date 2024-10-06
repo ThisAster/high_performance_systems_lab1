@@ -35,6 +35,7 @@ public class AppointmentService {
 
         appointment.setPatient(patient);
         appointment.setDoctor(doctor);
+        
         return appointmentRepository.save(appointment);
     }
 

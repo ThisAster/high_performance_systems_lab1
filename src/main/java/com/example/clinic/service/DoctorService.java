@@ -1,7 +1,6 @@
 package com.example.clinic.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -28,31 +27,28 @@ public class DoctorService {
     private final DoctorMapper doctorMapper;
 
     @Transactional
-    public Optional<Doctor> createDoctor(DoctorDto doctorDto) {
+    public Doctor createDoctor(DoctorDto doctorDto) {
         Doctor doctor = doctorMapper.doctorDtoToEntity(doctorDto);
         
         List<Appointment> appointments = appointmentRepository.findByDoctorId(doctor.getId());
         List<Recipe> recipes = recipeRepository.findByDoctorId(doctor.getId());
 
         doctor.setAppointments(appointments);
-
         doctor.setRecipes(recipes);
-
-        Doctor savedDoctor = doctorRepository.save(doctor);
     
-        return Optional.of(savedDoctor);
+        return doctorRepository.save(doctor);
     }
 
     @Transactional
-    public Optional<Doctor> updateDoctor(Long id, DoctorDto doctorDto) {
+    public Doctor updateDoctor(Long id, DoctorDto doctorDto) {
         Doctor doctor = doctorRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Doctor with id " + id + " not found"));
 
         doctor.setName(doctorDto.name());
         doctor.setSpeciality(doctorDto.speciality());
         doctor.setConsultationCost(doctorDto.consultationCost());
-        Doctor updatedDoctor = doctorRepository.save(doctor);
-        return Optional.of(updatedDoctor);
+
+        return doctorRepository.save(doctor);
     }
 
     @Transactional

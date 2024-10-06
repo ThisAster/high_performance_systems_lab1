@@ -1,7 +1,5 @@
 package com.example.clinic.service;
 
-import java.util.Optional;
-
 import org.springframework.stereotype.Service;
 
 import com.example.clinic.dto.DocumentDto;
@@ -24,28 +22,28 @@ public class DocumentService {
     private final DocumentMapper documentMapper;
 
     @Transactional
-    public Optional<Document> createDocument(DocumentDto documentDto, Long patientId) {
+    public Document createDocument(DocumentDto documentDto, Long patientId) {
         Patient patient = patientRepository.findById(patientId)
                 .orElseThrow(() -> new IllegalArgumentException("Patient with id " + patientId + " not found"));
 
         Document document = documentMapper.documentDtoToEntity(documentDto);
 
         document.setPatient(patient);
-        Document savedDocument = documentRepository.save(document);
-        return Optional.of(savedDocument);
+
+        return documentRepository.save(document);
     }
 
     @Transactional
-    public Optional<Document> updateDocument(Long id, DocumentDto documentDto) {
+    public Document updateDocument(Long id, DocumentDto documentDto) {
         Document document = documentRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Document with id " + id + " not found"));
+                
         document.setType(documentDto.type());
         document.setDate(documentDto.date());
         document.setContent(documentDto.content());
         document.setStatus(documentDto.status());
 
-        Document updatedDocument = documentRepository.save(document);
-        return Optional.of(updatedDocument);
+        return documentRepository.save(document);
     }
 
     @Transactional

@@ -1,7 +1,5 @@
 package com.example.clinic.service;
 
-import java.util.Optional;
-
 import org.springframework.stereotype.Service;
 
 import com.example.clinic.dto.RecipeDto;
@@ -27,7 +25,7 @@ public class RecipeService {
     private final RecipeMapper recipeMapper;
 
     @Transactional
-    public Optional<Recipe> createRecipe(RecipeDto recipeDto, Long doctorId, Long patientId) {
+    public Recipe createRecipe(RecipeDto recipeDto, Long doctorId, Long patientId) {
         Doctor doctor = doctorRepository.findById(doctorId)
                 .orElseThrow(() -> new IllegalArgumentException("Doctor with id " + doctorId + " not found"));
 
@@ -37,12 +35,12 @@ public class RecipeService {
         
         recipe.setDoctor(doctor);
         recipe.setPatient(patient);
-        Recipe savedRecipe = recipeRepository.save(recipe);
-        return Optional.of(savedRecipe);
+
+        return recipeRepository.save(recipe);
     }
 
     @Transactional
-    public Optional<Recipe> updateRecipe(Long id, RecipeDto recipeDto) {
+    public Recipe updateRecipe(Long id, RecipeDto recipeDto) {
         Recipe recipe = recipeRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Recipe with id " + id + " not found"));
         
@@ -51,8 +49,7 @@ public class RecipeService {
         recipe.setDose(recipeDto.dose());
         recipe.setDuration(recipeDto.duration());
 
-        Recipe updatedRecipe = recipeRepository.save(recipe);
-        return Optional.of(updatedRecipe);
+        return recipeRepository.save(recipe);
     }
 
     @Transactional

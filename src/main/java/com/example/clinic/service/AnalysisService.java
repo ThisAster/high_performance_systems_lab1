@@ -5,8 +5,6 @@
 
 package com.example.clinic.service;
 
-import java.util.Optional;
-
 import org.springframework.stereotype.Service;
 
 import com.example.clinic.dto.AnalysisDto;
@@ -29,21 +27,19 @@ public class AnalysisService {
     private final AnalysisMapper analysisMapper;
 
     @Transactional
-    public Optional<Analysis> createAnalysis(AnalysisDto analysisDto, Long patientId) {
+    public Analysis createAnalysis(AnalysisDto analysisDto, Long patientId) {
         Patient patient = patientRepository.findById(patientId)
-                .orElseThrow(() -> new IllegalArgumentException("Patient with id " + patientId + " not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Patient with id " + patientId + " not found"));
 
         Analysis analysis = analysisMapper.analysisDtoToEntity(analysisDto);
 
         analysis.setPatient(patient);
 
-        Analysis savedAnalysis = analysisRepository.save(analysis);
-
-        return Optional.of(savedAnalysis);
+        return analysisRepository.save(analysis);
     }   
 
     @Transactional
-    public Optional<Analysis> updateAnalysis(Long id, AnalysisDto analysisDto) {
+    public Analysis updateAnalysis(Long id, AnalysisDto analysisDto) {
         Analysis analysis = analysisRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Analysis with id " + id + " not found"));
 
@@ -51,10 +47,8 @@ public class AnalysisService {
         analysis.setSampleDate(analysisDto.sampleDate());
         analysis.setResult(analysisDto.result());
         analysis.setStatus(analysisDto.status());
-
-        Analysis updatedAnalysis = analysisRepository.save(analysis);
     
-        return Optional.of(updatedAnalysis);
+        return analysisRepository.save(analysis);
     }
 
     @Transactional
