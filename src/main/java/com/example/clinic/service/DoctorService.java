@@ -9,16 +9,17 @@ import com.example.clinic.dto.DoctorDto;
 import com.example.clinic.entity.Appointment;
 import com.example.clinic.entity.Doctor;
 import com.example.clinic.entity.Recipe;
+import com.example.clinic.exception.EntityNotFoundException;
 import com.example.clinic.mapper.DoctorMapper;
 import com.example.clinic.repository.AppointmentRepository;
 import com.example.clinic.repository.DoctorRepository;
 import com.example.clinic.repository.RecipeRepository;
 
 import jakarta.transaction.Transactional;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class DoctorService {
 
     private final DoctorRepository doctorRepository;
@@ -56,6 +57,14 @@ public class DoctorService {
 
     @Transactional
     public void deleteDoctor(Long id) {
+        if (!doctorRepository.existsById(id)) {
+            throw new EntityNotFoundException("Doctor with id " + id + " not found");
+        }
         doctorRepository.deleteById(id);
     }
+
+    public Doctor getDoctorById(Long id) {
+        return doctorRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Doctor with id " + id + " not found"));
+    } 
 }

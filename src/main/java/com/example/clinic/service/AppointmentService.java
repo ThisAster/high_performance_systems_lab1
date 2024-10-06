@@ -7,16 +7,16 @@ import com.example.clinic.entity.Appointment;
 import com.example.clinic.entity.Doctor;
 import com.example.clinic.entity.Patient;
 import com.example.clinic.exception.EntityNotFoundException;
-import com.example.clinic.mapper.AppointmentMapper; // Импортируйте ваше собственное исключение
+import com.example.clinic.mapper.AppointmentMapper; 
 import com.example.clinic.repository.AppointmentRepository;
 import com.example.clinic.repository.DoctorRepository;
 import com.example.clinic.repository.PatientRepository;
 
 import jakarta.transaction.Transactional;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class AppointmentService {
 
     private final AppointmentRepository appointmentRepository;

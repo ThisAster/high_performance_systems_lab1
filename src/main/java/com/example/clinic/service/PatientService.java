@@ -11,6 +11,7 @@ import com.example.clinic.entity.Appointment;
 import com.example.clinic.entity.Document;
 import com.example.clinic.entity.Patient;
 import com.example.clinic.entity.Recipe;
+import com.example.clinic.exception.EntityNotFoundException;
 import com.example.clinic.mapper.PatientMapper;
 import com.example.clinic.repository.AnalysisRepository;
 import com.example.clinic.repository.AppointmentRepository;
@@ -19,10 +20,10 @@ import com.example.clinic.repository.PatientRepository;
 import com.example.clinic.repository.RecipeRepository;
 
 import jakarta.transaction.Transactional;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class PatientService {
     
     private final PatientRepository patientRepository;
@@ -31,11 +32,6 @@ public class PatientService {
     private final DocumentRepository documentRepository;
     private final AnalysisRepository analysisRepository;
     private final PatientMapper patientMapper;
-
-
-    public boolean patientExists(Long userId) {
-        return patientRepository.existsById(userId);
-    }
 
     @Transactional
     public Optional<Patient> createPatient(PatientDto patientDto) {
@@ -74,6 +70,14 @@ public class PatientService {
 
     @Transactional
     public void deletePatient(Long id) {
+        if (!patientRepository.existsById(id)) {
+            throw new EntityNotFoundException("Patient with id " + id + " not found");
+        }
         patientRepository.deleteById(id);
     }
+
+    public Patient getPatientById(Long id) {
+        return patientRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Patient with id " + id + " not found"));
+    } 
 }

@@ -12,15 +12,16 @@ import org.springframework.stereotype.Service;
 import com.example.clinic.dto.AnalysisDto;
 import com.example.clinic.entity.Analysis;
 import com.example.clinic.entity.Patient;
+import com.example.clinic.exception.EntityNotFoundException;
 import com.example.clinic.mapper.AnalysisMapper;
 import com.example.clinic.repository.AnalysisRepository;
 import com.example.clinic.repository.PatientRepository;
 
 import jakarta.transaction.Transactional;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class AnalysisService {
 
     private final AnalysisRepository analysisRepository;
@@ -29,9 +30,10 @@ public class AnalysisService {
 
     @Transactional
     public Optional<Analysis> createAnalysis(AnalysisDto analysisDto, Long patientId) {
-        Analysis analysis = analysisMapper.analysisDtoToEntity(analysisDto);
         Patient patient = patientRepository.findById(patientId)
                 .orElseThrow(() -> new IllegalArgumentException("Patient with id " + patientId + " not found"));
+
+        Analysis analysis = analysisMapper.analysisDtoToEntity(analysisDto);
 
         analysis.setPatient(patient);
 
@@ -57,6 +59,14 @@ public class AnalysisService {
 
     @Transactional
     public void deleteAnalysis(Long id) {
+        if (!analysisRepository.existsById(id)) {
+            throw new EntityNotFoundException("Analysis with id " + id + " not found");
+        }
         analysisRepository.deleteById(id);
     }
+
+    public Analysis getAnalysisById(Long id) {
+        return analysisRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Analysis with id " + id + " not found"));
+    } 
 }

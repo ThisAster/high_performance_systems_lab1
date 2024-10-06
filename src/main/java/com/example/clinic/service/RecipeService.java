@@ -8,16 +8,17 @@ import com.example.clinic.dto.RecipeDto;
 import com.example.clinic.entity.Doctor;
 import com.example.clinic.entity.Patient;
 import com.example.clinic.entity.Recipe;
+import com.example.clinic.exception.EntityNotFoundException;
 import com.example.clinic.mapper.RecipeMapper;
 import com.example.clinic.repository.DoctorRepository;
 import com.example.clinic.repository.PatientRepository;
 import com.example.clinic.repository.RecipeRepository;
 
 import jakarta.transaction.Transactional;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class RecipeService {
 
     private final RecipeRepository recipeRepository;
@@ -27,12 +28,12 @@ public class RecipeService {
 
     @Transactional
     public Optional<Recipe> createRecipe(RecipeDto recipeDto, Long doctorId, Long patientId) {
-        Recipe recipe = recipeMapper.recipeDtoToEntity(recipeDto);
         Doctor doctor = doctorRepository.findById(doctorId)
-                .orElseThrow(() -> new IllegalArgumentException("Appointment with id " + doctorId + " not found"));
+                .orElseThrow(() -> new IllegalArgumentException("Doctor with id " + doctorId + " not found"));
 
         Patient patient = patientRepository.findById(patientId)
                 .orElseThrow(() -> new IllegalArgumentException("Patient with id " + patientId + " not found"));
+        Recipe recipe = recipeMapper.recipeDtoToEntity(recipeDto);
         
         recipe.setDoctor(doctor);
         recipe.setPatient(patient);
@@ -56,6 +57,14 @@ public class RecipeService {
 
     @Transactional
     public void deleteRecipe(Long id) {
+        if (!recipeRepository.existsById(id)) {
+            throw new EntityNotFoundException("Recipe with id " + id + " not found");
+        }
         recipeRepository.deleteById(id);
     }
+
+    public Recipe getRecipeById(Long id) {
+        return recipeRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Recipe with id " + id + " not found"));
+    } 
 }

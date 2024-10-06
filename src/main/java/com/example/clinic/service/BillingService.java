@@ -15,16 +15,14 @@ import com.example.clinic.exception.EntityNotFoundException;
 import com.example.clinic.mapper.InvoiceMapper;
 import com.example.clinic.repository.PatientRepository;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class BillingService {
 
     private final PatientRepository patientRepository;
     private final InvoiceMapper invoiceMapper;
-
-
 
     public InvoiceDTO generateInvoice(List<Long> patientIds) {
 
