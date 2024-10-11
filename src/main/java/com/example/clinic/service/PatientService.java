@@ -56,6 +56,7 @@ public class PatientService {
     
         patient.setName(patientDto.name());
         patient.setDateOfBirth(patientDto.dateOfBirth());
+        patient.setEmail(patientDto.email());
     
         return patientRepository.save(patient);
     }

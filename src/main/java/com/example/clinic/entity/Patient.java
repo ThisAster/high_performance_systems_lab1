@@ -37,6 +37,9 @@ public class Patient {
     @Column(name = "date_of_birth", nullable = false)
     private LocalDate dateOfBirth;
 
+    @Column(name = "email", nullable = false)
+    private String email;
+
     @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Collection<Appointment> appointments;
 
