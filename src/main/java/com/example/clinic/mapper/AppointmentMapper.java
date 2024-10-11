@@ -16,7 +16,9 @@ public class AppointmentMapper {
         return new AppointmentDto(
             appointment.getId(),
             appointment.getAppointmentDate(), 
-            appointment.getDescription()
+            appointment.getDescription(),
+            appointment.getDoctor() != null ? appointment.getDoctor().getId() : null,
+            appointment.getPatient() != null ? appointment.getPatient().getId() : null
         );
     }
  
