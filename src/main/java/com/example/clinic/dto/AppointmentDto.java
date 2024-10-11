@@ -14,5 +14,7 @@ import java.time.LocalDate;
 public record AppointmentDto(
     Long id,
     LocalDate appointmentDate,
-    String description
+    String description,
+    Long doctor_id,
+    Long patient_id
 ) {}
