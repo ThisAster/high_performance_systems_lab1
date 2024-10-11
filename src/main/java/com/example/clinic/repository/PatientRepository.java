@@ -7,6 +7,7 @@ import java.util.Set;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.example.clinic.entity.Patient;
@@ -22,6 +23,12 @@ public interface PatientRepository extends JpaRepository<Patient, Long> {
             "join fetch p.appointments as a " +
             "join fetch a.doctor")
     Set<Patient> findByIdInWithAppointments(Set<Long> ids);
+
+    @Query("SELECT p FROM Patient p " +
+            "LEFT JOIN FETCH p.appointments a " +
+            "LEFT JOIN FETCH a.doctor d " +
+            "WHERE p.id = :id")
+    Optional<Patient> findByIdWithAppointmentsAndDoctors(@Param("id") Long id);
 
     Optional<Patient> findByEmail(String email);
 }

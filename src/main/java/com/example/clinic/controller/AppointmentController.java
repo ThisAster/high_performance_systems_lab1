@@ -29,10 +29,8 @@ public class AppointmentController {
     private final AppointmentMapper appointmentMapper;
 
     @PostMapping
-    public ResponseEntity<AppointmentDto> createAppointment(@RequestBody AppointmentDto appointmentDto,
-                                                             @RequestParam Long patientId,
-                                                             @RequestParam Long doctorId) {
-        Appointment appointment = appointmentService.createAppointment(appointmentDto, patientId, doctorId);
+    public ResponseEntity<AppointmentDto> createAppointment(@RequestBody AppointmentDto appointmentDto) {
+        Appointment appointment = appointmentService.createAppointment(appointmentDto);
         AppointmentDto createdAppointmentDto = appointmentMapper.entityToAppointmentDto(appointment);
         return ResponseEntity.created(URI.create("/api/appointments/" + createdAppointmentDto.id())).body(createdAppointmentDto);
     }
