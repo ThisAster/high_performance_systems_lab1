@@ -1,7 +1,7 @@
-INSERT INTO patients (patient_name, date_of_birth) VALUES
-('Иванов Иван Иванович', '1990-01-01'),
-('Петров Петр Петрович', '1985-05-05'),
-('Сидоров Сидор Сидорович', '2000-10-10');
+INSERT INTO patients (patient_name, date_of_birth, email) VALUES
+('Иванов Иван Иванович', '1990-01-01', 'ivan@mail.ru'),
+('Петров Петр Петрович', '1985-05-05', 'petr@yandex.ru'),
+('Сидоров Сидор Сидорович', '2000-10-10', 'ilovesidr@gmail.ru');
 
 INSERT INTO doctors (doctor_name, speciality, consultation_cost) VALUES
 ('Врач А', 'Терапевт', 1500.00),
