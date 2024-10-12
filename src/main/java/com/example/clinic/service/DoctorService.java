@@ -3,6 +3,7 @@ package com.example.clinic.service;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 
 import com.example.clinic.dto.DoctorDto;
 import com.example.clinic.entity.Appointment;
@@ -26,6 +27,7 @@ public class DoctorService {
     private final RecipeRepository recipeRepository;
     private final DoctorMapper doctorMapper;
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public Doctor createDoctor(DoctorDto doctorDto) {
         Doctor doctor = doctorMapper.doctorDtoToEntity(doctorDto);
         
@@ -38,6 +40,7 @@ public class DoctorService {
         return doctorRepository.save(doctor);
     }
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public Doctor updateDoctor(Long id, DoctorDto doctorDto) {
         Doctor doctor = doctorRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Doctor with id " + id + " not found"));
@@ -49,6 +52,7 @@ public class DoctorService {
         return doctorRepository.save(doctor);
     }
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public void deleteDoctor(Long id) {
         if (!doctorRepository.existsById(id)) {
             throw new EntityNotFoundException("Doctor with id " + id + " not found");

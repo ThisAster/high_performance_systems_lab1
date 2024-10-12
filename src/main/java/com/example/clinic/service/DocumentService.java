@@ -1,6 +1,7 @@
 package com.example.clinic.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 
 import com.example.clinic.dto.DocumentDto;
 import com.example.clinic.entity.Document;
@@ -21,6 +22,7 @@ public class DocumentService {
     private final PatientRepository patientRepository;
     private final DocumentMapper documentMapper;
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public Document createDocument(DocumentDto documentDto, Long patientId) {
         Patient patient = patientRepository.findById(patientId)
                 .orElseThrow(() -> new EntityNotFoundException("Patient with id " + patientId + " not found"));
@@ -32,6 +34,7 @@ public class DocumentService {
         return documentRepository.save(document);
     }
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public Document updateDocument(Long id, DocumentDto documentDto) {
         Document document = documentRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Document with id " + id + " not found"));
@@ -44,6 +47,7 @@ public class DocumentService {
         return documentRepository.save(document);
     }
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public void deleteDocument(Long id) {
         if (!documentRepository.existsById(id)) {
             throw new EntityNotFoundException("Document with id " + id + " not found");

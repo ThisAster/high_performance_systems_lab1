@@ -5,7 +5,10 @@
 
 package com.example.clinic.service;
 
+import java.lang.annotation.Repeatable;
+
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 
 import com.example.clinic.dto.AnalysisDto;
 import com.example.clinic.entity.Analysis;
@@ -26,6 +29,7 @@ public class AnalysisService {
     private final PatientRepository patientRepository;
     private final AnalysisMapper analysisMapper;
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public Analysis createAnalysis(AnalysisDto analysisDto, Long patientId) {
         Patient patient = patientRepository.findById(patientId)
                 .orElseThrow(() -> new EntityNotFoundException("Patient with id " + patientId + " not found"));
@@ -37,6 +41,7 @@ public class AnalysisService {
         return analysisRepository.save(analysis);
     }   
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public Analysis updateAnalysis(Long id, AnalysisDto analysisDto) {
         Analysis analysis = analysisRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Analysis with id " + id + " not found"));
@@ -49,6 +54,7 @@ public class AnalysisService {
         return analysisRepository.save(analysis);
     }
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public void deleteAnalysis(Long id) {
         if (!analysisRepository.existsById(id)) {
             throw new EntityNotFoundException("Analysis with id " + id + " not found");

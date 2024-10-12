@@ -1,6 +1,7 @@
 package com.example.clinic.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 
 import com.example.clinic.dto.AppointmentDto;
 import com.example.clinic.entity.Appointment;
@@ -24,6 +25,7 @@ public class AppointmentService {
     private final DoctorRepository doctorRepository;
     private final AppointmentMapper appointmentMapper;
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public Appointment createAppointment(AppointmentDto appointmentDto) {
         Patient patient = patientRepository.findByIdWithAppointmentsAndDoctors(appointmentDto.patient_id())
                 .orElseThrow(() -> new EntityNotFoundException("Patient with id " + appointmentDto.patient_id() + " not found"));
@@ -42,6 +44,7 @@ public class AppointmentService {
         return appointmentRepository.save(appointment);
     }
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public Appointment updateAppointment(Long id, AppointmentDto appointmentDto) {
         Appointment appointment = this.getAppointmentById(id);
 
@@ -50,6 +53,7 @@ public class AppointmentService {
         return appointmentRepository.save(appointment);
     }
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public void deleteAppointment(Long id) {
         if (!appointmentRepository.existsById(id)) {
             throw new EntityNotFoundException("Appointment with id " + id + " not found");
