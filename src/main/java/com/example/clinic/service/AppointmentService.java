@@ -23,7 +23,6 @@ public class AppointmentService {
 
     private final AppointmentRepository appointmentRepository;
     private final PatientRepository patientRepository;
-    private final DoctorRepository doctorRepository;
     private final AppointmentMapper appointmentMapper;
 
     @Transactional(isolation = Isolation.REPEATABLE_READ)
