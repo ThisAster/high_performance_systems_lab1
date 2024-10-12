@@ -7,8 +7,7 @@ CREATE TABLE patients (
 CREATE TABLE doctors (
     id SERIAL PRIMARY KEY,
     doctor_name VARCHAR(40) NOT NULL,
-    speciality VARCHAR(50) NOT NULL,
-    consultation_cost NUMERIC(10, 2) NOT NULL
+    speciality VARCHAR(50) NOT NULL
 );
 
 
