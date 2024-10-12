@@ -22,18 +22,16 @@ import lombok.RequiredArgsConstructor;
 public class AppointmentService {
 
     private final AppointmentRepository appointmentRepository;
+    private final DoctorRepository doctorRepository;
     private final PatientRepository patientRepository;
     private final AppointmentMapper appointmentMapper;
 
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     public Appointment createAppointment(AppointmentDto appointmentDto) {
-        Patient patient = patientRepository.findByIdWithAppointmentsAndDoctors(appointmentDto.patient_id())
+        Patient patient = patientRepository.findById(appointmentDto.patient_id())
                 .orElseThrow(() -> new EntityNotFoundException("Patient with id " + appointmentDto.patient_id() + " not found"));
     
-        Doctor doctor = patient.getAppointments().stream()
-                .map(Appointment::getDoctor)
-                .filter(doc -> doc.getId().equals(appointmentDto.doctor_id()))
-                .findFirst()
+        Doctor doctor = doctorRepository.findById(appointmentDto.doctor_id())
                 .orElseThrow(() -> new EntityNotFoundException("Doctor with id " + appointmentDto.doctor_id() + " not found"));
     
         Appointment appointment = appointmentMapper.appointmentDtoToEntity(appointmentDto);
