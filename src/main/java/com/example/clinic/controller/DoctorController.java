@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.example.clinic.util.HeaderUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -66,10 +67,7 @@ public class DoctorController {
                 .map(doctorMapper::entityToDoctorDto)
                 .collect(Collectors.toList());
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Total-Count", String.valueOf(doctorPage.getTotalElements()));
-        headers.add("Page-Number", String.valueOf(doctorPage.getNumber()));
-        headers.add("Page-Size", String.valueOf(doctorPage.getSize()));
+        HttpHeaders headers = HeaderUtils.createPaginationHeaders(doctorPage);
 
         return ResponseEntity.ok().headers(headers).body(doctorDtos);
     }
