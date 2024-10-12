@@ -33,7 +33,6 @@ public class DoctorService {
         List<Appointment> appointments = appointmentRepository.findByDoctorId(doctor.getId());
         List<Recipe> recipes = recipeRepository.findByDoctorId(doctor.getId());
 
-        doctor.setAppointments(appointments);
         doctor.setRecipes(recipes);
     
         return doctorRepository.save(doctor);
@@ -46,7 +45,6 @@ public class DoctorService {
 
         doctor.setName(doctorDto.name());
         doctor.setSpeciality(doctorDto.speciality());
-        doctor.setConsultationCost(doctorDto.consultationCost());
 
         return doctorRepository.save(doctor);
     }

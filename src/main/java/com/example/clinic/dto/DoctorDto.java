@@ -13,6 +13,5 @@ package com.example.clinic.dto;
  public record DoctorDto(
      Long id,
      String name,
-     String speciality,
-     Double consultationCost
+     String speciality
  ) {}

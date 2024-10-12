@@ -17,6 +17,8 @@ import com.example.clinic.repository.PatientRepository;
 
 import lombok.RequiredArgsConstructor;
 
+import static java.lang.StringTemplate.STR;
+
 @Service
 @RequiredArgsConstructor
 public class BillingService {

@@ -1,12 +1,16 @@
 package com.example.clinic.mapper;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import com.example.clinic.dto.AppointmentDto;
 import com.example.clinic.entity.Appointment;
 
 @Component
+@RequiredArgsConstructor
 public class AppointmentMapper {
+
+    private final AppoinmentsTypeMapper appoinmentsTypeMapper;
 
     public AppointmentDto entityToAppointmentDto(Appointment appointment) {
         if (appointment == null) {
@@ -15,10 +19,9 @@ public class AppointmentMapper {
 
         return new AppointmentDto(
             appointment.getId(),
-            appointment.getAppointmentDate(), 
-            appointment.getDescription(),
-            appointment.getDoctor() != null ? appointment.getDoctor().getId() : null,
-            appointment.getPatient() != null ? appointment.getPatient().getId() : null
+            appointment.getAppointmentDate(),
+            appointment.getPatient() != null ? appointment.getPatient().getId() : null,
+            appoinmentsTypeMapper.entityToAppointmentTypeDTO(appointment.getAppointmentType())
         );
     }
  
@@ -30,7 +33,9 @@ public class AppointmentMapper {
         Appointment appointment = new Appointment();
         appointment.setId(appointmentDto.id());
         appointment.setAppointmentDate(appointmentDto.appointmentDate());
-        appointment.setDescription(appointmentDto.description());
+        appointment.setAppointmentType(
+                appoinmentsTypeMapper.appointmentTypeDTOToEntity(appointmentDto.appointmentType())
+        );
         return appointment;
     }
 }

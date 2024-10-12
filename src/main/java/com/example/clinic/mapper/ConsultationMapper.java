@@ -23,8 +23,8 @@ public class ConsultationMapper {
 
         ConsultationDTO consultationDTO = new ConsultationDTO();
 
-        consultationDTO.setPrice(appointment.getDoctor().getConsultationCost());
-        consultationDTO.setDoctor(doctorMapper.entityToDoctorDto(appointment.getDoctor()));
+        //consultationDTO.setPrice(appointment.getDoctor().getConsultationCost());
+        //consultationDTO.setDoctor(doctorMapper.entityToDoctorDto(appointment.getDoctor()));
         consultationDTO.setPatient(patientMapper.entityToPatientDto(appointment.getPatient()));
 
         return consultationDTO;

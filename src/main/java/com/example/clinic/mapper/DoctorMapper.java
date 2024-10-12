@@ -25,8 +25,7 @@
          return new DoctorDto(
             doctor.getId(),
             doctor.getName(),
-            doctor.getSpeciality(),
-            doctor.getConsultationCost()
+            doctor.getSpeciality()
          );
      }
  
@@ -38,7 +37,6 @@
          doctor.setId(doctorDto.id());
          doctor.setName(doctorDto.name());
          doctor.setSpeciality(doctorDto.speciality());
-         doctor.setConsultationCost(doctorDto.consultationCost());
          return doctor;
      }
  }

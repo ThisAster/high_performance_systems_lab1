@@ -36,11 +36,8 @@ public class Doctor {
     @Column(name = "speciality", length = 50, nullable = false)
     private String speciality;
 
-    @Column(name = "consultation_cost", nullable = false)
-    private Double consultationCost;
-
     @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private Collection<Appointment> appointments;
+    private Collection<AppointmentsType> appointments;
 
     @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Collection<Recipe> recipes;

@@ -15,6 +15,9 @@ import com.example.clinic.repository.PatientRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
+import java.time.LocalDate;
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class AppointmentService {
@@ -34,7 +37,7 @@ public class AppointmentService {
         Appointment appointment = appointmentMapper.appointmentDtoToEntity(appointmentDto);
 
         appointment.setPatient(patient);
-        appointment.setDoctor(doctor);
+        //appointment.setDoctor(doctor);
         
         return appointmentRepository.save(appointment);
     }
@@ -44,7 +47,7 @@ public class AppointmentService {
         Appointment appointment = this.getAppointmentById(id);
 
         appointment.setAppointmentDate(appointmentDto.appointmentDate());
-        appointment.setDescription(appointmentDto.description());
+        //appointment.setDescription(appointmentDto.description());
         return appointmentRepository.save(appointment);
     }
 
@@ -59,5 +62,10 @@ public class AppointmentService {
     public Appointment getAppointmentById(Long id) {
         return appointmentRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Appointment with id " + id + " not found"));
-    } 
+    }
+
+
+    public List<Appointment> getAppointmentsByDate(LocalDate date) {
+        return appointmentRepository.findByAppointmentDate(date);
+    }
 }
