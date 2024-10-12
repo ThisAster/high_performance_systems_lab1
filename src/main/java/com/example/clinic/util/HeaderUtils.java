@@ -10,6 +10,8 @@ public class HeaderUtils {
         headers.add("Total-Count", String.valueOf(page.getTotalElements()));
         headers.add("Page-Number", String.valueOf(page.getNumber()));
         headers.add("Page-Size", String.valueOf(page.getSize()));
+        headers.add("Total-Pages", String.valueOf(page.getTotalPages()));
+        headers.add("Is-Last", String.valueOf(page.isLast()));
         return headers;
     }
 }
