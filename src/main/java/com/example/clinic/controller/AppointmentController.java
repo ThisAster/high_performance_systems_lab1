@@ -2,6 +2,7 @@ package com.example.clinic.controller;
 
 import java.net.URI;
 
+import com.example.clinic.service.EmailService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +21,8 @@ import com.example.clinic.service.AppointmentService;
 
 import lombok.AllArgsConstructor;
 
+import javax.mail.MessagingException;
+
 @RestController
 @RequestMapping("/api/appointments")
 @AllArgsConstructor
@@ -27,11 +30,13 @@ public class AppointmentController {
 
     private final AppointmentService appointmentService;
     private final AppointmentMapper appointmentMapper;
+    private final EmailService emailService;
 
     @PostMapping
     public ResponseEntity<AppointmentDto> createAppointment(@RequestBody AppointmentDto appointmentDto) {
         Appointment appointment = appointmentService.createAppointment(appointmentDto);
         AppointmentDto createdAppointmentDto = appointmentMapper.entityToAppointmentDto(appointment);
+        emailService.sendAppointmentEmail(appointmentDto);
         return ResponseEntity.created(URI.create("/api/appointments/" + createdAppointmentDto.id())).body(createdAppointmentDto);
     }
 
