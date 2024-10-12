@@ -9,11 +9,11 @@ package com.example.clinic.dto;
  *
  * @author thisaster
  */
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public record AppointmentDto(
     Long id,
-    LocalDate appointmentDate,
+    LocalDateTime appointmentDate,
     String description,
     Long doctor_id,
     Long patient_id
