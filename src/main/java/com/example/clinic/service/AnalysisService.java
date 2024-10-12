@@ -56,6 +56,7 @@ public class AnalysisService {
         return analysisRepository.save(analysis);
     }
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public void deleteAnalysis(Long id) {
         if (!analysisRepository.existsById(id)) {
             throw new EntityNotFoundException("Analysis with id " + id + " not found");
