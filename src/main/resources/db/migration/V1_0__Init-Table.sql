@@ -22,14 +22,24 @@ CREATE TABLE analyses (
     CONSTRAINT fk_patient FOREIGN KEY (patient_id) REFERENCES patients(id)
 );
 
-CREATE TABLE appointments (
+CREATE TABLE appointments_types
+(
     id SERIAL PRIMARY KEY,
-    appointment_date TIMESTAMP DEFAULT now() NOT NULL,
-    description VARCHAR(200),
-    doctor_id SERIAL,
-    patient_id SERIAL,
-    CONSTRAINT fk_doctor FOREIGN KEY (doctor_id) REFERENCES doctors(id),
-    CONSTRAINT fk_patient FOREIGN KEY (patient_id) REFERENCES patients(id)
+    name        VARCHAR            NOT NULL,
+    description VARCHAR            NOT NULL,
+    duration    INTEGER DEFAULT 15 NOT NULL,
+    price       NUMERIC(10, 2)     NOT NULL,
+    doctor_id   BIGINT CONSTRAINT fk_doctor REFERENCES doctors
+);
+
+CREATE TABLE appointments
+(
+    id                  SERIAL PRIMARY KEY,
+    appointment_date    TIMESTAMP DEFAULT now() NOT NULL,
+    patient_id          INTEGER CONSTRAINT fk_patient
+            REFERENCES patients,
+    appointment_type_id INTEGER CONSTRAINT fk_appointment_type
+            REFERENCES appointments_types
 );
 
 CREATE TABLE documents (
