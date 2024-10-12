@@ -1,3 +1,17 @@
+DROP TABLE IF EXISTS recipes;
+DROP TABLE IF EXISTS documents;
+DROP TABLE IF EXISTS appointments;
+DROP TABLE IF EXISTS analyses;
+DROP TABLE IF EXISTS doctors;
+DROP TABLE IF EXISTS patients;
+DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS admins;
+DROP TABLE IF EXISTS roles;
+DROP TABLE IF EXISTS patients_roles;
+DROP TABLE IF EXISTS doctors_roles;
+DROP TABLE IF EXISTS admins_roles;
+DROP TABLE IF EXISTS users_roles;
+
 CREATE TABLE IF NOT EXISTS patients (
     id SERIAL PRIMARY KEY,
     patient_name VARCHAR(40) NOT NULL,
@@ -43,19 +57,20 @@ CREATE TABLE IF NOT EXISTS documents (
     CONSTRAINT fk_patient FOREIGN KEY (patient_id) REFERENCES patients(id)
 );
 
-CREATE TABLE IF NOT EXISTS recipes (
-    id SERIAL PRIMARY KEY,
-    recipe_date TIMESTAMP DEFAULT now() NOT NULL,
-    medication VARCHAR(255) NOT NULL,
-    dose VARCHAR(255) NOT NULL,
-    duration VARCHAR(255) NOT NULL,
-    doctor_id SERIAL,
-    patient_id SERIAL,
-    appointment_id SERIAL,
-    CONSTRAINT fk_doctor FOREIGN KEY (doctor_id) REFERENCES doctors(id),
-    CONSTRAINT fk_patient FOREIGN KEY (patient_id) REFERENCES patients(id),
-    CONSTRAINT fk_appointment FOREIGN KEY (appointment_id) REFERENCES appointments(id) ON DELETE CASCADE
+CREATE TABLE recipes (
+                         id SERIAL PRIMARY KEY,
+                         recipe_date TIMESTAMP DEFAULT now() NOT NULL,
+                         medication VARCHAR(255) NOT NULL,
+                         dose VARCHAR(255) NOT NULL,
+                         duration VARCHAR(255) NOT NULL,
+                         doctor_id INTEGER,
+                         patient_id INTEGER,
+                         appointment_id INTEGER,
+                         CONSTRAINT fk_doctor FOREIGN KEY (doctor_id) REFERENCES doctors(id),
+                         CONSTRAINT fk_patient FOREIGN KEY (patient_id) REFERENCES patients(id),
+                         CONSTRAINT fk_appointment FOREIGN KEY (appointment_id) REFERENCES appointments(id) ON DELETE CASCADE
 );
+
 
 CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY,
