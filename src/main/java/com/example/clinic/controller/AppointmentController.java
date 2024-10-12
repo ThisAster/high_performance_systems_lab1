@@ -56,7 +56,7 @@ public class AppointmentController {
     }
 
     @GetMapping
-    public ResponseEntity<List<AppointmentDto>> getDoctors(
+    public ResponseEntity<List<AppointmentDto>> getAppointments(
             @RequestParam int page,
             @RequestParam int size
     ) {
