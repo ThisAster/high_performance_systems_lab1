@@ -10,7 +10,9 @@ import com.example.clinic.mapper.DocumentMapper;
 import com.example.clinic.repository.DocumentRepository;
 import com.example.clinic.repository.PatientRepository;
 
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
+
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -21,7 +23,7 @@ public class DocumentService {
     private final PatientRepository patientRepository;
     private final DocumentMapper documentMapper;
 
-    @Transactional
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public Document createDocument(DocumentDto documentDto, Long patientId) {
         Patient patient = patientRepository.findById(patientId)
                 .orElseThrow(() -> new EntityNotFoundException("Patient with id " + patientId + " not found"));
@@ -33,7 +35,7 @@ public class DocumentService {
         return documentRepository.save(document);
     }
 
-    @Transactional
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public Document updateDocument(Long id, DocumentDto documentDto) {
         Document document = documentRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Document with id " + id + " not found"));
@@ -46,7 +48,7 @@ public class DocumentService {
         return documentRepository.save(document);
     }
 
-    @Transactional
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public void deleteDocument(Long id) {
         if (!documentRepository.existsById(id)) {
             throw new EntityNotFoundException("Document with id " + id + " not found");

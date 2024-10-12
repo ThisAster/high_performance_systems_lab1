@@ -5,7 +5,12 @@
 
 package com.example.clinic.service;
 
+import com.example.clinic.entity.Recipe;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.clinic.dto.AnalysisDto;
 import com.example.clinic.entity.Analysis;
@@ -15,7 +20,6 @@ import com.example.clinic.mapper.AnalysisMapper;
 import com.example.clinic.repository.AnalysisRepository;
 import com.example.clinic.repository.PatientRepository;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -26,7 +30,7 @@ public class AnalysisService {
     private final PatientRepository patientRepository;
     private final AnalysisMapper analysisMapper;
 
-    @Transactional
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public Analysis createAnalysis(AnalysisDto analysisDto, Long patientId) {
         Patient patient = patientRepository.findById(patientId)
                 .orElseThrow(() -> new EntityNotFoundException("Patient with id " + patientId + " not found"));
@@ -38,7 +42,7 @@ public class AnalysisService {
         return analysisRepository.save(analysis);
     }   
 
-    @Transactional
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public Analysis updateAnalysis(Long id, AnalysisDto analysisDto) {
         Analysis analysis = analysisRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Analysis with id " + id + " not found"));
@@ -51,7 +55,7 @@ public class AnalysisService {
         return analysisRepository.save(analysis);
     }
 
-    @Transactional
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public void deleteAnalysis(Long id) {
         if (!analysisRepository.existsById(id)) {
             throw new EntityNotFoundException("Analysis with id " + id + " not found");
@@ -62,5 +66,9 @@ public class AnalysisService {
     public Analysis getAnalysisById(Long id) {
         return analysisRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Analysis with id " + id + " not found"));
-    } 
+    }
+
+    public Page<Analysis> getAnalyses(Pageable page) {
+        return analysisRepository.findAll(page);
+    }
 }

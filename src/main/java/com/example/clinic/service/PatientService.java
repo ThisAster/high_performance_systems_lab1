@@ -3,6 +3,8 @@ package com.example.clinic.service;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.clinic.dto.PatientDto;
 import com.example.clinic.entity.Analysis;
@@ -18,7 +20,6 @@ import com.example.clinic.repository.DocumentRepository;
 import com.example.clinic.repository.PatientRepository;
 import com.example.clinic.repository.RecipeRepository;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -32,7 +33,7 @@ public class PatientService {
     private final AnalysisRepository analysisRepository;
     private final PatientMapper patientMapper;
 
-    @Transactional
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public Patient createPatient(PatientDto patientDto) {
         Patient patient = patientMapper.patientDtoToEntity(patientDto);
 
@@ -49,18 +50,19 @@ public class PatientService {
         return patientRepository.save(patient);
     }
 
-    @Transactional
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public Patient updatePatient(Long id, PatientDto patientDto) {
         Patient patient = patientRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Patient not found with id: " + id));
     
         patient.setName(patientDto.name());
         patient.setDateOfBirth(patientDto.dateOfBirth());
+        patient.setEmail(patientDto.email());
     
         return patientRepository.save(patient);
     }
 
-    @Transactional
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public void deletePatient(Long id) {
         if (!patientRepository.existsById(id)) {
             throw new EntityNotFoundException("Patient with id " + id + " not found");

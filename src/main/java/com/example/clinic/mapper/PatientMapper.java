@@ -15,7 +15,8 @@ public class PatientMapper {
         return new PatientDto(
             patient.getId(),
             patient.getName(),
-            patient.getDateOfBirth()
+            patient.getDateOfBirth(),
+            patient.getEmail()
         );
     }
 
@@ -27,6 +28,7 @@ public class PatientMapper {
         patient.setId(patientDto.id());
         patient.setName(patientDto.name());
         patient.setDateOfBirth(patientDto.dateOfBirth());
+        patient.setEmail(patientDto.email());
         
         return patient;
     }

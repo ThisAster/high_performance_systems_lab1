@@ -1,7 +1,8 @@
 CREATE TABLE patients (
     id SERIAL PRIMARY KEY,
     patient_name VARCHAR(40) NOT NULL,
-    date_of_birth DATE NOT NULL
+    date_of_birth DATE NOT NULL,
+    email VARCHAR(70) NOT NULL
 );
 
 CREATE TABLE doctors (
@@ -52,17 +53,17 @@ CREATE TABLE documents (
 );
 
 CREATE TABLE recipes (
-    id SERIAL PRIMARY KEY,
-    recipe_date TIMESTAMP DEFAULT now() NOT NULL,
-    medication VARCHAR(255) NOT NULL,
-    dose VARCHAR(255) NOT NULL,
-    duration VARCHAR(255) NOT NULL,
-    doctor_id SERIAL,
-    patient_id SERIAL,
-    appointment_id SERIAL,
-    CONSTRAINT fk_doctor FOREIGN KEY (doctor_id) REFERENCES doctors(id),
-    CONSTRAINT fk_patient FOREIGN KEY (patient_id) REFERENCES patients(id),
-    CONSTRAINT fk_appointment FOREIGN KEY (appointment_id) REFERENCES appointments(id) ON DELETE CASCADE
+                         id SERIAL PRIMARY KEY,
+                         recipe_date TIMESTAMP DEFAULT now() NOT NULL,
+                         medication VARCHAR(255) NOT NULL,
+                         dose VARCHAR(255) NOT NULL,
+                         duration VARCHAR(255) NOT NULL,
+                         doctor_id INTEGER,
+                         patient_id INTEGER,
+                         appointment_id INTEGER,
+                         CONSTRAINT fk_doctor FOREIGN KEY (doctor_id) REFERENCES doctors(id),
+                         CONSTRAINT fk_patient FOREIGN KEY (patient_id) REFERENCES patients(id),
+                         CONSTRAINT fk_appointment FOREIGN KEY (appointment_id) REFERENCES appointments(id) ON DELETE CASCADE
 );
 
 CREATE TABLE users (

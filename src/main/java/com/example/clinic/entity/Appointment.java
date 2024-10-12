@@ -1,16 +1,18 @@
 package com.example.clinic.entity;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collection;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "appointments")
 @NoArgsConstructor
@@ -22,7 +24,7 @@ public class Appointment {
 
     @Column(name = "appointment_date", nullable = false)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm")
-    private LocalDate appointmentDate;
+    private LocalDateTime appointmentDate;
 
     @ManyToOne
     @JoinColumn(name = "patient_id")

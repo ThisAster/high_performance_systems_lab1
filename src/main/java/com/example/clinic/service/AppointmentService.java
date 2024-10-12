@@ -1,6 +1,9 @@
 package com.example.clinic.service;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.clinic.dto.AppointmentDto;
 import com.example.clinic.entity.Appointment;
@@ -12,7 +15,6 @@ import com.example.clinic.repository.AppointmentRepository;
 import com.example.clinic.repository.DoctorRepository;
 import com.example.clinic.repository.PatientRepository;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
@@ -23,26 +25,27 @@ import java.util.List;
 public class AppointmentService {
 
     private final AppointmentRepository appointmentRepository;
-    private final PatientRepository patientRepository;
     private final DoctorRepository doctorRepository;
+    private final PatientRepository patientRepository;
     private final AppointmentMapper appointmentMapper;
 
-    @Transactional
-    public Appointment createAppointment(AppointmentDto appointmentDto, Long patientId, Long doctorId) {
-        Patient patient = patientRepository.findById(patientId)
-                .orElseThrow(() -> new EntityNotFoundException("Patient with id " + patientId + " not found"));
-        Doctor doctor = doctorRepository.findById(doctorId)
-                .orElseThrow(() -> new EntityNotFoundException("Doctor with id " + doctorId + " not found"));
-
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
+    public Appointment createAppointment(AppointmentDto appointmentDto) {
+        Patient patient = patientRepository.findById(appointmentDto.patient_id())
+                .orElseThrow(() -> new EntityNotFoundException("Patient with id " + appointmentDto.patient_id() + " not found"));
+    
+        Doctor doctor = doctorRepository.findById(appointmentDto.doctor_id())
+                .orElseThrow(() -> new EntityNotFoundException("Doctor with id " + appointmentDto.doctor_id() + " not found"));
+    
         Appointment appointment = appointmentMapper.appointmentDtoToEntity(appointmentDto);
-
+    
         appointment.setPatient(patient);
         //appointment.setDoctor(doctor);
         
         return appointmentRepository.save(appointment);
     }
 
-    @Transactional
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public Appointment updateAppointment(Long id, AppointmentDto appointmentDto) {
         Appointment appointment = this.getAppointmentById(id);
 
@@ -51,7 +54,7 @@ public class AppointmentService {
         return appointmentRepository.save(appointment);
     }
 
-    @Transactional
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public void deleteAppointment(Long id) {
         if (!appointmentRepository.existsById(id)) {
             throw new EntityNotFoundException("Appointment with id " + id + " not found");

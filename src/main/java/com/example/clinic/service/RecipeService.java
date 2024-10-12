@@ -1,6 +1,8 @@
 package com.example.clinic.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.clinic.dto.RecipeDto;
 import com.example.clinic.entity.Doctor;
@@ -12,7 +14,6 @@ import com.example.clinic.repository.DoctorRepository;
 import com.example.clinic.repository.PatientRepository;
 import com.example.clinic.repository.RecipeRepository;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -24,7 +25,7 @@ public class RecipeService {
     private final PatientRepository patientRepository;
     private final RecipeMapper recipeMapper;
 
-    @Transactional
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public Recipe createRecipe(RecipeDto recipeDto, Long doctorId, Long patientId) {
         Doctor doctor = doctorRepository.findById(doctorId)
                 .orElseThrow(() -> new EntityNotFoundException("Doctor with id " + doctorId + " not found"));
@@ -39,7 +40,7 @@ public class RecipeService {
         return recipeRepository.save(recipe);
     }
 
-    @Transactional
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public Recipe updateRecipe(Long id, RecipeDto recipeDto) {
         Recipe recipe = recipeRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Recipe with id " + id + " not found"));
@@ -52,7 +53,7 @@ public class RecipeService {
         return recipeRepository.save(recipe);
     }
 
-    @Transactional
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public void deleteRecipe(Long id) {
         if (!recipeRepository.existsById(id)) {
             throw new EntityNotFoundException("Recipe with id " + id + " not found");
