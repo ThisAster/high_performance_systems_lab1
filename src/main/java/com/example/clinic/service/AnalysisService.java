@@ -5,10 +5,9 @@
 
 package com.example.clinic.service;
 
-import java.lang.annotation.Repeatable;
-
 import com.example.clinic.entity.Recipe;
-import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -67,5 +66,9 @@ public class AnalysisService {
     public Analysis getAnalysisById(Long id) {
         return analysisRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Analysis with id " + id + " not found"));
+    }
+
+    public Page<Analysis> getAllAnalyses(Pageable page) {
+        return analysisRepository.findAll(page);
     }
 }
