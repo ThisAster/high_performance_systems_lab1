@@ -7,6 +7,8 @@ package com.example.clinic.service;
 
 import java.lang.annotation.Repeatable;
 
+import com.example.clinic.entity.Recipe;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,7 +56,6 @@ public class AnalysisService {
         return analysisRepository.save(analysis);
     }
 
-    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public void deleteAnalysis(Long id) {
         if (!analysisRepository.existsById(id)) {
             throw new EntityNotFoundException("Analysis with id " + id + " not found");
@@ -65,5 +66,5 @@ public class AnalysisService {
     public Analysis getAnalysisById(Long id) {
         return analysisRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Analysis with id " + id + " not found"));
-    } 
+    }
 }

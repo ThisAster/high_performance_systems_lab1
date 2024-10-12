@@ -16,12 +16,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "documents")
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
 public class Document {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

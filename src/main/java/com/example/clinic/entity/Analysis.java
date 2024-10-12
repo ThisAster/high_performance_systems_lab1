@@ -16,12 +16,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "analyses")
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
 public class Analysis {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -56,11 +56,10 @@ public class AppointmentService {
 
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     public void deleteAppointment(Long id) {
-        try {
-            appointmentRepository.deleteById(id);
-        } catch (EmptyResultDataAccessException ex) {
+        if (!appointmentRepository.existsById(id)) {
             throw new EntityNotFoundException("Appointment with id " + id + " not found");
         }
+        appointmentRepository.deleteById(id);
     }
 
     public Appointment getAppointmentById(Long id) {

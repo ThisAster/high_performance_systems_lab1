@@ -17,12 +17,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "admins")
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
 public class Admin {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
