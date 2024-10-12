@@ -34,13 +34,9 @@ public class AppointmentService {
         Patient patient = patientRepository.findById(appointmentDto.patient_id())
                 .orElseThrow(() -> new EntityNotFoundException("Patient with id " + appointmentDto.patient_id() + " not found"));
     
-        Doctor doctor = doctorRepository.findById(appointmentDto.doctor_id())
-                .orElseThrow(() -> new EntityNotFoundException("Doctor with id " + appointmentDto.doctor_id() + " not found"));
-    
         Appointment appointment = appointmentMapper.appointmentDtoToEntity(appointmentDto);
     
         appointment.setPatient(patient);
-        //appointment.setDoctor(doctor);
         
         return appointmentRepository.save(appointment);
     }
