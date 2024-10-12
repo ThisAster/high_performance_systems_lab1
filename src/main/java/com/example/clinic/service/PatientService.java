@@ -32,7 +32,6 @@ public class PatientService {
     private final AnalysisRepository analysisRepository;
     private final PatientMapper patientMapper;
 
-    @Transactional
     public Patient createPatient(PatientDto patientDto) {
         Patient patient = patientMapper.patientDtoToEntity(patientDto);
 
@@ -49,7 +48,6 @@ public class PatientService {
         return patientRepository.save(patient);
     }
 
-    @Transactional
     public Patient updatePatient(Long id, PatientDto patientDto) {
         Patient patient = patientRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Patient not found with id: " + id));
@@ -61,7 +59,6 @@ public class PatientService {
         return patientRepository.save(patient);
     }
 
-    @Transactional
     public void deletePatient(Long id) {
         if (!patientRepository.existsById(id)) {
             throw new EntityNotFoundException("Patient with id " + id + " not found");

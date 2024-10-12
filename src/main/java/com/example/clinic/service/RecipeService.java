@@ -24,7 +24,6 @@ public class RecipeService {
     private final PatientRepository patientRepository;
     private final RecipeMapper recipeMapper;
 
-    @Transactional
     public Recipe createRecipe(RecipeDto recipeDto, Long doctorId, Long patientId) {
         Doctor doctor = doctorRepository.findById(doctorId)
                 .orElseThrow(() -> new EntityNotFoundException("Doctor with id " + doctorId + " not found"));
@@ -39,7 +38,6 @@ public class RecipeService {
         return recipeRepository.save(recipe);
     }
 
-    @Transactional
     public Recipe updateRecipe(Long id, RecipeDto recipeDto) {
         Recipe recipe = recipeRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Recipe with id " + id + " not found"));
@@ -52,7 +50,6 @@ public class RecipeService {
         return recipeRepository.save(recipe);
     }
 
-    @Transactional
     public void deleteRecipe(Long id) {
         if (!recipeRepository.existsById(id)) {
             throw new EntityNotFoundException("Recipe with id " + id + " not found");

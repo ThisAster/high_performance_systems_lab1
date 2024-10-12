@@ -26,7 +26,6 @@ public class DoctorService {
     private final RecipeRepository recipeRepository;
     private final DoctorMapper doctorMapper;
 
-    @Transactional
     public Doctor createDoctor(DoctorDto doctorDto) {
         Doctor doctor = doctorMapper.doctorDtoToEntity(doctorDto);
         
@@ -39,7 +38,6 @@ public class DoctorService {
         return doctorRepository.save(doctor);
     }
 
-    @Transactional
     public Doctor updateDoctor(Long id, DoctorDto doctorDto) {
         Doctor doctor = doctorRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Doctor with id " + id + " not found"));
@@ -51,7 +49,6 @@ public class DoctorService {
         return doctorRepository.save(doctor);
     }
 
-    @Transactional
     public void deleteDoctor(Long id) {
         if (!doctorRepository.existsById(id)) {
             throw new EntityNotFoundException("Doctor with id " + id + " not found");

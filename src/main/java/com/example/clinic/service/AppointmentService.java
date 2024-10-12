@@ -24,14 +24,13 @@ public class AppointmentService {
     private final DoctorRepository doctorRepository;
     private final AppointmentMapper appointmentMapper;
 
-    @Transactional
     public Appointment createAppointment(AppointmentDto appointmentDto) {
         Patient patient = patientRepository.findByIdWithAppointmentsAndDoctors(appointmentDto.patient_id())
                 .orElseThrow(() -> new EntityNotFoundException("Patient with id " + appointmentDto.patient_id() + " not found"));
     
         Doctor doctor = patient.getAppointments().stream()
                 .map(Appointment::getDoctor)
-                .filter(doctor -> doctor.getId().equals(appointmentDto.doctor_id()))
+                .filter(doc -> doc.getId().equals(appointmentDto.doctor_id()))
                 .findFirst()
                 .orElseThrow(() -> new EntityNotFoundException("Doctor with id " + appointmentDto.doctor_id() + " not found"));
     
@@ -43,7 +42,6 @@ public class AppointmentService {
         return appointmentRepository.save(appointment);
     }
 
-    @Transactional
     public Appointment updateAppointment(Long id, AppointmentDto appointmentDto) {
         Appointment appointment = this.getAppointmentById(id);
 
@@ -52,7 +50,6 @@ public class AppointmentService {
         return appointmentRepository.save(appointment);
     }
 
-    @Transactional
     public void deleteAppointment(Long id) {
         if (!appointmentRepository.existsById(id)) {
             throw new EntityNotFoundException("Appointment with id " + id + " not found");

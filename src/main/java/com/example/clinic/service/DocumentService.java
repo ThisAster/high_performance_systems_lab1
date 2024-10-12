@@ -21,7 +21,6 @@ public class DocumentService {
     private final PatientRepository patientRepository;
     private final DocumentMapper documentMapper;
 
-    @Transactional
     public Document createDocument(DocumentDto documentDto, Long patientId) {
         Patient patient = patientRepository.findById(patientId)
                 .orElseThrow(() -> new EntityNotFoundException("Patient with id " + patientId + " not found"));
@@ -33,7 +32,6 @@ public class DocumentService {
         return documentRepository.save(document);
     }
 
-    @Transactional
     public Document updateDocument(Long id, DocumentDto documentDto) {
         Document document = documentRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Document with id " + id + " not found"));
@@ -46,7 +44,6 @@ public class DocumentService {
         return documentRepository.save(document);
     }
 
-    @Transactional
     public void deleteDocument(Long id) {
         if (!documentRepository.existsById(id)) {
             throw new EntityNotFoundException("Document with id " + id + " not found");

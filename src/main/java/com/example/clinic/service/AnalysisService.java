@@ -26,7 +26,6 @@ public class AnalysisService {
     private final PatientRepository patientRepository;
     private final AnalysisMapper analysisMapper;
 
-    @Transactional
     public Analysis createAnalysis(AnalysisDto analysisDto, Long patientId) {
         Patient patient = patientRepository.findById(patientId)
                 .orElseThrow(() -> new EntityNotFoundException("Patient with id " + patientId + " not found"));
@@ -38,7 +37,6 @@ public class AnalysisService {
         return analysisRepository.save(analysis);
     }   
 
-    @Transactional
     public Analysis updateAnalysis(Long id, AnalysisDto analysisDto) {
         Analysis analysis = analysisRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Analysis with id " + id + " not found"));
@@ -51,7 +49,6 @@ public class AnalysisService {
         return analysisRepository.save(analysis);
     }
 
-    @Transactional
     public void deleteAnalysis(Long id) {
         if (!analysisRepository.existsById(id)) {
             throw new EntityNotFoundException("Analysis with id " + id + " not found");
