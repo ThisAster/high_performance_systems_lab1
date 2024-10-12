@@ -71,7 +71,7 @@ public class AnalysisController {
             @RequestParam int size
     ) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<Analysis> analysisPage = analysisService.getAllAnalyses(pageable);
+        Page<Analysis> analysisPage = analysisService.getAnalyses(pageable);
         List<AnalysisDto> analysisDtos = analysisPage.getContent().stream()
                 .map(analysisMapper::entityToAnalysisDto)
                 .collect(Collectors.toList());

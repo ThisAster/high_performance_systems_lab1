@@ -67,7 +67,7 @@ public class DoctorService {
                 .orElseThrow(() -> new EntityNotFoundException("Doctor with id " + id + " not found"));
     }
 
-    public Page<Doctor> getAllDoctors(Pageable page) {
+    public Page<Doctor> getDoctors(Pageable page) {
         return doctorRepository.findAll(page);
     }
 }

@@ -68,7 +68,7 @@ public class AnalysisService {
                 .orElseThrow(() -> new EntityNotFoundException("Analysis with id " + id + " not found"));
     }
 
-    public Page<Analysis> getAllAnalyses(Pageable page) {
+    public Page<Analysis> getAnalyses(Pageable page) {
         return analysisRepository.findAll(page);
     }
 }

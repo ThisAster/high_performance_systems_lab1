@@ -61,7 +61,7 @@ public class DoctorController {
             @RequestParam int size
     ) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<Doctor> doctorPage = doctorService.getAllDoctors(pageable);
+        Page<Doctor> doctorPage = doctorService.getDoctors(pageable);
 
         List<DoctorDto> doctorDtos = doctorPage.getContent().stream()
                 .map(doctorMapper::entityToDoctorDto)
