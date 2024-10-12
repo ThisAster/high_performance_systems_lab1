@@ -36,7 +36,7 @@ public class EmailService {
         //String password = properties.getProperty("mail.password");
         //String hostSMTP = properties.getProperty("mail.host");
         String user = "ilya.minyaeff@yandex.ru";
-        String password = "rodxxznqoxoewnfa";
+        String password = "lol";
         String hostSMTP = "smtp.yandex.ru";
         Integer port = 465;
 
