@@ -1,5 +1,7 @@
 package com.example.clinic.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.example.clinic.dto.DocumentDto;
@@ -59,5 +61,9 @@ public class DocumentService {
     public Document getDocumentById(Long id) {
         return documentRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Document with id " + id + " not found"));
-    } 
+    }
+
+    public Page<Document> getDocuments(Pageable page) {
+        return documentRepository.findAll(page);
+    }
 }

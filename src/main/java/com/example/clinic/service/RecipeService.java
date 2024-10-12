@@ -1,5 +1,7 @@
 package com.example.clinic.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -64,5 +66,9 @@ public class RecipeService {
     public Recipe getRecipeById(Long id) {
         return recipeRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Recipe with id " + id + " not found"));
-    } 
+    }
+
+    public Page<Recipe> getRecipes(Pageable page) {
+        return recipeRepository.findAll(page);
+    }
 }

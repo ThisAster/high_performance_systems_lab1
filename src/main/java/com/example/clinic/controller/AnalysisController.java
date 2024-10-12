@@ -66,7 +66,7 @@ public class AnalysisController {
     }
 
     @GetMapping
-    public ResponseEntity<List<AnalysisDto>> getAllAnalyses(
+    public ResponseEntity<List<AnalysisDto>> getAnalyses(
             @RequestParam int page,
             @RequestParam int size
     ) {

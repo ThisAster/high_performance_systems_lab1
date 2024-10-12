@@ -1,23 +1,22 @@
 package com.example.clinic.service;
 
-import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.clinic.dto.AppointmentDto;
 import com.example.clinic.entity.Appointment;
-import com.example.clinic.entity.Doctor;
 import com.example.clinic.entity.Patient;
 import com.example.clinic.exception.EntityNotFoundException;
 import com.example.clinic.mapper.AppointmentMapper; 
 import com.example.clinic.repository.AppointmentRepository;
-import com.example.clinic.repository.DoctorRepository;
 import com.example.clinic.repository.PatientRepository;
 
 import lombok.RequiredArgsConstructor;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -25,7 +24,6 @@ import java.util.List;
 public class AppointmentService {
 
     private final AppointmentRepository appointmentRepository;
-    private final DoctorRepository doctorRepository;
     private final PatientRepository patientRepository;
     private final AppointmentMapper appointmentMapper;
 
@@ -63,8 +61,11 @@ public class AppointmentService {
                 .orElseThrow(() -> new EntityNotFoundException("Appointment with id " + id + " not found"));
     }
 
-
-    public List<Appointment> getAppointmentsByDate(LocalDate date) {
+    public List<Appointment> getAppointmentsByDate(LocalDateTime date) {
         return appointmentRepository.findByAppointmentDate(date);
+    }
+
+    public Page<Appointment> getAppointments(Pageable page) {
+        return appointmentRepository.findAll(page);
     }
 }

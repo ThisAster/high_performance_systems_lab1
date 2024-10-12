@@ -2,6 +2,10 @@ package com.example.clinic.controller;
 
 import java.net.URI;
 
+import com.example.clinic.dto.PagedResponse;
+import com.example.clinic.util.ResponseUtil;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -53,5 +57,15 @@ public class DocumentController {
         Document document = documentService.getDocumentById(id);
         DocumentDto documentDto = documentMapper.entityToDocumentDto(document);
         return ResponseEntity.ok(documentDto);
+    }
+
+    @GetMapping
+    public ResponseEntity<PagedResponse<DocumentDto>> getRecipes(
+            @RequestParam int page,
+            @RequestParam int size
+    ) {
+        Page<Document> documentPage = documentService.getDocuments(PageRequest.of(page, size));
+        PagedResponse<DocumentDto> response = ResponseUtil.createPagedResponse(documentPage.map(documentMapper::entityToDocumentDto));
+        return ResponseEntity.ok(response);
     }
 }

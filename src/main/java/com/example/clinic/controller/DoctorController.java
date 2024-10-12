@@ -56,7 +56,7 @@ public class DoctorController {
   }
 
     @GetMapping
-    public ResponseEntity<List<DoctorDto>> getAllDoctors(
+    public ResponseEntity<List<DoctorDto>> getDoctors(
             @RequestParam int page,
             @RequestParam int size
     ) {
