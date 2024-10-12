@@ -11,6 +11,6 @@ public record AppointmentTypeDTO (
     String name,
     String description,
     Integer duration,
-    Double price,
+    BigDecimal price,
     Doctor doctor
 ) {}

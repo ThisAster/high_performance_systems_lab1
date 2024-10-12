@@ -21,7 +21,8 @@ public interface PatientRepository extends JpaRepository<Patient, Long> {
 
     @Query("select p from Patient p " +
             "join fetch p.appointments as a " +
-            "join fetch a.doctor")
+            "join fetch a.appointmentType as t " +
+            "join fetch t.doctor as d")
     Set<Patient> findByIdInWithAppointments(Set<Long> ids);
 
     Optional<Patient> findByEmail(String email);

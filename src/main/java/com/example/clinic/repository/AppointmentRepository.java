@@ -6,10 +6,13 @@
 package com.example.clinic.repository;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.example.clinic.entity.Appointment;
@@ -21,13 +24,13 @@ import com.example.clinic.entity.Appointment;
 @Repository
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
     
-    List<Appointment> findByAppointmentDate(LocalDate appointmentDate);
+    List<Appointment> findByAppointmentDate(LocalDateTime appointmentDate);
 
-    List<Appointment> findByDoctorId(Long doctorId);
+    @Query("select a from Appointment a " +
+            "join a.appointmentType as t " +
+            "join t.doctor as d " +
+            "WHERE d.id = :id")
+    List<Appointment> findByDoctorId(@Param("id") Long doctorId);
 
     List<Appointment> findByPatientId(Long patientId);
-
-    List<Appointment> findByPatientIdAndDoctorId(Long patientId, Long doctorId);
-
-    Optional<Appointment> findByAppointmentDateAndPatientIdAndDoctorId(LocalDate appointmentDate, Long patientId, Long doctorId);
 }
