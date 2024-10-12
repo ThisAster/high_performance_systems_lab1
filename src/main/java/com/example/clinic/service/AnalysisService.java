@@ -9,6 +9,7 @@ import java.lang.annotation.Repeatable;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.clinic.dto.AnalysisDto;
 import com.example.clinic.entity.Analysis;
@@ -18,7 +19,6 @@ import com.example.clinic.mapper.AnalysisMapper;
 import com.example.clinic.repository.AnalysisRepository;
 import com.example.clinic.repository.PatientRepository;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service

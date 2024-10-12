@@ -1,7 +1,6 @@
 package com.example.clinic.service;
 
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
 
 import com.example.clinic.dto.DocumentDto;
 import com.example.clinic.entity.Document;
@@ -11,7 +10,9 @@ import com.example.clinic.mapper.DocumentMapper;
 import com.example.clinic.repository.DocumentRepository;
 import com.example.clinic.repository.PatientRepository;
 
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
+
 import lombok.RequiredArgsConstructor;
 
 @Service

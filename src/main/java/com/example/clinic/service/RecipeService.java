@@ -2,6 +2,7 @@ package com.example.clinic.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.clinic.dto.RecipeDto;
 import com.example.clinic.entity.Doctor;
@@ -13,7 +14,6 @@ import com.example.clinic.repository.DoctorRepository;
 import com.example.clinic.repository.PatientRepository;
 import com.example.clinic.repository.RecipeRepository;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service

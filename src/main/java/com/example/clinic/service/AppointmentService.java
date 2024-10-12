@@ -1,7 +1,9 @@
 package com.example.clinic.service;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.clinic.dto.AppointmentDto;
 import com.example.clinic.entity.Appointment;
@@ -13,7 +15,6 @@ import com.example.clinic.repository.AppointmentRepository;
 import com.example.clinic.repository.DoctorRepository;
 import com.example.clinic.repository.PatientRepository;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -55,10 +56,11 @@ public class AppointmentService {
 
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     public void deleteAppointment(Long id) {
-        if (!appointmentRepository.existsById(id)) {
+        try {
+            appointmentRepository.deleteById(id);
+        } catch (EmptyResultDataAccessException ex) {
             throw new EntityNotFoundException("Appointment with id " + id + " not found");
         }
-        appointmentRepository.deleteById(id);
     }
 
     public Appointment getAppointmentById(Long id) {
