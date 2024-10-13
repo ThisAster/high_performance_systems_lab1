@@ -4,8 +4,12 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.example.clinic.dto.AppointmentCreationDTO;
 import com.example.clinic.service.EmailService;
 import com.example.clinic.util.HeaderUtils;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -23,6 +27,7 @@ import lombok.AllArgsConstructor;
 @RestController
 @RequestMapping("/api/appointments")
 @AllArgsConstructor
+@Slf4j
 public class AppointmentController {
 
     private final AppointmentService appointmentService;
@@ -30,15 +35,19 @@ public class AppointmentController {
     private final EmailService emailService;
 
     @PostMapping
-    public ResponseEntity<AppointmentDto> createAppointment(@RequestBody AppointmentDto appointmentDto) {
+    public ResponseEntity<AppointmentDto> createAppointment(@RequestBody AppointmentCreationDTO appointmentDto) {
         Appointment appointment = appointmentService.createAppointment(appointmentDto);
         AppointmentDto createdAppointmentDto = appointmentMapper.entityToAppointmentDto(appointment);
-        emailService.sendAppointmentEmail(appointmentDto);
-        return ResponseEntity.created(URI.create("/api/appointments/" + createdAppointmentDto.id())).body(createdAppointmentDto);
+        try {
+            emailService.sendAppointmentEmail(appointmentDto);
+        } catch (Exception e) {
+            log.error("Failed to send email", e);
+        }
+        return ResponseEntity.created(URI.create("/api/appointments/" + createdAppointmentDto.getId())).body(createdAppointmentDto);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<AppointmentDto> updateAppointment(@PathVariable Long id, @RequestBody AppointmentDto appointmentDto) {
+    public ResponseEntity<AppointmentDto> updateAppointment(@PathVariable Long id, @RequestBody AppointmentCreationDTO appointmentDto) {
         Appointment updatedAppointment = appointmentService.updateAppointment(id, appointmentDto);
         return ResponseEntity.ok(appointmentMapper.entityToAppointmentDto(updatedAppointment));
     }

@@ -1,18 +1,18 @@
 package com.example.clinic.service;
 
+import com.example.clinic.dto.AppointmentCreationDTO;
+import com.example.clinic.entity.AppointmentsType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.clinic.dto.AppointmentDto;
 import com.example.clinic.entity.Appointment;
 import com.example.clinic.entity.Patient;
 import com.example.clinic.exception.EntityNotFoundException;
 import com.example.clinic.mapper.AppointmentMapper; 
 import com.example.clinic.repository.AppointmentRepository;
-import com.example.clinic.repository.PatientRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,27 +24,33 @@ import java.util.List;
 public class AppointmentService {
 
     private final AppointmentRepository appointmentRepository;
-    private final PatientRepository patientRepository;
+    private final PatientService patientService;
     private final AppointmentMapper appointmentMapper;
+    private final AppointmentsTypeService appointmentsTypeService;
 
     @Transactional(isolation = Isolation.REPEATABLE_READ)
-    public Appointment createAppointment(AppointmentDto appointmentDto) {
-        Patient patient = patientRepository.findById(appointmentDto.patient_id())
-                .orElseThrow(() -> new EntityNotFoundException("Patient with id " + appointmentDto.patient_id() + " not found"));
-    
+    public Appointment createAppointment(AppointmentCreationDTO appointmentDto) {
+        Patient patient = patientService.getPatientById(appointmentDto.getPatient_id());
+
+        AppointmentsType appointmentsType = appointmentsTypeService
+                .getAppointmentsType(appointmentDto.getAppointment_type_id());
+
         Appointment appointment = appointmentMapper.appointmentDtoToEntity(appointmentDto);
     
         appointment.setPatient(patient);
+        appointment.setAppointmentType(appointmentsType);
         
         return appointmentRepository.save(appointment);
     }
 
     @Transactional(isolation = Isolation.REPEATABLE_READ)
-    public Appointment updateAppointment(Long id, AppointmentDto appointmentDto) {
+    public Appointment updateAppointment(Long id, AppointmentCreationDTO appointmentDto) {
         Appointment appointment = this.getAppointmentById(id);
 
-        appointment.setAppointmentDate(appointmentDto.appointmentDate());
-        //appointment.setDescription(appointmentDto.description());
+        appointment.setAppointmentDate(appointmentDto.getAppointment_date());
+        appointment.setPatient(patientService.getPatientById(appointmentDto.getPatient_id()));
+        appointment.setAppointmentType(appointmentsTypeService.getAppointmentsType(appointmentDto.getAppointment_type_id()));
+
         return appointmentRepository.save(appointment);
     }
 

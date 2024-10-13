@@ -1,5 +1,6 @@
 package com.example.clinic.service;
 
+import com.example.clinic.dto.AppointmentCreationDTO;
 import com.example.clinic.dto.AppointmentDto;
 import com.example.clinic.entity.Patient;
 import com.example.clinic.repository.DoctorRepository;
@@ -24,8 +25,8 @@ public class EmailService {
 
     @SneakyThrows
     @Transactional
-    public void sendAppointmentEmail(AppointmentDto appointmentDto)  {
-        Optional<Patient> patient = patientRepository.findById(appointmentDto.patient_id());
+    public void sendAppointmentEmail(AppointmentCreationDTO appointmentDto)  {
+        Optional<Patient> patient = patientRepository.findById(appointmentDto.getPatient_id());
         String to = patient.get().getEmail();
 
         //FileInputStream fileInputStream = new FileInputStream("config.properties");
