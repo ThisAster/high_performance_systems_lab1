@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class AppointmentCreationDTO {
-    private Long id;
     private LocalDateTime appointment_date;
     private Long patient_id;
     private Long appointment_type_id;

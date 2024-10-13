@@ -32,7 +32,6 @@ public class AppointmentMapper {
         }
 
         Appointment appointment = new Appointment();
-        appointment.setId(appointmentDto.getId());
         appointment.setAppointmentDate(appointmentDto.getAppointment_date());
         return appointment;
     }
