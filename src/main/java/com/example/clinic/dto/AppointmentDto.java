@@ -9,11 +9,18 @@ package com.example.clinic.dto;
  *
  * @author thisaster
  */
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDateTime;
 
-public record AppointmentDto(
-    Long id,
-    LocalDateTime appointmentDate,
-    Long patient_id,
-    AppointmentTypeDTO appointmentType
-) {}
+@NoArgsConstructor
+@Data
+@AllArgsConstructor
+public class AppointmentDto {
+    private Long id;
+    private LocalDateTime appointmentDate;
+    private Long patient_id;
+    private AppointmentTypeDTO appointmentType;
+}
