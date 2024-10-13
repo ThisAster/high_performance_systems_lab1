@@ -2,8 +2,6 @@ package com.example.clinic.controller;
 
 import java.net.URI;
 
-import com.example.clinic.dto.PagedResponse;
-import com.example.clinic.util.ResponseUtil;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
@@ -62,12 +60,12 @@ public class RecipeController {
     }
 
     @GetMapping
-    public ResponseEntity<PagedResponse<RecipeDto>> getRecipes(
+    public ResponseEntity<Page<RecipeDto>> getRecipes(
             @RequestParam int page,
             @RequestParam int size
     ) {
         Page<Recipe> recipePage = recipeService.getRecipes(PageRequest.of(page, size));
-        PagedResponse<RecipeDto> response = ResponseUtil.createPagedResponse(recipePage.map(recipeMapper::entityToRecipeDto));
+        Page<RecipeDto> response = recipePage.map(recipeMapper::entityToRecipeDto);
         return ResponseEntity.ok(response);
     }
 }
