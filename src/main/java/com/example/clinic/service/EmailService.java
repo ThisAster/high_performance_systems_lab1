@@ -11,6 +11,7 @@ import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 
 import javax.mail.*;
+import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.io.FileInputStream;
@@ -23,9 +24,8 @@ import java.util.Properties;
 public class EmailService {
     private final PatientRepository patientRepository;
 
-    @SneakyThrows
     @Transactional
-    public void sendAppointmentEmail(AppointmentCreationDTO appointmentDto)  {
+    public void sendAppointmentEmail(AppointmentCreationDTO appointmentDto) throws MessagingException {
         Optional<Patient> patient = patientRepository.findById(appointmentDto.getPatient_id());
         String to = patient.get().getEmail();
 

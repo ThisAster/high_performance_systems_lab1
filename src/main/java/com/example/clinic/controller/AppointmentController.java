@@ -38,11 +38,15 @@ public class AppointmentController {
     public ResponseEntity<AppointmentDto> createAppointment(@RequestBody AppointmentCreationDTO appointmentDto) {
         Appointment appointment = appointmentService.createAppointment(appointmentDto);
         AppointmentDto createdAppointmentDto = appointmentMapper.entityToAppointmentDto(appointment);
-        try {
-            emailService.sendAppointmentEmail(appointmentDto);
-        } catch (Exception e) {
-            log.error("Failed to send email", e);
-        }
+
+        new Thread(() -> {
+            try {
+                emailService.sendAppointmentEmail(appointmentDto);
+            } catch (Exception e) {
+                log.error("Failed to send email", e);
+            }
+        }).start();
+
         return ResponseEntity.created(URI.create("/api/appointments/" + createdAppointmentDto.getId())).body(createdAppointmentDto);
     }
 
