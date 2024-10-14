@@ -9,12 +9,10 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.clinic.dto.DoctorDto;
-import com.example.clinic.entity.Appointment;
 import com.example.clinic.entity.Doctor;
 import com.example.clinic.entity.Recipe;
 import com.example.clinic.exception.EntityNotFoundException;
 import com.example.clinic.mapper.DoctorMapper;
-import com.example.clinic.repository.AppointmentRepository;
 import com.example.clinic.repository.DoctorRepository;
 import com.example.clinic.repository.RecipeRepository;
 
@@ -25,15 +23,13 @@ import lombok.RequiredArgsConstructor;
 public class DoctorService {
 
     private final DoctorRepository doctorRepository;
-    private final AppointmentRepository appointmentRepository;
     private final RecipeRepository recipeRepository;
     private final DoctorMapper doctorMapper;
 
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     public Doctor createDoctor(DoctorDto doctorDto) {
         Doctor doctor = doctorMapper.doctorDtoToEntity(doctorDto);
-        
-        List<Appointment> appointments = appointmentRepository.findByDoctorId(doctor.getId());
+
         List<Recipe> recipes = recipeRepository.findByDoctorId(doctor.getId());
 
         doctor.setRecipes(recipes);
