@@ -1,5 +1,6 @@
 package com.example.clinic.handler;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -45,6 +46,7 @@ public class AppHandlerException {
         body.put("status", status.value());
         body.put("error", error);
         body.put("message", message);
+        body.put("timestamp", LocalDateTime.now());
         return new ResponseEntity<>(body, status);
     }
 }
