@@ -32,7 +32,7 @@ public class AppointmentController {
 
     private final AppointmentService appointmentService;
     private final AppointmentMapper appointmentMapper;
-    private final EmailService emailService;
+    // private final EmailService emailService;
 
     @PostMapping
     public ResponseEntity<AppointmentDto> createAppointment(@RequestBody AppointmentCreationDTO appointmentDto) {
@@ -41,7 +41,7 @@ public class AppointmentController {
 
         new Thread(() -> {
             try {
-                emailService.sendAppointmentEmail(appointmentDto);
+               // emailService.sendCreationEmail(appointment);
             } catch (Exception e) {
                 log.error("Failed to send email", e);
             }
@@ -53,12 +53,29 @@ public class AppointmentController {
     @PutMapping("/{id}")
     public ResponseEntity<AppointmentDto> updateAppointment(@PathVariable Long id, @RequestBody AppointmentCreationDTO appointmentDto) {
         Appointment updatedAppointment = appointmentService.updateAppointment(id, appointmentDto);
+
+        new Thread(() -> {
+            try {
+              //  emailService.sendUpdateEmail(updatedAppointment);
+            } catch (Exception e) {
+                log.error("Failed to send email", e);
+            }
+        }).start();
+
         return ResponseEntity.ok(appointmentMapper.entityToAppointmentDto(updatedAppointment));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteAppointment(@PathVariable Long id) {
         appointmentService.deleteAppointment(id);
+
+        new Thread(() -> {
+            try {
+              //  emailService.sendDeletionEmail(id);
+            } catch (Exception e) {
+                log.error("Failed to send email", e);
+            }
+        }).start();
         return ResponseEntity.ok("Appointment with id " + id + " successfully deleted.");
     }
 
