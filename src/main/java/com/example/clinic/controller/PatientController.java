@@ -61,7 +61,7 @@ public class PatientController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<PatientDto>> getRecipes(
+    public ResponseEntity<Page<PatientDto>> getPatients(
             @RequestParam int page,
             @RequestParam int size
     ) {

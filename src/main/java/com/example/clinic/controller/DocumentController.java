@@ -58,7 +58,7 @@ public class DocumentController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<DocumentDto>> getRecipes(
+    public ResponseEntity<Page<DocumentDto>> getDocuments(
             @RequestParam int page,
             @RequestParam int size
     ) {
