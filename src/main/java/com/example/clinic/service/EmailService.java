@@ -66,25 +66,10 @@ public class EmailService {
 
     @SneakyThrows
     @Transactional
-    public void sendCreationEmail(Appointment appointment){
+    public void sendEmail(Appointment appointment, String emailTypeText){
         Session session = buildSession();
-        Message msg = buildMessage(session, appointment, "You have signed up for an appointment");
+        Message msg = buildMessage(session, appointment, emailTypeText);
         Transport.send(msg);
     }
 
-    @SneakyThrows
-    @Transactional
-    public void sendUpdateEmail(Appointment appointment){
-        Session session = buildSession();
-        Message msg = buildMessage(session, appointment, "Information about your appointment has been updated.");
-        Transport.send(msg);
-    }
-
-    @SneakyThrows
-    @Transactional
-    public void sendDeletionEmail(Appointment appointment){
-        Session session = buildSession();
-        Message msg = buildMessage(session, appointment, "Your appointment has been canceled.");
-        Transport.send(msg);
-    }
 }
