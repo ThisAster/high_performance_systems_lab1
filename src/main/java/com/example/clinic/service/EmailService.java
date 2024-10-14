@@ -1,11 +1,6 @@
 package com.example.clinic.service;
 
-import com.example.clinic.dto.AppointmentCreationDTO;
-import com.example.clinic.dto.AppointmentDto;
 import com.example.clinic.entity.Appointment;
-import com.example.clinic.entity.Patient;
-import com.example.clinic.repository.AppointmentRepository;
-import com.example.clinic.repository.PatientRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -16,7 +11,6 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.time.LocalDateTime;
 import java.util.Date;
-import java.util.Optional;
 import java.util.Properties;
 
 @Service
@@ -27,8 +21,6 @@ public class EmailService {
     private Integer port = 465;
     private String emailTitle = "Information about your appointment at ITMO clinic";
     private String password = "lol";
-
-    private final AppointmentRepository appointmentRepository;
 
     @SneakyThrows
     private Message buildMessage(Session session, Appointment appointment, String emailTypeText){
@@ -93,9 +85,7 @@ public class EmailService {
 
     @SneakyThrows
     @Transactional
-    public void sendDeletionEmail(Long id){
-        Appointment appointment = appointmentRepository.getReferenceById(id);
-
+    public void sendDeletionEmail(Appointment appointment){
         Session session = buildSession();
         Message msg = buildMessage(session, appointment, "Your appointment has been canceled.");
         Transport.send(msg);

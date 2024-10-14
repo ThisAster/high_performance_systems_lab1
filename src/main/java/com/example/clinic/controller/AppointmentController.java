@@ -8,8 +8,6 @@ import com.example.clinic.dto.AppointmentCreationDTO;
 import com.example.clinic.service.EmailService;
 import com.example.clinic.util.HeaderUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -32,7 +30,7 @@ public class AppointmentController {
 
     private final AppointmentService appointmentService;
     private final AppointmentMapper appointmentMapper;
-    // private final EmailService emailService;
+    private final EmailService emailService;
 
     @PostMapping
     public ResponseEntity<AppointmentDto> createAppointment(@RequestBody AppointmentCreationDTO appointmentDto) {
@@ -41,7 +39,7 @@ public class AppointmentController {
 
         new Thread(() -> {
             try {
-               // emailService.sendCreationEmail(appointment);
+                emailService.sendCreationEmail(appointment);
             } catch (Exception e) {
                 log.error("Failed to send email", e);
             }
@@ -56,7 +54,7 @@ public class AppointmentController {
 
         new Thread(() -> {
             try {
-              //  emailService.sendUpdateEmail(updatedAppointment);
+                emailService.sendUpdateEmail(updatedAppointment);
             } catch (Exception e) {
                 log.error("Failed to send email", e);
             }
@@ -67,15 +65,17 @@ public class AppointmentController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteAppointment(@PathVariable Long id) {
-        appointmentService.deleteAppointment(id);
+        Appointment appointment = appointmentService.getAppointmentById(id);
 
         new Thread(() -> {
             try {
-              //  emailService.sendDeletionEmail(id);
+                emailService.sendDeletionEmail(appointment);
             } catch (Exception e) {
                 log.error("Failed to send email", e);
             }
         }).start();
+
+        appointmentService.deleteAppointment(id);
         return ResponseEntity.ok("Appointment with id " + id + " successfully deleted.");
     }
 
