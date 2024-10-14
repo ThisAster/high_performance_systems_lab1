@@ -33,4 +33,13 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
     List<Appointment> findByDoctorId(@Param("id") Long doctorId);
 
     List<Appointment> findByPatientId(Long patientId);
+
+    @Query("select a from Appointment a " +
+            "join a.appointmentType as t " +
+            "join t.doctor as d " +
+            "WHERE d.id = :id " +
+            "AND a.appointmentDate BETWEEN :start AND :end")
+    List<Appointment> findByDoctorIdAndTimeInterval(@Param("id") Long doctorId,
+                                                   @Param("start") LocalDateTime start,
+                                                   @Param("end") LocalDateTime end);
 }
