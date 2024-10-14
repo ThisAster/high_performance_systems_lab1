@@ -39,7 +39,7 @@ public class AppointmentController {
 
         new Thread(() -> {
             try {
-                emailService.sendEmail(appointment, "You have signed up for an appointment");
+                emailService.sendAppointmentEmail(appointment, "You have signed up for an appointment");
             } catch (Exception e) {
                 log.error("Failed to send email", e);
             }
@@ -54,7 +54,7 @@ public class AppointmentController {
 
         new Thread(() -> {
             try {
-                emailService.sendEmail(updatedAppointment, "Information about your appointment has been updated.");
+                emailService.sendAppointmentEmail(updatedAppointment, "Information about your appointment has been updated.");
             } catch (Exception e) {
                 log.error("Failed to send email", e);
             }
@@ -69,7 +69,7 @@ public class AppointmentController {
 
         new Thread(() -> {
             try {
-                emailService.sendEmail(appointment, "Your appointment has been canceled.");
+                emailService.sendAppointmentEmail(appointment, "Your appointment has been canceled.");
             } catch (Exception e) {
                 log.error("Failed to send email", e);
             }

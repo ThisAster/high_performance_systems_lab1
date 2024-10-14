@@ -2,6 +2,8 @@ package com.example.clinic.controller;
 
 import java.net.URI;
 
+import com.example.clinic.service.EmailService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
@@ -17,13 +19,22 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/patients")
 @RequiredArgsConstructor
+@Slf4j
 public class PatientController {
 
     private final PatientService patientService;
+    private final EmailService emailService;
     private final PatientMapper patientMapper;
 
     @PostMapping
     public ResponseEntity<PatientDto> createPatient(@RequestBody PatientDto patientDto) {
+        new Thread(() -> {
+            try {
+                emailService.sendPatientEmail(patientDto, "Registration on ITMO clinic platform");
+            } catch (Exception e) {
+                log.error("Failed to send email", e);
+            }
+        }).start();
         Patient patient = patientService.createPatient(patientDto);
         PatientDto createdPatientDto = patientMapper.entityToPatientDto(patient);
         return ResponseEntity.created(URI.create("/api/patients/" + createdPatientDto.id())).body(createdPatientDto);

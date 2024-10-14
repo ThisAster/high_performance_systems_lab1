@@ -1,6 +1,7 @@
 package com.example.clinic.service;
 
 import com.example.clinic.config.ConfigEmail;
+import com.example.clinic.dto.PatientDto;
 import com.example.clinic.entity.Appointment;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -50,7 +51,7 @@ public class EmailService {
 
     @SneakyThrows
     @Transactional
-    public void sendEmail(Appointment appointment, String emailTypeText){
+    public void sendAppointmentEmail(Appointment appointment, String emailTypeText){
         Session session = buildSession();
 
         String receiverEmail = appointment.getPatient().getEmail();
@@ -68,6 +69,24 @@ public class EmailService {
                 \{appointmentDescription}
                 """;
         Message msg = buildMessage(session, receiverEmail, emailText);
+
+        Transport.send(msg);
+    }
+
+    @SneakyThrows
+    @Transactional
+    public void sendPatientEmail(PatientDto patientDto, String emailTypeText){
+        Session session = buildSession();
+
+        String patientName = patientDto.name();
+        String patientEmail = patientDto.email();
+        String emailText = STR.
+                """
+                Hello, \{patientName}
+                \{emailTypeText}
+                You have successfully registered on ITMO clinic platform
+                """;
+        Message msg = buildMessage(session, patientEmail, emailText);
 
         Transport.send(msg);
     }
