@@ -85,7 +85,6 @@ public class EmailService {
                 """
                 Hello, \{patientName}
                 \{emailTypeText}
-                You have successfully registered on ITMO clinic platform
                 """;
 
         String emailTitle = configEmail.getTitles().get("patient");

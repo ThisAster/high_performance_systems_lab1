@@ -30,7 +30,7 @@ public class PatientController {
     public ResponseEntity<PatientDto> createPatient(@RequestBody PatientDto patientDto) {
         new Thread(() -> {
             try {
-                emailService.sendPatientEmail(patientDto, "Registration on ITMO clinic platform");
+                emailService.sendPatientEmail(patientDto, "You have successfully registered on ITMO clinic platform");
             } catch (Exception e) {
                 log.error("Failed to send email", e);
             }
