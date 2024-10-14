@@ -51,10 +51,11 @@ public class AppointmentController {
     @PutMapping("/{id}")
     public ResponseEntity<AppointmentDto> updateAppointment(@PathVariable Long id, @RequestBody AppointmentCreationDTO appointmentDto) {
         Appointment updatedAppointment = appointmentService.updateAppointment(id, appointmentDto);
+        Appointment appointment = appointmentService.getAppointmentById(id);
 
         new Thread(() -> {
             try {
-                emailService.sendUpdateEmail(updatedAppointment);
+                emailService.sendUpdateEmail(appointment);
             } catch (Exception e) {
                 log.error("Failed to send email", e);
             }
