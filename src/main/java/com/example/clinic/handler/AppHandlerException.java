@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.example.clinic.exception.EntityNotFoundException;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 @ControllerAdvice
@@ -39,6 +40,12 @@ public class AppHandlerException {
     public ResponseEntity<Map<String, Object>> handleNotFoundException(NoResourceFoundException ex) {
         log.error(ex.getMessage(), ex);
         return buildResponseEntity(HttpStatus.NOT_FOUND, "Resource not Found", "Resource not found");
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<Map<String, Object>> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex) {
+        log.error(ex.getMessage(), ex);
+        return buildResponseEntity(HttpStatus.BAD_REQUEST, "Bad Request", "Invalid parameter type");
     }
 
     private ResponseEntity<Map<String, Object>> buildResponseEntity(HttpStatus status, String error, String message) {
