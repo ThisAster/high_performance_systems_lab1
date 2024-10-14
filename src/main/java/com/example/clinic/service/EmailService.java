@@ -20,29 +20,13 @@ public class EmailService {
     private final ConfigEmail configEmail;
 
     @SneakyThrows
-    private Message buildMessage(Session session, Appointment appointment, String emailTypeText){
-        String receiverEmail = appointment.getPatient().getEmail();
-        String receiverName = appointment.getPatient().getName();
-        LocalDateTime appointmentDate = appointment.getAppointmentDate();
-        String appointmentDescription = appointment.getAppointmentType().getDescription();
-        String doctorName = appointment.getAppointmentType().getDoctor().getName();
-
+    private Message buildMessage(Session session, String receiverEmail, String emailText){
         Message msg = new MimeMessage(session);
         msg.setFrom(new InternetAddress(configEmail.getSender()));
         InternetAddress[] addresses = {new InternetAddress(receiverEmail)};
         msg.setRecipients(Message.RecipientType.TO, addresses);
         msg.setSubject(configEmail.getTitle());
         msg.setSentDate(new Date());
-
-        String emailText = STR.
-                """
-                Dear \{receiverName},
-                \{emailTypeText}
-                Your appointment information:
-                Date: \{appointmentDate}
-                Doctor: \{doctorName}
-                \{appointmentDescription}
-                """;
         msg.setText(emailText);
         return msg;
     }
@@ -68,7 +52,23 @@ public class EmailService {
     @Transactional
     public void sendEmail(Appointment appointment, String emailTypeText){
         Session session = buildSession();
-        Message msg = buildMessage(session, appointment, emailTypeText);
+
+        String receiverEmail = appointment.getPatient().getEmail();
+        String receiverName = appointment.getPatient().getName();
+        LocalDateTime appointmentDate = appointment.getAppointmentDate();
+        String appointmentDescription = appointment.getAppointmentType().getDescription();
+        String doctorName = appointment.getAppointmentType().getDoctor().getName();
+        String emailText = STR.
+                """
+                Dear \{receiverName},
+                \{emailTypeText}
+                Your appointment information:
+                Date: \{appointmentDate}
+                Doctor: \{doctorName}
+                \{appointmentDescription}
+                """;
+        Message msg = buildMessage(session, receiverEmail, emailText);
+
         Transport.send(msg);
     }
 
