@@ -21,12 +21,12 @@ public class EmailService {
     private final ConfigEmail configEmail;
 
     @SneakyThrows
-    private Message buildMessage(Session session, String receiverEmail, String emailText){
+    private Message buildMessage(Session session, String receiverEmail, String emailTitle, String emailText) {
         Message msg = new MimeMessage(session);
         msg.setFrom(new InternetAddress(configEmail.getSender()));
         InternetAddress[] addresses = {new InternetAddress(receiverEmail)};
         msg.setRecipients(Message.RecipientType.TO, addresses);
-        msg.setSubject(configEmail.getTitle());
+        msg.setSubject(emailTitle);
         msg.setSentDate(new Date());
         msg.setText(emailText);
         return msg;
@@ -68,7 +68,8 @@ public class EmailService {
                 Doctor: \{doctorName}
                 \{appointmentDescription}
                 """;
-        Message msg = buildMessage(session, receiverEmail, emailText);
+        String emailTitle = configEmail.getTitles().get("appointment");
+        Message msg = buildMessage(session, receiverEmail, emailTitle, emailText);
 
         Transport.send(msg);
     }
@@ -86,7 +87,9 @@ public class EmailService {
                 \{emailTypeText}
                 You have successfully registered on ITMO clinic platform
                 """;
-        Message msg = buildMessage(session, patientEmail, emailText);
+
+        String emailTitle = configEmail.getTitles().get("patient");
+        Message msg = buildMessage(session, patientEmail, emailTitle, emailText);
 
         Transport.send(msg);
     }
