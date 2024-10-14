@@ -1,5 +1,6 @@
 package com.example.clinic.service;
 
+import com.example.clinic.config.ConfigEmail;
 import com.example.clinic.entity.Appointment;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -16,11 +17,7 @@ import java.util.Properties;
 @Service
 @RequiredArgsConstructor
 public class EmailService {
-    private String senderEmail = "ilya.minyaeff@yandex.ru";
-    private String hostSMTP = "smtp.yandex.ru";
-    private Integer port = 465;
-    private String emailTitle = "Information about your appointment at ITMO clinic";
-    private String password = "lol";
+    private final ConfigEmail configEmail;
 
     @SneakyThrows
     private Message buildMessage(Session session, Appointment appointment, String emailTypeText){
@@ -31,10 +28,10 @@ public class EmailService {
         String doctorName = appointment.getAppointmentType().getDoctor().getName();
 
         Message msg = new MimeMessage(session);
-        msg.setFrom(new InternetAddress(senderEmail));
+        msg.setFrom(new InternetAddress(configEmail.getSender()));
         InternetAddress[] addresses = {new InternetAddress(receiverEmail)};
         msg.setRecipients(Message.RecipientType.TO, addresses);
-        msg.setSubject(emailTitle);
+        msg.setSubject(configEmail.getTitle());
         msg.setSentDate(new Date());
 
         String emailText = STR.
@@ -53,16 +50,16 @@ public class EmailService {
     @SneakyThrows
     private Session buildSession(){
         Properties prop = new Properties() {{
-            put("mail.smtp.host", hostSMTP);
+            put("mail.smtp.host", configEmail.getHost());
             put("mail.smtp.ssl.enable", "true");
-            put("mail.smtp.port", port);
+            put("mail.smtp.port", configEmail.getPort());
             put("mail.smtp.auth", "true");
         }};
 
         return Session.getDefaultInstance(prop, new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(senderEmail, password);
+                return new PasswordAuthentication(configEmail.getSender(), configEmail.getPassword());
             }
         });
     }
