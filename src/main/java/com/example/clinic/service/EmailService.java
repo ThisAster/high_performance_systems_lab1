@@ -1,7 +1,6 @@
 package com.example.clinic.service;
 
 import com.example.clinic.config.ConfigEmail;
-import com.example.clinic.dto.PatientDto;
 import com.example.clinic.entity.Appointment;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -70,27 +69,6 @@ public class EmailService {
                 """;
         String emailTitle = configEmail.getTitles().get("appointment");
         Message msg = buildMessage(session, receiverEmail, emailTitle, emailText);
-
         Transport.send(msg);
     }
-
-    @SneakyThrows
-    @Transactional
-    public void sendPatientEmail(PatientDto patientDto, String emailTypeText){
-        Session session = buildSession();
-
-        String patientName = patientDto.name();
-        String patientEmail = patientDto.email();
-        String emailText = STR.
-                """
-                Hello, \{patientName}
-                \{emailTypeText}
-                """;
-
-        String emailTitle = configEmail.getTitles().get("patient");
-        Message msg = buildMessage(session, patientEmail, emailTitle, emailText);
-
-        Transport.send(msg);
-    }
-
 }
