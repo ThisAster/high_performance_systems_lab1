@@ -9,6 +9,8 @@ package com.example.clinic.dto;
  *
  * @author thisaster
  */
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,9 +20,10 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Data
 @AllArgsConstructor
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class AppointmentDto {
     private Long id;
     private LocalDateTime appointmentDate;
-    private Long patient_id;
+    private Long patientId;
     private AppointmentTypeDTO appointmentType;
 }

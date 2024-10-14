@@ -30,10 +30,10 @@ public class AppointmentService {
 
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     public Appointment createAppointment(AppointmentCreationDTO appointmentDto) {
-        Patient patient = patientService.getPatientById(appointmentDto.getPatient_id());
+        Patient patient = patientService.getPatientById(appointmentDto.getPatientId());
 
         AppointmentsType appointmentsType = appointmentsTypeService
-                .getAppointmentsType(appointmentDto.getAppointment_type_id());
+                .getAppointmentsType(appointmentDto.getAppointmentTypeId());
 
         Appointment appointment = appointmentMapper.appointmentDtoToEntity(appointmentDto);
     
@@ -47,9 +47,9 @@ public class AppointmentService {
     public Appointment updateAppointment(Long id, AppointmentCreationDTO appointmentDto) {
         Appointment appointment = this.getAppointmentById(id);
 
-        appointment.setAppointmentDate(appointmentDto.getAppointment_date());
-        appointment.setPatient(patientService.getPatientById(appointmentDto.getPatient_id()));
-        appointment.setAppointmentType(appointmentsTypeService.getAppointmentsType(appointmentDto.getAppointment_type_id()));
+        appointment.setAppointmentDate(appointmentDto.getAppointmentDate());
+        appointment.setPatient(patientService.getPatientById(appointmentDto.getPatientId()));
+        appointment.setAppointmentType(appointmentsTypeService.getAppointmentsType(appointmentDto.getAppointmentTypeId()));
 
         return appointmentRepository.save(appointment);
     }

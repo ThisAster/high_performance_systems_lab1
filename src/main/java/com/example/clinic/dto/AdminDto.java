@@ -9,6 +9,7 @@ package com.example.clinic.dto;
  *
  * @author thisaster
  */
+
 public record AdminDto(
     Long id,
     String login,
