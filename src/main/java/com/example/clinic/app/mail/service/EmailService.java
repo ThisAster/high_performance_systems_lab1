@@ -58,15 +58,10 @@ public class EmailService {
         LocalDateTime appointmentDate = appointment.getAppointmentDate();
         String appointmentDescription = appointment.getAppointmentType().getDescription();
         String doctorName = appointment.getAppointmentType().getDoctor().getName();
-        String emailText = STR.
-                """
-                Dear \{receiverName},
-                \{emailTypeText}
-                Your appointment information:
-                Date: \{appointmentDate}
-                Doctor: \{doctorName}
-                \{appointmentDescription}
-                """;
+        String emailText = String.format(
+                "Dear %s,\n%s\nYour appointment information:\nDate: %s\nDoctor: %s\n%s",
+                receiverName, emailTypeText, appointmentDate, doctorName, appointmentDescription
+        );
         String emailTitle = configEmail.getTitles().get("appointment");
         Message msg = buildMessage(session, receiverEmail, emailTitle, emailText);
         Transport.send(msg);
