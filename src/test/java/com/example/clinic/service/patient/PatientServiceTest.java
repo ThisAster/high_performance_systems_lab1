@@ -21,8 +21,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.time.LocalDate;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Testcontainers
@@ -60,6 +59,19 @@ public class PatientServiceTest {
     }
 
     @Test
+    void createPatientTest(){
+        PatientDto patientDto = new PatientDto(
+                1L,
+                "patient-lolik",
+                LocalDate.of(Integer.parseInt("1984"), Integer.parseInt("4"), Integer.parseInt("20")),
+                "email@example.com");
+        Patient createdPatient = patientService.createPatient(patientDto);
+        Patient retrievedPatient = patientService.getPatientById(createdPatient.getId());
+
+        assertNotNull(retrievedPatient);
+    }
+
+    @Test
     void getPatientByIdTest(){
         PatientDto patientDto = new PatientDto(
                 1L,
@@ -74,5 +86,40 @@ public class PatientServiceTest {
         assertEquals(retrievedPatient.getName(), createdPatient.getName());
         assertEquals(retrievedPatient.getDateOfBirth(), createdPatient.getDateOfBirth());
         assertEquals(retrievedPatient.getEmail(), createdPatient.getEmail());
+    }
+
+    @Test
+    void deletePatientTest(){
+        PatientDto patientDto = new PatientDto(
+                1L,
+                "patient-lolik",
+                LocalDate.of(Integer.parseInt("1984"), Integer.parseInt("4"), Integer.parseInt("20")),
+                "email@example.com");
+        Patient createdPatient = patientService.createPatient(patientDto);
+        patientService.deletePatient(createdPatient.getId());
+        Patient retrievedPatient = patientService.getPatientById(createdPatient.getId());
+
+        assertNull(retrievedPatient);
+    }
+
+    @Test
+    void updatePatientTest(){
+        PatientDto oldPatientDto = new PatientDto(
+                1L,
+                "patient-lolik",
+                LocalDate.of(Integer.parseInt("1984"), Integer.parseInt("4"), Integer.parseInt("20")),
+                "email@example.com");
+        PatientDto newPatientDto = new PatientDto(
+                1L,
+                "patient-bolik",
+                LocalDate.of(Integer.parseInt("2000"), Integer.parseInt("4"), Integer.parseInt("20")),
+                "email@example.com");
+        Patient createdPatient = patientService.createPatient(oldPatientDto);
+        Patient updatedPatient = patientService.updatePatient(createdPatient.getId(), newPatientDto);
+
+        assertNotNull(updatedPatient);
+        assertEquals(newPatientDto.name(), updatedPatient.getName());
+        assertEquals(newPatientDto.dateOfBirth(), updatedPatient.getDateOfBirth());
+        assertEquals(newPatientDto.email(), updatedPatient.getEmail());
     }
 }
