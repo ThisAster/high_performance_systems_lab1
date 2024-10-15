@@ -1,4 +1,4 @@
-package com.example.clinic.service.pacient;
+package com.example.clinic.service.patient;
 
 
 
