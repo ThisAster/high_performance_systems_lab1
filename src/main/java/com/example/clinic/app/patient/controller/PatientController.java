@@ -2,6 +2,7 @@ package com.example.clinic.app.patient.controller;
 
 import java.net.URI;
 
+import com.example.clinic.model.PageArgument;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -55,10 +56,9 @@ public class PatientController {
 
     @GetMapping
     public ResponseEntity<Page<PatientDto>> getPatients(
-            @RequestParam int page,
-            @RequestParam int size
+            PageArgument page
     ) {
-        Page<Patient> patientPage = patientService.getPatients(PageRequest.of(page, size));
+        Page<Patient> patientPage = patientService.getPatients(page.getPageRequest());
         Page<PatientDto> response = patientPage.map(patientMapper::entityToPatientDto);
         return ResponseEntity.ok(response);
     }

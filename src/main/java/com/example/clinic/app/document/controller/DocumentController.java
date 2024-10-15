@@ -2,6 +2,7 @@ package com.example.clinic.app.document.controller;
 
 import java.net.URI;
 
+import com.example.clinic.model.PageArgument;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
@@ -59,10 +60,9 @@ public class DocumentController {
 
     @GetMapping
     public ResponseEntity<Page<DocumentDto>> getDocuments(
-            @RequestParam int page,
-            @RequestParam int size
+            PageArgument page
     ) {
-        Page<Document> documentPage = documentService.getDocuments(PageRequest.of(page, size));
+        Page<Document> documentPage = documentService.getDocuments(page.getPageRequest());
         Page<DocumentDto> response = documentPage.map(documentMapper::entityToDocumentDto);
         return ResponseEntity.ok(response);
     }

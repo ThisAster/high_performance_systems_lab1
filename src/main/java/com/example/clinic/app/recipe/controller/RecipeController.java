@@ -2,6 +2,7 @@ package com.example.clinic.app.recipe.controller;
 
 import java.net.URI;
 
+import com.example.clinic.model.PageArgument;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
@@ -61,10 +62,9 @@ public class RecipeController {
 
     @GetMapping
     public ResponseEntity<Page<RecipeDto>> getRecipes(
-            @RequestParam int page,
-            @RequestParam int size
+            PageArgument page
     ) {
-        Page<Recipe> recipePage = recipeService.getRecipes(PageRequest.of(page, size));
+        Page<Recipe> recipePage = recipeService.getRecipes(page.getPageRequest());
         Page<RecipeDto> response = recipePage.map(recipeMapper::entityToRecipeDto);
         return ResponseEntity.ok(response);
     }

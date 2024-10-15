@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.example.clinic.model.PageArgument;
 import com.example.clinic.util.HeaderUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -57,11 +58,9 @@ public class DoctorController {
 
     @GetMapping
     public ResponseEntity<List<DoctorDto>> getDoctors(
-            @RequestParam int page,
-            @RequestParam int size
+            PageArgument page
     ) {
-        Pageable pageable = PageRequest.of(page, size);
-        Page<Doctor> doctorPage = doctorService.getDoctors(pageable);
+        Page<Doctor> doctorPage = doctorService.getDoctors(page.getPageRequest());
 
         List<DoctorDto> doctorDtos = doctorPage.getContent().stream()
                 .map(doctorMapper::entityToDoctorDto)

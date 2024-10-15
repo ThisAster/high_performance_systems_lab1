@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import com.example.clinic.app.appointment.dto.AppointmentCreationDTO;
 import com.example.clinic.app.mail.service.EmailService;
+import com.example.clinic.model.PageArgument;
 import com.example.clinic.util.HeaderUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -87,11 +88,9 @@ public class AppointmentController {
 
     @GetMapping
     public ResponseEntity<List<AppointmentDto>> getAppointments(
-            @RequestParam int page,
-            @RequestParam int size
+            PageArgument page
     ) {
-        Pageable pageable = PageRequest.of(page, size);
-        Page<Appointment> appointmentPage = appointmentService.getAppointments(pageable);
+        Page<Appointment> appointmentPage = appointmentService.getAppointments(page.getPageRequest());
 
         List<AppointmentDto> appointmentDtos = appointmentPage.getContent().stream()
                 .map(appointmentMapper::entityToAppointmentDto)
