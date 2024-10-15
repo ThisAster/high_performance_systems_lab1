@@ -6,25 +6,16 @@ import com.example.clinic.app.patient.entity.Patient;
 import com.example.clinic.app.patient.repository.PatientRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import java.util.List;
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 @SpringBootTest
 @Testcontainers
 @Transactional
-class BillingServiceIntegrationTest {
+class BillingServiceTest {
 
     @Autowired
     private BillingService billingService;
