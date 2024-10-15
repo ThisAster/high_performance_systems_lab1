@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.example.clinic.app.patient.service.PatientService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -21,14 +22,14 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class BillingService {
 
-    private final PatientRepository patientRepository;
+    private final PatientService patientService;
     private final InvoiceMapper invoiceMapper;
 
     public InvoiceDTO generateInvoice(List<Long> patientIds) {
 
         Set<Long> patientIdSet = new HashSet<>(patientIds);
 
-        Set<Patient> patients = patientRepository.findByIdInWithAppointments(patientIdSet);
+        Set<Patient> patients = patientService.getPatientsWithAppointmentsByIds(patientIdSet);
 
 
         patientIdSet.removeAll(patients.stream().map(Patient::getId).collect(Collectors.toSet()));
