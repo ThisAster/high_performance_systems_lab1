@@ -34,7 +34,7 @@ public class BillingService {
         patientIdSet.removeAll(patients.stream().map(Patient::getId).collect(Collectors.toSet()));
 
         if (!patientIdSet.isEmpty()) {
-            throw new EntityNotFoundException("Patients with ids " + StringUtils.join(patientIdSet, ',') +  "not found.");
+            throw new EntityNotFoundException("Patients with ids " + StringUtils.join(patientIdSet, ',') +  " not found.");
         }
 
         List<Appointment> appointments = patients.stream().flatMap((patient) -> patient.getAppointments().stream()).collect(Collectors.toList());
