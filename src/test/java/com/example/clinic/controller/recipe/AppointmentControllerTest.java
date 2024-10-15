@@ -34,6 +34,7 @@ class AppointmentControllerTest {
                         .accept(MediaType.APPLICATION_JSON))
                         .andExpect(status().isCreated())
                         .andExpect(jsonPath("$.id").exists());
+
     }
 
     @Test

@@ -38,16 +38,6 @@ public class PatientService {
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     public Patient createPatient(PatientDto patientDto) {
         Patient patient = patientMapper.patientDtoToEntity(patientDto);
-
-        List<Appointment> appointments = appointmentRepository.findByPatientId(patientDto.id());
-        List<Recipe> recipes = recipeRepository.findByPatientId(patientDto.id());
-        List<Document> documents = documentRepository.findByPatientId(patientDto.id());
-        List<Analysis> analyses = analysisRepository.findByPatientId(patientDto.id());
-        
-        patient.setAppointments(appointments);
-        patient.setRecipes(recipes);
-        patient.setDocuments(documents);
-        patient.setAnalyses(analyses);
         
         return patientRepository.save(patient);
     }

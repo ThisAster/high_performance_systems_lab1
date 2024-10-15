@@ -49,7 +49,6 @@ public class EmailService {
     }
 
     @SneakyThrows
-    @Transactional
     public void sendAppointmentEmail(Appointment appointment, String emailTypeText){
         Session session = buildSession();
 
