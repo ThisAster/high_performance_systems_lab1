@@ -1,6 +1,7 @@
 package com.example.clinic.app.patient.service;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,10 +30,6 @@ import lombok.RequiredArgsConstructor;
 public class PatientService {
     
     private final PatientRepository patientRepository;
-    private final AppointmentRepository appointmentRepository;
-    private final RecipeRepository recipeRepository;
-    private final DocumentRepository documentRepository;
-    private final AnalysisRepository analysisRepository;
     private final PatientMapper patientMapper;
 
     @Transactional(isolation = Isolation.REPEATABLE_READ)
@@ -69,5 +66,16 @@ public class PatientService {
 
     public Page<Patient> getPatients(Pageable page) {
         return patientRepository.findAll(page);
+    }
+
+    @Transactional(readOnly = true)
+    public Set<Patient> getPatientsWithAppointmentsByIds(Set<Long> ids) {
+        Set<Patient> patients = patientRepository.findByIdInWithAppointments(ids);
+
+        if (patients.isEmpty()) {
+            throw new EntityNotFoundException("No patients found for the provided IDs");
+        }
+
+        return patients;
     }
 }

@@ -23,16 +23,11 @@ import lombok.RequiredArgsConstructor;
 public class DoctorService {
 
     private final DoctorRepository doctorRepository;
-    private final RecipeRepository recipeRepository;
     private final DoctorMapper doctorMapper;
 
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     public Doctor createDoctor(DoctorDto doctorDto) {
         Doctor doctor = doctorMapper.doctorDtoToEntity(doctorDto);
-
-        List<Recipe> recipes = recipeRepository.findByDoctorId(doctor.getId());
-
-        doctor.setRecipes(recipes);
     
         return doctorRepository.save(doctor);
     }

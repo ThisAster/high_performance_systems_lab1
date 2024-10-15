@@ -25,8 +25,8 @@ public class ConsultationMapper {
 
         ConsultationDTO consultationDTO = new ConsultationDTO();
 
-        //consultationDTO.setPrice(appointment.getDoctor().getConsultationCost());
-        //consultationDTO.setDoctor(doctorMapper.entityToDoctorDto(appointment.getDoctor()));
+        consultationDTO.setPrice(appointment.getAppointmentType().getPrice());
+        consultationDTO.setDoctor(doctorMapper.entityToDoctorDto(appointment.getAppointmentType().getDoctor()));
         consultationDTO.setPatient(patientMapper.entityToPatientDto(appointment.getPatient()));
 
         return consultationDTO;
@@ -37,7 +37,6 @@ public class ConsultationMapper {
         if (appointments == null) {
             return null;
         }
-
         return appointments.stream().map(this::appointmentToConsultationDTO).collect(Collectors.toList());
     }
 }
