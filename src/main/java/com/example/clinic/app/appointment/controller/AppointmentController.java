@@ -49,7 +49,7 @@ public class AppointmentController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<AppointmentDto> updateAppointment(@PathVariable Long id, @RequestBody AppointmentCreationDTO appointmentDto) {
+    public ResponseEntity<AppointmentCreationDTO> updateAppointment(@PathVariable Long id, @RequestBody AppointmentCreationDTO appointmentDto) {
         Appointment updatedAppointment = appointmentService.updateAppointment(id, appointmentDto);
 
         new Thread(() -> {
@@ -60,7 +60,7 @@ public class AppointmentController {
             }
         }).start();
 
-        return ResponseEntity.ok(appointmentMapper.entityToAppointmentDto(updatedAppointment));
+        return ResponseEntity.ok(appointmentDto);
     }
 
     @DeleteMapping("/{id}")

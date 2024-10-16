@@ -1,5 +1,6 @@
 package com.example.clinic.app.document.mapper;
 
+import com.example.clinic.app.document.dto.DocumentCreationDTO;
 import org.springframework.stereotype.Component;
 
 import com.example.clinic.app.document.dto.DocumentDto;
@@ -21,12 +22,11 @@ public class DocumentMapper {
         );
     }
 
-    public Document documentDtoToEntity(DocumentDto documentDto) {
+    public Document documentDtoToEntity(DocumentCreationDTO documentDto) {
         if (documentDto == null) {
             return null;
         }
         Document document = new Document();
-        document.setId(documentDto.id());
         document.setType(documentDto.type());
         document.setDate(documentDto.date());
         document.setContent(documentDto.content());

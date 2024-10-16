@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.clinic.app.analysis.dto.AnalysisDto;
 import com.example.clinic.app.analysis.entity.Analysis;
 import com.example.clinic.app.patient.entity.Patient;
 import com.example.clinic.exception.EntityNotFoundException;
@@ -42,7 +41,7 @@ public class AnalysisService {
     }   
 
     @Transactional(isolation = Isolation.REPEATABLE_READ)
-    public Analysis updateAnalysis(Long id, AnalysisDto analysisDto) {
+    public Analysis updateAnalysis(Long id, AnalysisCreationDto analysisDto) {
         Analysis analysis = analysisRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Analysis with id " + id + " not found"));
 
@@ -50,7 +49,7 @@ public class AnalysisService {
         analysis.setSampleDate(analysisDto.sampleDate());
         analysis.setResult(analysisDto.result());
         analysis.setStatus(analysisDto.status());
-    
+
         return analysisRepository.save(analysis);
     }
 

@@ -4,11 +4,10 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.example.clinic.app.doctor.dto.DoctorCreationDTO;
 import com.example.clinic.model.PageArgument;
 import com.example.clinic.util.HeaderUtils;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,10 +29,9 @@ public class DoctorController {
   private final DoctorMapper doctorMapper;
 
   @PostMapping
-  public ResponseEntity<DoctorDto> createDoctor(@RequestBody @Valid DoctorDto doctorDto) {
+  public ResponseEntity<DoctorCreationDTO> createDoctor(@RequestBody @Valid DoctorCreationDTO doctorDto) {
       Doctor doctor = doctorService.createDoctor(doctorDto);
-      DoctorDto createdDoctorDto = doctorMapper.entityToDoctorDto(doctor);
-      return ResponseEntity.created(URI.create("/api/doctors/" + createdDoctorDto.id())).body(createdDoctorDto);
+      return ResponseEntity.created(URI.create("/api/doctors/" + doctor.getId())).body(doctorDto);
   }
 
   @PutMapping("/{id}")

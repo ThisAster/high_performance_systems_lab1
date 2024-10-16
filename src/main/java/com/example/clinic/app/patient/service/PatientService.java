@@ -1,27 +1,18 @@
 package com.example.clinic.app.patient.service;
 
-import java.util.List;
 import java.util.Set;
 
+import com.example.clinic.app.patient.dto.PatientCreationDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.clinic.app.patient.dto.PatientDto;
-import com.example.clinic.app.analysis.entity.Analysis;
-import com.example.clinic.app.appointment.entity.Appointment;
-import com.example.clinic.app.document.entity.Document;
 import com.example.clinic.app.patient.entity.Patient;
-import com.example.clinic.app.recipe.entity.Recipe;
 import com.example.clinic.exception.EntityNotFoundException;
 import com.example.clinic.app.patient.mapper.PatientMapper;
-import com.example.clinic.app.analysis.repository.AnalysisRepository;
-import com.example.clinic.app.appointment.repository.AppointmentRepository;
-import com.example.clinic.app.document.repository.DocumentRepository;
 import com.example.clinic.app.patient.repository.PatientRepository;
-import com.example.clinic.app.recipe.repository.RecipeRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -33,14 +24,14 @@ public class PatientService {
     private final PatientMapper patientMapper;
 
     @Transactional(isolation = Isolation.REPEATABLE_READ)
-    public Patient createPatient(PatientDto patientDto) {
+    public Patient createPatient(PatientCreationDTO patientDto) {
         Patient patient = patientMapper.patientDtoToEntity(patientDto);
         
         return patientRepository.save(patient);
     }
 
     @Transactional(isolation = Isolation.REPEATABLE_READ)
-    public Patient updatePatient(Long id, PatientDto patientDto) {
+    public Patient updatePatient(Long id, PatientCreationDTO patientDto) {
         Patient patient = patientRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Patient not found with id: " + id));
     

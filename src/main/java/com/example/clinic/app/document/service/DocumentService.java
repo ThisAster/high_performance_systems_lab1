@@ -1,5 +1,6 @@
 package com.example.clinic.app.document.service;
 
+import com.example.clinic.app.document.dto.DocumentCreationDTO;
 import com.example.clinic.app.patient.service.PatientService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,7 +27,7 @@ public class DocumentService {
     private final DocumentMapper documentMapper;
 
     @Transactional(isolation = Isolation.REPEATABLE_READ)
-    public Document createDocument(DocumentDto documentDto, Long patientId) {
+    public Document createDocument(DocumentCreationDTO documentDto, Long patientId) {
         Patient patient = patientService.getPatientById(patientId);
 
         Document document = documentMapper.documentDtoToEntity(documentDto);

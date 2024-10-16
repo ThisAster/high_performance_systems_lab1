@@ -47,11 +47,9 @@ public class AnalysisController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<AnalysisDto> updateAnalysis(@PathVariable Long id, @RequestBody AnalysisDto analysisDto) {
-        Analysis updatedAnalysis = analysisService.updateAnalysis(id, analysisDto);
-
-        AnalysisDto updatedAnalysisDto = analysisMapper.entityToAnalysisDto(updatedAnalysis);
-        return ResponseEntity.ok(updatedAnalysisDto);
+    public ResponseEntity<AnalysisCreationDto> updateAnalysis(@PathVariable Long id, @RequestBody AnalysisCreationDto analysisDto) {
+        analysisService.updateAnalysis(id, analysisDto);
+        return ResponseEntity.ok(analysisDto);
     }
 
     @DeleteMapping("/{id}")

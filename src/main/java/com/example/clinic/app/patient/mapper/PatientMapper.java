@@ -1,5 +1,6 @@
 package com.example.clinic.app.patient.mapper;
 
+import com.example.clinic.app.patient.dto.PatientCreationDTO;
 import org.springframework.stereotype.Component;
 
 import com.example.clinic.app.patient.dto.PatientDto;
@@ -20,7 +21,7 @@ public class PatientMapper {
         );
     }
 
-    public Patient patientDtoToEntity(PatientDto patientDto) {
+    public Patient patientDtoToEntity(PatientCreationDTO patientDto) {
         if (patientDto == null) {
             return null;
         }

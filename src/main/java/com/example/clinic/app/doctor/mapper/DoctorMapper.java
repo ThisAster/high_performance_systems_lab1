@@ -5,6 +5,7 @@
 
  package com.example.clinic.app.doctor.mapper;
 
+ import com.example.clinic.app.doctor.dto.DoctorCreationDTO;
  import org.springframework.stereotype.Component;
  
  import com.example.clinic.app.doctor.dto.DoctorDto;
@@ -29,12 +30,11 @@
          );
      }
  
-     public Doctor doctorDtoToEntity(DoctorDto doctorDto) {
+     public Doctor doctorDtoToEntity(DoctorCreationDTO doctorDto) {
          if (doctorDto == null) {
              return null;
          }
          Doctor doctor = new Doctor();
-         doctor.setId(doctorDto.id());
          doctor.setName(doctorDto.name());
          doctor.setSpeciality(doctorDto.speciality());
          return doctor;

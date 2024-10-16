@@ -1,7 +1,6 @@
 package com.example.clinic.app.doctor.service;
 
-import java.util.List;
-
+import com.example.clinic.app.doctor.dto.DoctorCreationDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -10,11 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.clinic.app.doctor.dto.DoctorDto;
 import com.example.clinic.app.doctor.entity.Doctor;
-import com.example.clinic.app.recipe.entity.Recipe;
 import com.example.clinic.exception.EntityNotFoundException;
 import com.example.clinic.app.doctor.mapper.DoctorMapper;
 import com.example.clinic.app.doctor.repository.DoctorRepository;
-import com.example.clinic.app.recipe.repository.RecipeRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -26,7 +23,7 @@ public class DoctorService {
     private final DoctorMapper doctorMapper;
 
     @Transactional(isolation = Isolation.REPEATABLE_READ)
-    public Doctor createDoctor(DoctorDto doctorDto) {
+    public Doctor createDoctor(DoctorCreationDTO doctorDto) {
         Doctor doctor = doctorMapper.doctorDtoToEntity(doctorDto);
     
         return doctorRepository.save(doctor);

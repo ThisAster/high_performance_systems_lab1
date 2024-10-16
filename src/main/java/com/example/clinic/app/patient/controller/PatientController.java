@@ -2,10 +2,10 @@ package com.example.clinic.app.patient.controller;
 
 import java.net.URI;
 
+import com.example.clinic.app.patient.dto.PatientCreationDTO;
 import com.example.clinic.model.PageArgument;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,19 +26,17 @@ public class PatientController {
     private final PatientMapper patientMapper;
 
     @PostMapping
-    public ResponseEntity<PatientDto> createPatient(@RequestBody PatientDto patientDto) {
+    public ResponseEntity<PatientCreationDTO> createPatient(@RequestBody PatientCreationDTO patientDto) {
         Patient patient = patientService.createPatient(patientDto);
-        PatientDto createdPatientDto = patientMapper.entityToPatientDto(patient);
 
-        return ResponseEntity.created(URI.create("/api/patients/" + createdPatientDto.id()))
-                .body(createdPatientDto);
+        return ResponseEntity.created(URI.create("/api/patients/" + patient.getId()))
+                .body(patientDto);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PatientDto> updatePatient(@PathVariable Long id, @RequestBody PatientDto patientDto) {
-        Patient updatedPatient = patientService.updatePatient(id, patientDto);
-        PatientDto updatedPatientDto = patientMapper.entityToPatientDto(updatedPatient);
-        return ResponseEntity.ok(updatedPatientDto);
+    public ResponseEntity<PatientCreationDTO> updatePatient(@PathVariable Long id, @RequestBody PatientCreationDTO patientDto) {
+        patientService.updatePatient(id, patientDto);
+        return ResponseEntity.ok(patientDto);
     }
 
     @DeleteMapping("/{id}")
