@@ -2,21 +2,14 @@ package com.example.clinic.service.patient;
 
 
 
-import com.example.clinic.app.patient.dto.PatientDto;
+import com.example.clinic.app.patient.dto.PatientCreationDTO;
 import com.example.clinic.app.patient.entity.Patient;
-import com.example.clinic.app.patient.repository.PatientRepository;
 import com.example.clinic.app.patient.service.PatientService;
 import com.example.clinic.exception.EntityNotFoundException;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
-import org.springframework.transaction.annotation.Transactional;
-import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.time.LocalDate;
 
@@ -32,8 +25,7 @@ public class PatientServiceTest {
 
     @Test
     void createPatientTest(){
-        PatientDto patientDto = new PatientDto(
-                1L,
+        PatientCreationDTO patientDto = new PatientCreationDTO(
                 "patient-lolik",
                 LocalDate.of(Integer.parseInt("1984"), Integer.parseInt("4"), Integer.parseInt("20")),
                 "email@example.com");
@@ -45,8 +37,7 @@ public class PatientServiceTest {
 
     @Test
     void getPatientByIdTest(){
-        PatientDto patientDto = new PatientDto(
-                1L,
+        PatientCreationDTO patientDto = new PatientCreationDTO(
                 "patient-lolik",
                 LocalDate.of(Integer.parseInt("1984"), Integer.parseInt("4"), Integer.parseInt("20")),
                 "email@example.com");
@@ -62,8 +53,7 @@ public class PatientServiceTest {
 
     @Test
     void deletePatientTest(){
-        PatientDto patientDto = new PatientDto(
-                1L,
+        PatientCreationDTO patientDto = new PatientCreationDTO(
                 "patient-lolik",
                 LocalDate.of(Integer.parseInt("1984"), Integer.parseInt("4"), Integer.parseInt("20")),
                 "email@example.com");
@@ -76,13 +66,11 @@ public class PatientServiceTest {
 
     @Test
     void updatePatientTest(){
-        PatientDto oldPatientDto = new PatientDto(
-                1L,
+        PatientCreationDTO oldPatientDto = new PatientCreationDTO(
                 "patient-lolik",
                 LocalDate.of(Integer.parseInt("1984"), Integer.parseInt("4"), Integer.parseInt("20")),
                 "email@example.com");
-        PatientDto newPatientDto = new PatientDto(
-                1L,
+        PatientCreationDTO newPatientDto = new PatientCreationDTO(
                 "patient-bolik",
                 LocalDate.of(Integer.parseInt("2000"), Integer.parseInt("4"), Integer.parseInt("20")),
                 "email@example.com");

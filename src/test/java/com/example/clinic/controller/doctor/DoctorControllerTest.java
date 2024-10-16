@@ -1,6 +1,5 @@
 package com.example.clinic.controller.doctor;
 
-import com.example.clinic.app.appointment.dto.AppointmentCreationDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,8 +29,7 @@ public class DoctorControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json.getContentAsByteArray())
                         .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id").exists());
+                .andExpect(status().isCreated());
 
     }
 

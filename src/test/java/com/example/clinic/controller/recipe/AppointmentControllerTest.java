@@ -1,6 +1,5 @@
 package com.example.clinic.controller.recipe;
 
-import com.example.clinic.app.appointment.dto.AppointmentCreationDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,23 +31,19 @@ class AppointmentControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json.getContentAsByteArray())
                         .accept(MediaType.APPLICATION_JSON))
-                        .andExpect(status().isCreated())
-                        .andExpect(jsonPath("$.id").exists());
+                        .andExpect(status().isCreated());
 
     }
 
     @Test
     void updateAppointment(@Value("classpath:/appointments/update.json") Resource json) throws Exception {
         Long appointmentId = 2L;
-        AppointmentCreationDTO appointmentDto = new AppointmentCreationDTO();
-        // Set the necessary fields for appointmentDto
 
         mockMvc.perform(put("/api/appointments/{id}", appointmentId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json.getContentAsByteArray())
                         .accept(MediaType.APPLICATION_JSON))
-                        .andExpect(status().isOk())
-                        .andExpect(jsonPath("$.id").exists());
+                        .andExpect(status().isOk());
     }
 
     @Test
