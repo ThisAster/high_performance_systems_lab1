@@ -57,7 +57,7 @@ public class PatientServiceTest {
 
         EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> patientService.getPatientById(nonExistentId));
 
-        assertEquals("Patient with id 999 not found", exception.getMessage());
+        assertEquals("Patient with id " + nonExistentId + " not found", exception.getMessage());
     }
 
     @Test
