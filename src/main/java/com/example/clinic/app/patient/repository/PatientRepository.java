@@ -7,6 +7,7 @@ import java.util.Set;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.example.clinic.app.patient.entity.Patient;
@@ -18,11 +19,12 @@ public interface PatientRepository extends JpaRepository<Patient, Long> {
 
     List<Patient> findByDateOfBirth(LocalDate dateOfBirth);
 
-    @Query("select p from Patient p " +
-            "join fetch p.appointments as a " +
-            "join fetch a.appointmentType as t " +
-            "join fetch t.doctor as d")
-    Set<Patient> findByIdInWithAppointments(Set<Long> ids);
+    @Query("select distinct p from Patient p " +
+            "join fetch p.appointments a " +
+            "join fetch a.appointmentType t " +
+            "join fetch t.doctor d " +
+            "where p.id in :ids")
+    Set<Patient> findByIdInWithAppointments(@Param("ids") Set<Long> ids);
 
     Optional<Patient> findByEmail(String email);
 }
