@@ -59,6 +59,6 @@ class BillingServiceTest {
         EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () ->
                 billingService.generateInvoice(invalidPatientIds));
 
-        assertEquals("Patients with ids 999 not found.", exception.getMessage());
+        assertEquals("No patients found for the provided IDs", exception.getMessage());
     }
 }
