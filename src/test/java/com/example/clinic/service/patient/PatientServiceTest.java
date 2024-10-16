@@ -12,6 +12,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -21,7 +22,6 @@ public class PatientServiceTest {
 
     @Autowired
     private PatientService patientService;
-
 
     @Test
     void createPatientTest(){
@@ -49,6 +49,15 @@ public class PatientServiceTest {
         assertEquals(retrievedPatient.getName(), createdPatient.getName());
         assertEquals(retrievedPatient.getDateOfBirth(), createdPatient.getDateOfBirth());
         assertEquals(retrievedPatient.getEmail(), createdPatient.getEmail());
+    }
+
+    @Test
+    void getPatientByIdNotFoundTest() {
+        Long nonExistentId = 999L;
+
+        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> patientService.getPatientById(nonExistentId));
+
+        assertEquals("Patient with id 999 not found", exception.getMessage());
     }
 
     @Test
@@ -81,5 +90,24 @@ public class PatientServiceTest {
         assertEquals(newPatientDto.name(), updatedPatient.getName());
         assertEquals(newPatientDto.dateOfBirth(), updatedPatient.getDateOfBirth());
         assertEquals(newPatientDto.email(), updatedPatient.getEmail());
+    }
+
+    @Test
+    void getPatientsWithAppointmentsByIdsTest() {
+        Set<Patient> patients = patientService.getPatientsWithAppointmentsByIds(Set.of(1L, 2L));
+        assertNotNull(patients);
+        assertEquals(2, patients.size());
+        assertTrue(patients.contains(patientService.getPatientById(1L)));
+        assertTrue(patients.contains(patientService.getPatientById(2L)));
+
+    }
+
+    @Test
+    void getPatientsWithAppointmentsByIdsNotFoundTest() {
+        Set<Long> nonExistentIds = Set.of(999L, 1000L);
+
+        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> patientService.getPatientsWithAppointmentsByIds(nonExistentIds));
+
+        assertEquals("No patients found for the provided IDs", exception.getMessage());
     }
 }
