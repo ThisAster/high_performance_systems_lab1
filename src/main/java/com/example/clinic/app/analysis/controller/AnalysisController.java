@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.example.clinic.app.analysis.dto.AnalysisCreationDto;
 import com.example.clinic.util.HeaderUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -36,18 +37,19 @@ public class AnalysisController {
     private final AnalysisMapper analysisMapper;
 
     @PostMapping
-    public ResponseEntity<AnalysisDto> createAnalysis(@RequestBody AnalysisDto analysisDto,
-                                                       @RequestParam Long patientId) {
+    public ResponseEntity<AnalysisCreationDto> createAnalysis(@RequestBody AnalysisCreationDto analysisDto,
+                                                              @RequestParam Long patientId) {
+
         Analysis analysis = analysisService.createAnalysis(analysisDto, patientId);
-        
-        AnalysisDto createdAnalysisDto = analysisMapper.entityToAnalysisDto(analysis);
-        return ResponseEntity.created(URI.create("/api/analyses/" + createdAnalysisDto.id())).body(createdAnalysisDto);
+
+        return ResponseEntity.created(URI.create("/api/analyses/" + analysis.getId()))
+                .body(analysisDto);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<AnalysisDto> updateAnalysis(@PathVariable Long id, @RequestBody AnalysisDto analysisDto) {
         Analysis updatedAnalysis = analysisService.updateAnalysis(id, analysisDto);
-        
+
         AnalysisDto updatedAnalysisDto = analysisMapper.entityToAnalysisDto(updatedAnalysis);
         return ResponseEntity.ok(updatedAnalysisDto);
     }

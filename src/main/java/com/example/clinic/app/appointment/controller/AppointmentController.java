@@ -10,8 +10,6 @@ import com.example.clinic.model.PageArgument;
 import com.example.clinic.util.HeaderUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,9 +32,9 @@ public class AppointmentController {
     private final EmailService emailService;
 
     @PostMapping
-    public ResponseEntity<AppointmentDto> createAppointment(@RequestBody AppointmentCreationDTO appointmentDto) {
+    public ResponseEntity<AppointmentCreationDTO> createAppointment(@RequestBody AppointmentCreationDTO appointmentDto) {
+
         Appointment appointment = appointmentService.createAppointment(appointmentDto);
-        AppointmentDto createdAppointmentDto = appointmentMapper.entityToAppointmentDto(appointment);
 
         new Thread(() -> {
             try {
@@ -46,7 +44,8 @@ public class AppointmentController {
             }
         }).start();
 
-        return ResponseEntity.created(URI.create("/api/appointments/" + createdAppointmentDto.getId())).body(createdAppointmentDto);
+        return ResponseEntity.created(URI.create("/api/appointments/" + appointment.getId()))
+                .body(appointmentDto);
     }
 
     @PutMapping("/{id}")

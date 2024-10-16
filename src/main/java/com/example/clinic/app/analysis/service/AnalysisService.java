@@ -5,6 +5,7 @@
 
 package com.example.clinic.app.analysis.service;
 
+import com.example.clinic.app.analysis.dto.AnalysisCreationDto;
 import com.example.clinic.app.patient.service.PatientService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;
@@ -30,7 +31,7 @@ public class AnalysisService {
     private final AnalysisMapper analysisMapper;
 
     @Transactional(isolation = Isolation.REPEATABLE_READ)
-    public Analysis createAnalysis(AnalysisDto analysisDto, Long patientId) {
+    public Analysis createAnalysis(AnalysisCreationDto analysisDto, Long patientId) {
         Patient patient = patientService.getPatientById(patientId);
 
         Analysis analysis = analysisMapper.analysisDtoToEntity(analysisDto);

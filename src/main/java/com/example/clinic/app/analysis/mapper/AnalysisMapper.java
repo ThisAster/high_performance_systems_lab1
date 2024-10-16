@@ -1,5 +1,6 @@
 package com.example.clinic.app.analysis.mapper;
 
+import com.example.clinic.app.analysis.dto.AnalysisCreationDto;
 import org.springframework.stereotype.Component;
 
 import com.example.clinic.app.analysis.dto.AnalysisDto;
@@ -22,13 +23,12 @@ public class AnalysisMapper {
         );
     }
 
-    public Analysis analysisDtoToEntity(AnalysisDto analysisDto) {
+    public Analysis analysisDtoToEntity(AnalysisCreationDto analysisDto) {
         if (analysisDto == null) {
             return null;
         }
 
         Analysis analysis = new Analysis();
-        analysis.setId(analysisDto.id());
         analysis.setType(analysisDto.type());
         analysis.setSampleDate(analysisDto.sampleDate());
         analysis.setResult(analysisDto.result());
