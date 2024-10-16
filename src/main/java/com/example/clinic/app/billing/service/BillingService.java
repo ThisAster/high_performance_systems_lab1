@@ -14,7 +14,6 @@ import com.example.clinic.app.appointment.entity.Appointment;
 import com.example.clinic.app.patient.entity.Patient;
 import com.example.clinic.exception.EntityNotFoundException;
 import com.example.clinic.app.billing.mapper.InvoiceMapper;
-import com.example.clinic.app.patient.repository.PatientRepository;
 
 import lombok.RequiredArgsConstructor;
 

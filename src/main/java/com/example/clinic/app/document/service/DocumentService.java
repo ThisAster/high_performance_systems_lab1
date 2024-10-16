@@ -1,5 +1,6 @@
 package com.example.clinic.app.document.service;
 
+import com.example.clinic.app.patient.service.PatientService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -10,7 +11,6 @@ import com.example.clinic.app.patient.entity.Patient;
 import com.example.clinic.exception.EntityNotFoundException;
 import com.example.clinic.app.document.mapper.DocumentMapper;
 import com.example.clinic.app.document.repository.DocumentRepository;
-import com.example.clinic.app.patient.repository.PatientRepository;
 
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,14 +21,13 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class DocumentService {
 
+    private final PatientService patientService;
     private final DocumentRepository documentRepository;
-    private final PatientRepository patientRepository;
     private final DocumentMapper documentMapper;
 
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     public Document createDocument(DocumentDto documentDto, Long patientId) {
-        Patient patient = patientRepository.findById(patientId)
-                .orElseThrow(() -> new EntityNotFoundException("Patient with id " + patientId + " not found"));
+        Patient patient = patientService.getPatientById(patientId);
 
         Document document = documentMapper.documentDtoToEntity(documentDto);
 

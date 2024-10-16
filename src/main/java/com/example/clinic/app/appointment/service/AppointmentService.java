@@ -68,8 +68,8 @@ public class AppointmentService {
                 .orElseThrow(() -> new EntityNotFoundException("Appointment with id " + id + " not found"));
     }
 
-    public List<Appointment> getAppointmentsByDate(LocalDateTime date) {
-        return appointmentRepository.findByAppointmentDate(date);
+    public List<Appointment> getAppointmentsByDoctorIdAndTimeInterval(Long doctorId, LocalDateTime start, LocalDateTime end) {
+        return appointmentRepository.findByDoctorIdAndTimeInterval(doctorId, start, end);
     }
 
     public Page<Appointment> getAppointments(Pageable page) {

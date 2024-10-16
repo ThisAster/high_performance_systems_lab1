@@ -2,7 +2,7 @@ package com.example.clinic.app.timetable.service;
 
 
 import com.example.clinic.app.appointment.entity.Appointment;
-import com.example.clinic.app.appointment.repository.AppointmentRepository;
+import com.example.clinic.app.appointment.service.AppointmentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,11 +14,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TimeTableService {
 
-    private final AppointmentRepository appointmentRepository;
+    private final AppointmentService appointmentService;
     public List<Appointment> getTimeTableForDoctorAndDate(Long doctorId, LocalDate date) {
         LocalDateTime start = date.atStartOfDay();
         LocalDateTime end = date.atTime(23, 59, 59);
 
-        return appointmentRepository.findByDoctorIdAndTimeInterval(doctorId, start, end);
+        return appointmentService.getAppointmentsByDoctorIdAndTimeInterval(doctorId, start, end);
     }
 }

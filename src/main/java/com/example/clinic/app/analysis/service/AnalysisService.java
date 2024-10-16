@@ -5,6 +5,7 @@
 
 package com.example.clinic.app.analysis.service;
 
+import com.example.clinic.app.patient.service.PatientService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,6 @@ import com.example.clinic.app.patient.entity.Patient;
 import com.example.clinic.exception.EntityNotFoundException;
 import com.example.clinic.app.analysis.mapper.AnalysisMapper;
 import com.example.clinic.app.analysis.repository.AnalysisRepository;
-import com.example.clinic.app.patient.repository.PatientRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -25,14 +25,13 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AnalysisService {
 
+    private final PatientService patientService;
     private final AnalysisRepository analysisRepository;
-    private final PatientRepository patientRepository;
     private final AnalysisMapper analysisMapper;
 
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     public Analysis createAnalysis(AnalysisDto analysisDto, Long patientId) {
-        Patient patient = patientRepository.findById(patientId)
-                .orElseThrow(() -> new EntityNotFoundException("Patient with id " + patientId + " not found"));
+        Patient patient = patientService.getPatientById(patientId);
 
         Analysis analysis = analysisMapper.analysisDtoToEntity(analysisDto);
 
