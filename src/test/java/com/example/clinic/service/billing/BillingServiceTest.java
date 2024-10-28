@@ -34,7 +34,7 @@ class BillingServiceTest {
         assertNotNull(invoiceDTO);
         assertEquals(3, invoiceDTO.getConsultations().size());
 
-        ConsultationDTO consultation1 = invoiceDTO.getConsultations().getFirst();
+        ConsultationDTO consultation1 = invoiceDTO.getConsultations().get(0);
         assertEquals("John Doe", consultation1.getPatient().name());
         assertEquals("Dr. Alice Brown", consultation1.getDoctor().name());
         assertEquals(new BigDecimal("1200.00"), consultation1.getPrice());
