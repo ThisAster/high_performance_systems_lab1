@@ -5,10 +5,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.example.clinic.app.analysis.dto.AnalysisCreationDto;
+import com.example.clinic.model.PageArgument;
 import com.example.clinic.util.HeaderUtils;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -67,11 +66,9 @@ public class AnalysisController {
 
     @GetMapping
     public ResponseEntity<List<AnalysisDto>> getAnalyses(
-            @RequestParam int page,
-            @RequestParam int size
+            PageArgument page
     ) {
-        Pageable pageable = PageRequest.of(page, size);
-        Page<Analysis> analysisPage = analysisService.getAnalyses(pageable);
+        Page<Analysis> analysisPage = analysisService.getAnalyses(page.getPageRequest());
         List<AnalysisDto> analysisDtos = analysisPage.getContent().stream()
                 .map(analysisMapper::entityToAnalysisDto)
                 .collect(Collectors.toList());

@@ -2,7 +2,6 @@ package com.example.clinic.app.mail.service;
 
 import com.example.clinic.config.ConfigEmail;
 import com.example.clinic.app.appointment.entity.Appointment;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
