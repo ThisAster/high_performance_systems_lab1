@@ -38,7 +38,7 @@ public class DocumentController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<DocumentDto> updateDocument(@PathVariable Long id, @RequestBody DocumentDto documentDto) {
+    public ResponseEntity<DocumentDto> updateDocument(@PathVariable Long id, @RequestBody DocumentCreationDTO documentDto) {
         Document updatedDocument = documentService.updateDocument(id, documentDto);
         DocumentDto updatedDocumentDto = documentMapper.entityToDocumentDto(updatedDocument);
         return ResponseEntity.ok(updatedDocumentDto);

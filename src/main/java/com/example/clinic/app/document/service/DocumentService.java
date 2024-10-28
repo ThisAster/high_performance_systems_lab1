@@ -6,7 +6,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.example.clinic.app.document.dto.DocumentDto;
 import com.example.clinic.app.document.entity.Document;
 import com.example.clinic.app.patient.entity.Patient;
 import com.example.clinic.exception.EntityNotFoundException;
@@ -38,7 +37,7 @@ public class DocumentService {
     }
 
     @Transactional(isolation = Isolation.REPEATABLE_READ)
-    public Document updateDocument(Long id, DocumentDto documentDto) {
+    public Document updateDocument(Long id, DocumentCreationDTO documentDto) {
         Document document = documentRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Document with id " + id + " not found"));
                 

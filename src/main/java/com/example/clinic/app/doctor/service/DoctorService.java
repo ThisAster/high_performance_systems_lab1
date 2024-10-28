@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.clinic.app.doctor.dto.DoctorDto;
 import com.example.clinic.app.doctor.entity.Doctor;
 import com.example.clinic.exception.EntityNotFoundException;
 import com.example.clinic.app.doctor.mapper.DoctorMapper;
@@ -30,7 +29,7 @@ public class DoctorService {
     }
 
     @Transactional(isolation = Isolation.REPEATABLE_READ)
-    public Doctor updateDoctor(Long id, DoctorDto doctorDto) {
+    public Doctor updateDoctor(Long id, DoctorCreationDTO doctorDto) {
         Doctor doctor = doctorRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Doctor with id " + id + " not found"));
 

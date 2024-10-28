@@ -1,5 +1,6 @@
 package com.example.clinic.app.recipe.mapper;
 
+import com.example.clinic.app.recipe.dto.RecipeCreationDTO;
 import org.springframework.stereotype.Component;
 
 import com.example.clinic.app.recipe.dto.RecipeDto;
@@ -21,12 +22,11 @@ public class RecipeMapper {
         );
     }
 
-    public Recipe recipeDtoToEntity(RecipeDto recipeDto) {
+    public Recipe recipeDtoToEntity(RecipeCreationDTO recipeDto) {
         if (recipeDto == null) {
             return null;
         }
         Recipe recipe = new Recipe();
-        recipe.setId(recipeDto.id());
         recipe.setRecipeDate(recipeDto.recipeDate());
         recipe.setMedication(recipeDto.medication());
         recipe.setDose(recipeDto.dose());

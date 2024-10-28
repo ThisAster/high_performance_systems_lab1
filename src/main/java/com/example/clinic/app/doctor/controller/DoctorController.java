@@ -35,7 +35,7 @@ public class DoctorController {
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<DoctorDto> updateDoctor(@PathVariable Long id, @RequestBody @Valid DoctorDto doctorDto) {
+  public ResponseEntity<DoctorDto> updateDoctor(@PathVariable Long id, @RequestBody @Valid DoctorCreationDTO doctorDto) {
       Doctor doctor = doctorService.updateDoctor(id, doctorDto);
       DoctorDto updatedDoctorDto = doctorMapper.entityToDoctorDto(doctor);
       return ResponseEntity.ok(updatedDoctorDto);

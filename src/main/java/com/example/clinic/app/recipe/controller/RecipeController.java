@@ -2,9 +2,9 @@ package com.example.clinic.app.recipe.controller;
 
 import java.net.URI;
 
+import com.example.clinic.app.recipe.dto.RecipeCreationDTO;
 import com.example.clinic.model.PageArgument;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,16 +32,15 @@ public class RecipeController {
     private final RecipeMapper recipeMapper;
 
     @PostMapping
-    public ResponseEntity<RecipeDto> createRecipe(@RequestBody RecipeDto recipeDto,
+    public ResponseEntity<RecipeCreationDTO> createRecipe(@RequestBody RecipeCreationDTO recipeDto,
                                                    @RequestParam Long doctorId,
                                                    @RequestParam Long patientId) {
         Recipe recipe = recipeService.createRecipe(recipeDto, doctorId, patientId);
-        RecipeDto createdRecipeDto = recipeMapper.entityToRecipeDto(recipe);
-        return ResponseEntity.created(URI.create("/api/recipes/" + createdRecipeDto.id())).body(createdRecipeDto);
+        return ResponseEntity.created(URI.create("/api/recipes/" + recipe.getId())).body(recipeDto);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<RecipeDto> updateRecipe(@PathVariable Long id, @RequestBody RecipeDto recipeDto) {
+    public ResponseEntity<RecipeDto> updateRecipe(@PathVariable Long id, @RequestBody RecipeCreationDTO recipeDto) {
         Recipe updatedRecipe = recipeService.updateRecipe(id, recipeDto);
         RecipeDto updatedRecipeDto = recipeMapper.entityToRecipeDto(updatedRecipe);
         return ResponseEntity.ok(updatedRecipeDto);
