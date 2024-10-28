@@ -1,7 +1,5 @@
 package com.example.clinic.service.patient;
 
-
-
 import com.example.clinic.app.patient.dto.PatientCreationDTO;
 import com.example.clinic.app.patient.entity.Patient;
 import com.example.clinic.app.patient.service.PatientService;

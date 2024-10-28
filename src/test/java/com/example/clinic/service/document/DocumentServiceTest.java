@@ -1,9 +1,5 @@
 package com.example.clinic.service.document;
 
-
-import com.example.clinic.app.analysis.dto.AnalysisCreationDto;
-import com.example.clinic.app.analysis.entity.Analysis;
-import com.example.clinic.app.analysis.service.AnalysisService;
 import com.example.clinic.app.document.dto.DocumentCreationDTO;
 import com.example.clinic.app.document.entity.Document;
 import com.example.clinic.app.document.service.DocumentService;
