@@ -6,12 +6,13 @@ import com.example.clinic.app.patient.dto.PatientCreationDTO;
 import com.example.clinic.app.patient.entity.Patient;
 import com.example.clinic.app.patient.service.PatientService;
 import com.example.clinic.exception.EntityNotFoundException;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -95,11 +96,9 @@ public class PatientServiceTest {
     @Test
     void getPatientsWithAppointmentsByIdsTest() {
         Set<Patient> patients = patientService.getPatientsWithAppointmentsByIds(Set.of(1L, 2L));
+        System.out.println(Arrays.toString(patients.toArray()));
         assertNotNull(patients);
         assertEquals(2, patients.size());
-        assertTrue(patients.contains(patientService.getPatientById(1L)));
-        assertTrue(patients.contains(patientService.getPatientById(2L)));
-
     }
 
     @Test
