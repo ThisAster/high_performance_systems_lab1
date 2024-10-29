@@ -44,6 +44,7 @@ public class DoctorService {
         if (!doctorRepository.existsById(id)) {
             throw new EntityNotFoundException("Doctor with id " + id + " not found");
         }
+        
         doctorRepository.deleteById(id);
     }
 
