@@ -11,6 +11,12 @@
 	<groupId>com.example</groupId>
 	<artifactId>clinic</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+
+	<properties>
+		<maven.compiler.source>21</maven.compiler.source>
+		<maven.compiler.target>21</maven.compiler.target>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
 	<name>clinic</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>
@@ -133,16 +139,6 @@
 					<cleanDisabled>false</cleanDisabled>
 				</configuration>
 		</plugin>
-		 <plugin>
-		  <groupId>org.apache.maven.plugins</groupId>
-		  <artifactId>maven-compiler-plugin</artifactId>
-		  <version>3.11.0</version>
-		  <configuration>
-		   <compilerArgs>--enable-preview</compilerArgs>
-              <source>21</source>
-              <target>21</target>
-          </configuration>
-		 </plugin>
 		</plugins>
 	</build>
 

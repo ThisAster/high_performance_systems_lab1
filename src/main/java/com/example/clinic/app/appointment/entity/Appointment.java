@@ -30,7 +30,7 @@ public class Appointment {
     @JoinColumn(name = "patient_id")
     private Patient patient;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "appointment_type_id")
     private AppointmentsType appointmentType;
 

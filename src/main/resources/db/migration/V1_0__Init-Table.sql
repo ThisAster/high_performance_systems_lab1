@@ -37,9 +37,9 @@ CREATE TABLE appointments
     id                  SERIAL PRIMARY KEY,
     appointment_date    TIMESTAMP DEFAULT now() NOT NULL,
     patient_id          INTEGER CONSTRAINT fk_patient
-            REFERENCES patients,
+        REFERENCES patients,
     appointment_type_id INTEGER CONSTRAINT fk_appointment_type
-            REFERENCES appointments_types
+        REFERENCES appointments_types ON DELETE CASCADE
 );
 
 CREATE TABLE documents (
