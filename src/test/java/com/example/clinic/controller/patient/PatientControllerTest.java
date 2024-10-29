@@ -1,4 +1,4 @@
-package com.example.clinic.controller.doctor;
+package com.example.clinic.controller.patient;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,21 +11,20 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class DoctorControllerTest {
+class PatientControllerTest {
+
     @Autowired
     MockMvc mockMvc;
 
-
     @Test
-    void createDoctor(@Value("classpath:/doctors/create.json") Resource json) throws Exception {
+    void createPatient(@Value("classpath:/patients/create.json") Resource json) throws Exception {
 
-        mockMvc.perform(post("/api/doctors")
+        mockMvc.perform(post("/api/patients")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json.getContentAsByteArray())
                         .accept(MediaType.APPLICATION_JSON))
@@ -34,10 +33,10 @@ public class DoctorControllerTest {
     }
 
     @Test
-    void updateDoctor(@Value("classpath:/doctors/update.json") Resource json) throws Exception {
-        Long doctorId = 2L;
+    void updatePatient(@Value("classpath:/patients/update.json") Resource json) throws Exception {
+        Long patientId = 2L;
 
-        mockMvc.perform(put("/api/doctors/{id}", doctorId)
+        mockMvc.perform(put("/api/patients/{id}", patientId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json.getContentAsByteArray())
                         .accept(MediaType.APPLICATION_JSON))
@@ -45,29 +44,29 @@ public class DoctorControllerTest {
     }
 
     @Test
-    void deleteDoctor() throws Exception {
-        Long doctorId = 1L;
+    void deletePatient() throws Exception {
+        Long patientId = 1L;
 
-        mockMvc.perform(delete("/api/doctors/{id}", doctorId))
+        mockMvc.perform(delete("/api/patients/{id}", patientId))
                 .andExpect(status().isOk())
-                .andExpect(content().string("Doctor with id " + doctorId + " successfully deleted."));
+                .andExpect(content().string("Patient with id " + patientId + " successfully deleted."));
     }
 
     @Test
-    void getDoctorById() throws Exception {
-        Long doctorId = 1L; // Replace with actual ID
+    void getPatientById() throws Exception {
+        Long patientId = 1L;
 
-        mockMvc.perform(get("/api/doctors/{id}", doctorId))
+        mockMvc.perform(get("/api/patients/{id}", patientId))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(doctorId));
+                .andExpect(jsonPath("$.id").value(patientId));
     }
 
     @Test
-    void getADoctors() throws Exception {
+    void getPatients() throws Exception {
         int page = 0;
         int size = 2;
 
-        mockMvc.perform(get("/api/doctors")
+        mockMvc.perform(get("/api/patients")
                         .param("page", String.valueOf(page))
                         .param("size", String.valueOf(size)))
                 .andExpect(status().isOk())
