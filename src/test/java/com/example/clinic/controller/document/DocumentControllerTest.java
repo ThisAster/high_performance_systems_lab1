@@ -24,7 +24,10 @@ class DocumentControllerTest {
     @Test
     void createAppointment(@Value("classpath:/documents/create.json") Resource json) throws Exception {
 
+        Long patientId = 1L;
+
         mockMvc.perform(post("/api/documents")
+                        .param("patientId", patientId.toString())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json.getContentAsByteArray())
                         .accept(MediaType.APPLICATION_JSON))
@@ -54,7 +57,7 @@ class DocumentControllerTest {
 
     @Test
     void getDocumentById() throws Exception {
-        Long documentsId = 1L;
+        Long documentsId = 2L;
 
         mockMvc.perform(get("/api/documents/{id}", documentsId))
                 .andExpect(status().isOk())
@@ -70,6 +73,6 @@ class DocumentControllerTest {
                         .param("page", String.valueOf(page))
                         .param("size", String.valueOf(size)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()").value(size));
+                .andExpect(jsonPath("$.content.length()").value(size));
     }
 }

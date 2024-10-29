@@ -24,7 +24,12 @@ class RecipeControllerTest {
     @Test
     void createRecipe(@Value("classpath:/recipes/create.json") Resource json) throws Exception {
 
+        Long doctorId = 1L;
+        Long patientId = 2L;
+
         mockMvc.perform(post("/api/recipes")
+                        .param("doctorId", doctorId.toString())
+                        .param("patientId", patientId.toString())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json.getContentAsByteArray())
                         .accept(MediaType.APPLICATION_JSON))
@@ -54,7 +59,7 @@ class RecipeControllerTest {
 
     @Test
     void getRecipeById() throws Exception {
-        Long recipeId = 1L; // Replace with actual ID
+        Long recipeId = 2L;
 
         mockMvc.perform(get("/api/recipes/{id}", recipeId))
                 .andExpect(status().isOk())
@@ -70,6 +75,6 @@ class RecipeControllerTest {
                         .param("page", String.valueOf(page))
                         .param("size", String.valueOf(size)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()").value(size));
+                .andExpect(jsonPath("$.content.length()").value(size));
     }
 }

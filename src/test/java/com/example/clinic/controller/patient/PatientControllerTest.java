@@ -54,7 +54,7 @@ class PatientControllerTest {
 
     @Test
     void getPatientById() throws Exception {
-        Long patientId = 1L;
+        Long patientId = 2L;
 
         mockMvc.perform(get("/api/patients/{id}", patientId))
                 .andExpect(status().isOk())
@@ -70,6 +70,6 @@ class PatientControllerTest {
                         .param("page", String.valueOf(page))
                         .param("size", String.valueOf(size)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()").value(size));
+                .andExpect(jsonPath("$.content.length()").value(size));
     }
 }
