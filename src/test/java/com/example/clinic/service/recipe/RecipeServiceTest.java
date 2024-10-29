@@ -1,5 +1,7 @@
 package com.example.clinic.service.recipe;
 
+import com.example.clinic.app.appointment.entity.Appointment;
+import com.example.clinic.app.appointment.service.AppointmentService;
 import com.example.clinic.app.recipe.dto.RecipeCreationDTO;
 import com.example.clinic.app.recipe.entity.Recipe;
 import com.example.clinic.app.recipe.service.RecipeService;
@@ -20,6 +22,8 @@ public class RecipeServiceTest {
 
     @Autowired
     private RecipeService recipeService;
+    @Autowired
+    private AppointmentService appointmentService;
 
     @Test
     void createRecipeTest(){
@@ -30,7 +34,12 @@ public class RecipeServiceTest {
                 "1 week"
         );
 
-        Recipe createdRecipe = recipeService.createRecipe(recipeCreationDTO, 1L, 1L);
+        Appointment appointment = appointmentService.getAppointmentById(1L);
+
+        Recipe createdRecipe = recipeService.createRecipe(recipeCreationDTO,
+                appointment.getAppointmentType().getDoctor().getId(),
+                appointment.getPatient().getId());
+
         Recipe retrievedRecipe = recipeService.getRecipeById(createdRecipe.getId());
 
         assertNotNull(retrievedRecipe);
@@ -45,7 +54,12 @@ public class RecipeServiceTest {
                 "1 week"
         );
 
-        Recipe createdRecipe = recipeService.createRecipe(recipeCreationDTO, 1L, 1L);
+        Appointment appointment = appointmentService.getAppointmentById(1L);
+
+        Recipe createdRecipe = recipeService.createRecipe(recipeCreationDTO,
+                appointment.getAppointmentType().getDoctor().getId(),
+                appointment.getPatient().getId());
+
         Recipe retrievedRecipe = recipeService.getRecipeById(createdRecipe.getId());
 
         assertNotNull(retrievedRecipe);
@@ -63,7 +77,12 @@ public class RecipeServiceTest {
                 "10g",
                 "1 week"
         );
-        Recipe createdRecipe = recipeService.createRecipe(recipeCreationDTO, 1L, 1L);
+        Appointment appointment = appointmentService.getAppointmentById(1L);
+
+        Recipe createdRecipe = recipeService.createRecipe(recipeCreationDTO,
+                appointment.getAppointmentType().getDoctor().getId(),
+                appointment.getPatient().getId());
+
         recipeService.deleteRecipe(createdRecipe.getId());
         assertThrows(EntityNotFoundException.class,
                 () -> recipeService.getRecipeById(createdRecipe.getId()));
@@ -85,7 +104,12 @@ public class RecipeServiceTest {
                 "3 week"
         );
 
-        Recipe createdRecipe = recipeService.createRecipe(oldRecipeCreationDTO, 1L, 1L);
+        Appointment appointment = appointmentService.getAppointmentById(1L);
+
+        Recipe createdRecipe = recipeService.createRecipe(oldRecipeCreationDTO,
+                appointment.getAppointmentType().getDoctor().getId(),
+                appointment.getPatient().getId());
+
         Recipe updatedRecipe = recipeService.updateRecipe(createdRecipe.getId(), newRecipeCreationDTO);
 
 
