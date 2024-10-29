@@ -1,5 +1,6 @@
 package com.example.clinic.service.recipe;
 
+import com.example.clinic.app.appointment.dto.AppointmentCreationDTO;
 import com.example.clinic.app.appointment.entity.Appointment;
 import com.example.clinic.app.appointment.service.AppointmentService;
 import com.example.clinic.app.recipe.dto.RecipeCreationDTO;
@@ -12,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -34,7 +36,13 @@ public class RecipeServiceTest {
                 "1 week"
         );
 
-        Appointment appointment = appointmentService.getAppointmentById(1L);
+        AppointmentCreationDTO appointmentCreationDTO = new AppointmentCreationDTO(
+                LocalDateTime.now(),
+                1L,
+                1L
+        );
+
+        Appointment appointment = appointmentService.createAppointment(appointmentCreationDTO);
 
         Recipe createdRecipe = recipeService.createRecipe(recipeCreationDTO,
                 appointment.getAppointmentType().getDoctor().getId(),
