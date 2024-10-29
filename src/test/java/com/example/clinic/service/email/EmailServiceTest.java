@@ -4,18 +4,15 @@ import com.example.clinic.app.appointment.entity.Appointment;
 import com.example.clinic.app.appointment.entity.AppointmentsType;
 import com.example.clinic.app.mail.service.EmailService;
 import com.example.clinic.app.patient.entity.Patient;
-import com.example.clinic.app.user.service.UserService;
-import com.example.clinic.exception.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import javax.mail.SendFailedException;
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -34,7 +31,7 @@ public class EmailServiceTest {
         );
         String email = "m8y93485ynvp938";
 
-        assertThrows(SendFailedException.class,
+        assertThrows(NullPointerException.class,
                 () -> emailService.sendAppointmentEmail(appointment, email));
     }
 

@@ -1,4 +1,4 @@
-package com.example.clinic.controller.appointment;
+package com.example.clinic.controller.recipe;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
