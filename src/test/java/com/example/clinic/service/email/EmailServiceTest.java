@@ -1,15 +1,14 @@
 package com.example.clinic.service.email;
 
 import com.example.clinic.app.appointment.entity.Appointment;
-import com.example.clinic.app.appointment.entity.AppointmentsType;
+import com.example.clinic.app.appointment.service.AppointmentService;
 import com.example.clinic.app.mail.service.EmailService;
-import com.example.clinic.app.patient.entity.Patient;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.time.LocalDateTime;
+import javax.mail.SendFailedException;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -20,29 +19,25 @@ public class EmailServiceTest {
 
     @Autowired
     private EmailService emailService;
+    @Autowired
+    private AppointmentService appointmentService;
 
     @Test
     void sendIncorrectEmailTest() {
-        Appointment appointment = new Appointment(
-                1L,
-                LocalDateTime.now(),
-                new Patient(),
-                new AppointmentsType()
-        );
-        String email = "m8y93485ynvp938";
 
-        assertThrows(NullPointerException.class,
-                () -> emailService.sendAppointmentEmail(appointment, email));
+        Appointment appointment = appointmentService.getAppointmentById(1L);
+
+        appointment.getPatient().setEmail("m8y93485ynvp938");
+
+        assertThrows(SendFailedException.class,
+                () -> emailService.sendAppointmentEmail(appointment, appointment.getPatient().getEmail()));
     }
 
     @Test
     void sendCorrectEmailTest() {
-        Appointment appointment = new Appointment(
-                1L,
-                LocalDateTime.now(),
-                new Patient(),
-                new AppointmentsType()
-        );
+
+        Appointment appointment = appointmentService.getAppointmentById(1L);
+
         String email = "ilya.minyaeff.3@yandex.ru";
 
         assertDoesNotThrow(() -> emailService.sendAppointmentEmail(appointment, email));
