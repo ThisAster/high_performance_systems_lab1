@@ -24,7 +24,10 @@ class AnalysisControllerTest {
     @Test
     void createAnalysis(@Value("classpath:/analyses/create.json") Resource json) throws Exception {
 
+        Long patientId = 1L;
+
         mockMvc.perform(post("/api/analyses")
+                        .param("patientId", patientId.toString())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json.getContentAsByteArray())
                         .accept(MediaType.APPLICATION_JSON))
