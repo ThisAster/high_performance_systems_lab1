@@ -29,7 +29,7 @@ CREATE TABLE appointments_types
     description VARCHAR            NOT NULL,
     duration    INTEGER DEFAULT 15 NOT NULL,
     price       NUMERIC(10, 2)     NOT NULL,
-    doctor_id   BIGINT CONSTRAINT fk_doctor REFERENCES doctors
+    doctor_id   BIGINT CONSTRAINT fk_doctor REFERENCES doctors ON DELETE CASCADE
 );
 
 CREATE TABLE appointments
