@@ -15,7 +15,6 @@ import java.math.BigDecimal;
 public class AppointmentsType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
     private Long id;
 
     @NotNull
