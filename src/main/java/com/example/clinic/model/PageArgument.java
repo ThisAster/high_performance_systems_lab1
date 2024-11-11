@@ -1,5 +1,7 @@
 package com.example.clinic.model;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 @NoArgsConstructor
 @Setter
 @Getter
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class PageArgument {
     Integer page;
     Integer size;
