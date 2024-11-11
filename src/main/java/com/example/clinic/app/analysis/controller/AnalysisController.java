@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import com.example.clinic.app.analysis.dto.AnalysisCreationDto;
 import com.example.clinic.model.PageArgument;
 import com.example.clinic.util.HeaderUtils;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -36,7 +37,7 @@ public class AnalysisController {
     private final AnalysisMapper analysisMapper;
 
     @PostMapping
-    public ResponseEntity<AnalysisCreationDto> createAnalysis(@RequestBody AnalysisCreationDto analysisDto,
+    public ResponseEntity<AnalysisCreationDto> createAnalysis(@Valid @RequestBody AnalysisCreationDto analysisDto,
                                                               @RequestParam Long patientId) {
 
         Analysis analysis = analysisService.createAnalysis(analysisDto, patientId);
@@ -46,7 +47,7 @@ public class AnalysisController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<AnalysisCreationDto> updateAnalysis(@PathVariable Long id, @RequestBody AnalysisCreationDto analysisDto) {
+    public ResponseEntity<AnalysisCreationDto> updateAnalysis(@PathVariable Long id, @Valid @RequestBody AnalysisCreationDto analysisDto) {
         analysisService.updateAnalysis(id, analysisDto);
         return ResponseEntity.ok(analysisDto);
     }
