@@ -7,6 +7,8 @@ import com.example.clinic.app.doctor.entity.Doctor;
 import com.example.clinic.app.doctor.service.DoctorService;
 import com.example.clinic.exception.EntityNotFoundException;
 import com.example.clinic.app.appointment.repository.AppointmentsTypeRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -30,5 +32,26 @@ public class AppointmentsTypeService {
         AppointmentsType appointmentsType = mapper.appointmentTypeDTOToEntity(dto);
         appointmentsType.setDoctor(doctor);
         return appointmentsTypeRepository.save(appointmentsType);
+    }
+
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
+    public AppointmentsType updateAppointmentsType(Long id, AppointmentTypeCreationDTO dto) {
+        AppointmentsType existAppointmentsType = this.getAppointmentsType(id);
+        existAppointmentsType.setName(dto.name());
+        existAppointmentsType.setDescription(dto.description());
+        existAppointmentsType.setDoctor(doctorService.getDoctorById(dto.doctorId()));
+
+        return appointmentsTypeRepository.save(existAppointmentsType);
+    }
+
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
+    public void deleteAppointmentsType(Long appointmentTypeId) {
+        if (!appointmentsTypeRepository.existsById(appointmentTypeId))
+            throw new EntityNotFoundException("AppointmentType with id " + appointmentTypeId + " not found");
+        appointmentsTypeRepository.deleteById(appointmentTypeId);
+    }
+
+    public Page<AppointmentsType> getAppointments(Pageable page) {
+        return appointmentsTypeRepository.findAll(page);
     }
 }
