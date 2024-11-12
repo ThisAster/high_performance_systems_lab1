@@ -20,12 +20,10 @@ public interface PatientRepository extends JpaRepository<Patient, Long> {
     List<Patient> findByDateOfBirth(LocalDate dateOfBirth);
 
     @Query("select distinct p from Patient p " +
-            "join fetch p.appointments a " +
-            "join fetch a.appointmentType t " +
-            "join fetch t.doctor d " +
+            "left join fetch p.appointments a " +
+            "left join fetch a.appointmentType t " +
+            "left join fetch t.doctor d " +
             "where p.id in :ids")
     Set<Patient> findByIdInWithAppointments(@Param("ids") Set<Long> ids);
-
-    Optional<Patient> findByEmail(String email);
 }
 
