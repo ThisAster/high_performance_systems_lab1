@@ -29,13 +29,13 @@ public class DoctorController {
   private final DoctorMapper doctorMapper;
 
   @PostMapping
-  public ResponseEntity<DoctorCreationDTO> createDoctor(@RequestBody @Valid DoctorCreationDTO doctorDto) {
+  public ResponseEntity<DoctorCreationDTO> createDoctor(@Valid @RequestBody DoctorCreationDTO doctorDto) {
       Doctor doctor = doctorService.createDoctor(doctorDto);
       return ResponseEntity.created(URI.create("/api/doctors/" + doctor.getId())).body(doctorDto);
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<DoctorDto> updateDoctor(@PathVariable Long id, @RequestBody @Valid DoctorCreationDTO doctorDto) {
+  public ResponseEntity<DoctorDto> updateDoctor(@PathVariable Long id, @Valid @RequestBody DoctorCreationDTO doctorDto) {
       Doctor doctor = doctorService.updateDoctor(id, doctorDto);
       DoctorDto updatedDoctorDto = doctorMapper.entityToDoctorDto(doctor);
       return ResponseEntity.ok(updatedDoctorDto);

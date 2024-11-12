@@ -6,6 +6,7 @@ import com.example.clinic.app.appointment.entity.AppointmentsType;
 import com.example.clinic.app.appointment.mapper.AppoinmentsTypeMapper;
 import com.example.clinic.app.appointment.service.AppointmentsTypeService;
 import com.example.clinic.model.PageArgument;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +22,7 @@ public class AppointmentsTypeController {
     private final AppoinmentsTypeMapper appointmentsTypeMapper;
 
     @PostMapping
-    public ResponseEntity<AppointmentTypeCreationDTO> createAppointmentType(@RequestBody AppointmentTypeCreationDTO appointmentTypeDTO) {
+    public ResponseEntity<AppointmentTypeCreationDTO> createAppointmentType(@Valid @RequestBody AppointmentTypeCreationDTO appointmentTypeDTO) {
         AppointmentsType appointmentsType = appointmentsTypeService.createAppointmentsType(appointmentTypeDTO);
         return ResponseEntity.created(URI.create("/api/appointments/" + appointmentsType.getId()))
                 .body(appointmentTypeDTO);
@@ -34,7 +35,7 @@ public class AppointmentsTypeController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<AppointmentTypeCreationDTO> updateAppointmentType(@PathVariable Long id, @RequestBody AppointmentTypeCreationDTO appointmentTypeDTO) {
+    public ResponseEntity<AppointmentTypeCreationDTO> updateAppointmentType(@PathVariable Long id, @Valid @RequestBody AppointmentTypeCreationDTO appointmentTypeDTO) {
         appointmentsTypeService.updateAppointmentsType(id, appointmentTypeDTO);
         return ResponseEntity.ok(appointmentTypeDTO);
     }

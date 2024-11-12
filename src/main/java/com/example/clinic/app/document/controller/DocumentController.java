@@ -4,6 +4,7 @@ import java.net.URI;
 
 import com.example.clinic.app.document.dto.DocumentCreationDTO;
 import com.example.clinic.model.PageArgument;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -32,13 +33,13 @@ public class DocumentController {
     private final DocumentMapper documentMapper;
 
     @PostMapping
-    public ResponseEntity<DocumentCreationDTO> createDocument(@RequestBody DocumentCreationDTO documentDto, @RequestParam Long patientId) {
+    public ResponseEntity<DocumentCreationDTO> createDocument(@Valid @RequestBody DocumentCreationDTO documentDto, @RequestParam Long patientId) {
         Document document = documentService.createDocument(documentDto, patientId);
         return ResponseEntity.created(URI.create("/api/documents/" + document.getId())).body(documentDto);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<DocumentDto> updateDocument(@PathVariable Long id, @RequestBody DocumentCreationDTO documentDto) {
+    public ResponseEntity<DocumentDto> updateDocument(@PathVariable Long id, @Valid @RequestBody DocumentCreationDTO documentDto) {
         Document updatedDocument = documentService.updateDocument(id, documentDto);
         DocumentDto updatedDocumentDto = documentMapper.entityToDocumentDto(updatedDocument);
         return ResponseEntity.ok(updatedDocumentDto);

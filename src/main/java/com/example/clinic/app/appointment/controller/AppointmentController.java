@@ -8,6 +8,7 @@ import com.example.clinic.app.appointment.dto.AppointmentCreationDTO;
 import com.example.clinic.app.mail.service.EmailService;
 import com.example.clinic.model.PageArgument;
 import com.example.clinic.util.HeaderUtils;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
@@ -32,7 +33,7 @@ public class AppointmentController {
     private final EmailService emailService;
 
     @PostMapping
-    public ResponseEntity<AppointmentCreationDTO> createAppointment(@RequestBody AppointmentCreationDTO appointmentDto) {
+    public ResponseEntity<AppointmentCreationDTO> createAppointment(@Valid @RequestBody AppointmentCreationDTO appointmentDto) {
 
         Appointment appointment = appointmentService.createAppointment(appointmentDto);
 
@@ -49,7 +50,7 @@ public class AppointmentController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<AppointmentCreationDTO> updateAppointment(@PathVariable Long id, @RequestBody AppointmentCreationDTO appointmentDto) {
+    public ResponseEntity<AppointmentCreationDTO> updateAppointment(@PathVariable Long id, @Valid @RequestBody AppointmentCreationDTO appointmentDto) {
         Appointment updatedAppointment = appointmentService.updateAppointment(id, appointmentDto);
 
         new Thread(() -> {

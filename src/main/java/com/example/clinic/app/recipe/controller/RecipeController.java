@@ -4,6 +4,7 @@ import java.net.URI;
 
 import com.example.clinic.app.recipe.dto.RecipeCreationDTO;
 import com.example.clinic.model.PageArgument;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -32,7 +33,7 @@ public class RecipeController {
     private final RecipeMapper recipeMapper;
 
     @PostMapping
-    public ResponseEntity<RecipeCreationDTO> createRecipe(@RequestBody RecipeCreationDTO recipeDto,
+    public ResponseEntity<RecipeCreationDTO> createRecipe(@Valid @RequestBody RecipeCreationDTO recipeDto,
                                                    @RequestParam Long doctorId,
                                                    @RequestParam Long patientId) {
         Recipe recipe = recipeService.createRecipe(recipeDto, doctorId, patientId);
@@ -40,7 +41,7 @@ public class RecipeController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<RecipeDto> updateRecipe(@PathVariable Long id, @RequestBody RecipeCreationDTO recipeDto) {
+    public ResponseEntity<RecipeDto> updateRecipe(@PathVariable Long id, @Valid @RequestBody RecipeCreationDTO recipeDto) {
         Recipe updatedRecipe = recipeService.updateRecipe(id, recipeDto);
         RecipeDto updatedRecipeDto = recipeMapper.entityToRecipeDto(updatedRecipe);
         return ResponseEntity.ok(updatedRecipeDto);

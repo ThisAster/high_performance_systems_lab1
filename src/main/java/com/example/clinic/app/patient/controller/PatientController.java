@@ -4,6 +4,7 @@ import java.net.URI;
 
 import com.example.clinic.app.patient.dto.PatientCreationDTO;
 import com.example.clinic.model.PageArgument;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +27,7 @@ public class PatientController {
     private final PatientMapper patientMapper;
 
     @PostMapping
-    public ResponseEntity<PatientCreationDTO> createPatient(@RequestBody PatientCreationDTO patientDto) {
+    public ResponseEntity<PatientCreationDTO> createPatient(@Valid @RequestBody PatientCreationDTO patientDto) {
         Patient patient = patientService.createPatient(patientDto);
 
         return ResponseEntity.created(URI.create("/api/patients/" + patient.getId()))
@@ -34,7 +35,7 @@ public class PatientController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PatientCreationDTO> updatePatient(@PathVariable Long id, @RequestBody PatientCreationDTO patientDto) {
+    public ResponseEntity<PatientCreationDTO> updatePatient(@PathVariable Long id, @Valid @RequestBody PatientCreationDTO patientDto) {
         patientService.updatePatient(id, patientDto);
         return ResponseEntity.ok(patientDto);
     }
