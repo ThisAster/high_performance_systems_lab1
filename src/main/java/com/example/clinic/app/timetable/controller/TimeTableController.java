@@ -7,12 +7,14 @@ import com.example.clinic.app.timetable.dto.TimeTableDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
 import java.util.List;
 
-@RestController("/api/timetable")
+@RestController()
+@RequestMapping("/api/timetable")
 @RequiredArgsConstructor
 public class TimeTableController {
 
