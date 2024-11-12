@@ -40,6 +40,10 @@ public class AppointmentService {
     
         appointment.setPatient(patient);
         appointment.setAppointmentType(appointmentsType);
+
+        if (testForAppointmentCollision(appointmentsType.getDoctor().getId(), appointment)) {
+            throw new IllegalArgumentException("Appointment collision");
+        }
         
         return appointmentRepository.save(appointment);
     }
@@ -51,6 +55,10 @@ public class AppointmentService {
         appointment.setAppointmentDate(appointmentDto.getAppointmentDate());
         appointment.setPatient(patientService.getPatientById(appointmentDto.getPatientId()));
         appointment.setAppointmentType(appointmentsTypeService.getAppointmentsType(appointmentDto.getAppointmentTypeId()));
+
+        if (testForAppointmentCollision(appointment.getAppointmentType().getDoctor().getId(), appointment)) {
+            throw new IllegalArgumentException("Appointment collision");
+        }
 
         return appointmentRepository.save(appointment);
     }
@@ -74,5 +82,20 @@ public class AppointmentService {
 
     public Page<Appointment> getAppointments(Pageable page) {
         return appointmentRepository.findAll(page);
+    }
+
+
+    public boolean testForAppointmentCollision(Long doctorId, Appointment appointment) {
+        LocalDateTime start = appointment.getAppointmentDate();
+        LocalDateTime end = appointment.getAppointmentEnd();
+
+        List<Appointment> collisionCandidates = appointmentRepository.findByDoctorIdAndTimeInterval(doctorId, start.toLocalDate().atStartOfDay(), start.plusDays(1).toLocalDate().atStartOfDay());
+        collisionCandidates
+                .removeIf(a -> (a.getAppointmentDate().isBefore(start) && a.getAppointmentEnd().isBefore(start)));
+        collisionCandidates
+                .removeIf(a -> (a.getAppointmentDate().isAfter(end) && a.getAppointmentEnd().isAfter(end)));
+        collisionCandidates
+                .removeIf(a -> a.getId().equals(appointment.getId()));
+        return !collisionCandidates.isEmpty();
     }
 }

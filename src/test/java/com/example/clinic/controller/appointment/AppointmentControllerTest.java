@@ -1,6 +1,5 @@
 package com.example.clinic.controller.appointment;
 
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,7 +11,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.transaction.annotation.Transactional;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -28,6 +26,30 @@ class AppointmentControllerTest {
 
     @Autowired
     MockMvc mockMvc;
+
+
+    @Test
+    void createAppointmentWithCollision(@Value("classpath:/appointments/createcollision.json") Resource json) throws Exception {
+        mockMvc.perform(post("/api/appointments")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json.getContentAsByteArray())
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("Appointment collision"));
+
+    }
+
+    @Test
+    void updateAppointmentWithCollision(@Value("classpath:/appointments/createcollision.json") Resource json) throws Exception {
+        Long appointmentId = 3L;
+        mockMvc.perform(put("/api/appointments/{id}", appointmentId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json.getContentAsByteArray())
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("Appointment collision"));
+
+    }
 
     @Test
     void createAppointment(@Value("classpath:/appointments/create.json") Resource json) throws Exception {

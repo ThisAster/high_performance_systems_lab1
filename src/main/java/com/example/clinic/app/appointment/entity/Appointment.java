@@ -34,4 +34,9 @@ public class Appointment {
     @JoinColumn(name = "appointment_type_id")
     private AppointmentsType appointmentType;
 
+
+    public LocalDateTime getAppointmentEnd() {
+        return appointmentDate.plusMinutes(appointmentType.getDuration());
+    }
+
 }
