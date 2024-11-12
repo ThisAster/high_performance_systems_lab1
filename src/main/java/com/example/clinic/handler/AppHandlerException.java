@@ -5,8 +5,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageConversionException;
+import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -46,6 +49,24 @@ public class AppHandlerException {
     public ResponseEntity<Map<String, Object>> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex) {
         log.error(ex.getMessage(), ex);
         return buildResponseEntity(HttpStatus.BAD_REQUEST, "Bad Request", "Invalid parameter type");
+    }
+
+    @ExceptionHandler(BindException.class)
+    public ResponseEntity<Map<String, Object>> handleBindException(BindException ex) {
+        log.error(ex.getMessage(), ex);
+        return buildResponseEntity(HttpStatus.BAD_REQUEST, "Bad Request", "Invalid request");
+    }
+
+    @ExceptionHandler(HttpMessageConversionException.class)
+    public ResponseEntity<Map<String, Object>> handleHttpMessageConversionException(HttpMessageConversionException ex) {
+        log.error(ex.getMessage(), ex);
+        return buildResponseEntity(HttpStatus.BAD_REQUEST, "Bad Request", "Invalid request");
+    }
+
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<Map<String, Object>> handleBadRequestException(BadRequestException ex) {
+        log.error(ex.getMessage(), ex);
+        return buildResponseEntity(HttpStatus.BAD_REQUEST, "Bad Request", ex.getMessage());
     }
 
     private ResponseEntity<Map<String, Object>> buildResponseEntity(HttpStatus status, String error, String message) {
