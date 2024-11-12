@@ -21,7 +21,7 @@ public class BillingController {
     private final BillingService billingService;
 
     @GetMapping("/invoice")
-    public ResponseEntity<InvoiceDTO> getInvoice(@RequestParam List<Long> patientIds) {
+    public ResponseEntity<InvoiceDTO> getInvoice(@RequestParam("patients") List<Long> patientIds) {
         InvoiceDTO invoice = billingService.generateInvoice(patientIds);
         return ResponseEntity.ok(invoice);
     }
