@@ -9,6 +9,8 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.List;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -23,21 +25,34 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 class BillingControllerTest {
 
-
-
     @Autowired
     MockMvc mockMvc;
 
-
     @Test
     void getAppointments() throws Exception {
-        int patientId = 2;
+        List<Integer> patientIds = List.of(2);
 
         mockMvc.perform(get("/api/billing/invoice")
-                        .param("patients", String.valueOf(patientId)))
+                        .param("patients", patientIds.stream()
+                                .map(String::valueOf)
+                                .toArray(String[]::new)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.total_cost").value("1000.0"))
                 .andExpect(jsonPath("$.consultations.length()").value(2));
     }
+
+
+    @Test
+    void testGenerateInvoicePatientNotFoundInController() throws Exception {
+        List<Long> invalidPatientIds = List.of(999L);
+
+        mockMvc.perform(get("/api/billing/invoice")
+                        .param("patients", invalidPatientIds.stream()
+                                .map(String::valueOf)
+                                .toArray(String[]::new)))
+                .andExpect(jsonPath("$.message").value("No patients found for the provided IDs"))
+                .andExpect(jsonPath("$.status").value(404));
+    }
+
 
 }
