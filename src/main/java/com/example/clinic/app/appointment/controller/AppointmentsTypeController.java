@@ -6,13 +6,17 @@ import com.example.clinic.app.appointment.entity.AppointmentsType;
 import com.example.clinic.app.appointment.mapper.AppoinmentsTypeMapper;
 import com.example.clinic.app.appointment.service.AppointmentsTypeService;
 import com.example.clinic.model.PageArgument;
+import com.example.clinic.util.HeaderUtils;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/appointments-type")
@@ -47,11 +51,15 @@ public class AppointmentsTypeController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<AppointmentTypeDTO>> getAllAppointmentTypes(
+    public ResponseEntity<List<AppointmentTypeDTO>> getAllAppointmentTypes(
             PageArgument page
     ) {
         Page<AppointmentsType> appointmentsTypePage = appointmentsTypeService.getAllAppointmentsTypes(page.getPageRequest());
-        Page<AppointmentTypeDTO> response = appointmentsTypePage.map(appointmentsTypeMapper::entityToAppointmentTypeDTO);
-        return ResponseEntity.ok(response);
+        List<AppointmentTypeDTO> response = appointmentsTypePage.getContent().stream()
+                .map(appointmentsTypeMapper::entityToAppointmentTypeDTO)
+                .collect(Collectors.toList());
+
+        HttpHeaders headers = HeaderUtils.createPaginationHeaders(appointmentsTypePage);
+        return ResponseEntity.ok().headers(headers).body(response);
     }
 }
