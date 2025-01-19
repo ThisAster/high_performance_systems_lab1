@@ -2,7 +2,6 @@ package com.example.clinic.patient.service;
 
 import com.example.clinic.patient.dto.PatientCreationDTO;
 import com.example.clinic.patient.entity.Patient;
-import com.example.clinic.patient.integration.AppointmentService;
 import com.example.clinic.patient.mapper.PatientMapper;
 import com.example.clinic.patient.repository.PatientRepository;
 import com.example.clinic.patient.exception.EntityNotFoundException;

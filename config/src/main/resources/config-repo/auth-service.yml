@@ -1,0 +1,58 @@
+spring:
+  application:
+    name: auth-service
+    page: ${SPRING_PAGE:5}
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://postgres-db:5432/clinic_db}
+    username: ${SPRING_DATASOURCE_USERNAME:clinic}
+    password: ${SPRING_DATASOURCE_PASSWORD:clinic}
+    driver-class-name: org.postgresql.Driver
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+
+server:
+  port: 8084
+
+# API prefix
+api:
+  prefix: /api/v1
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_URL:http://eureka:8761/eureka/}
+keys:
+  privateKey: |
+    MIIEowIBAAKCAQEAiJv/wbqHCyUR5g4nRqTuR9RsEWd4glxKE6Vi9on7+GzqwIO/
+    UR/NXrp0VV5dP8kLWe4zSudBFYiFxzshThP4mY65tVaHj8g0G1BzU3Mb4/Lj7LF3
+    Q8iVKV/gdYPmGavQfmK1R5LZvY7ra/u4mYs3PAew0NPlT2oDDHkpsYycG4RqLLza
+    t+x0RzIPH+DtduhT1r/5hfgTn0y883xPxki7sBqqLJk+wgaPetOvKkPcmr5+ccsK
+    5o3tsFtmyM4AZ9b0f37zuixRiMQX/3QmJ9hKFyIxXIMrPA8X7d4v+H2iwRtxVVjr
+    R5wetecap5sNLnE58TEKhgPyqJZM8BcuJcAtLQIDAQABAoIBACl6A8sUERBnLuoE
+    fhRK2zXf3vfhzIr37l3MpyFnf6NLnnLZDWtaFoaeYdfRkMpfBh1F3zjswawCCWwW
+    HeSQ17f3x5axMPOMu5VXdcxudJdfFai1sRpZekBXpdTIOUKuEd1tptCWW5ncHMpq
+    YP/tbtXBGAQvcb4M1+QfnXMU2AjaV5zA7HquCwrHkkmAg5AwOcvo4ut84fa6ye1H
+    4/HWW5wHIfcfOmVZIVKjA4rSSf3mm9bAisOZKxyHcUMa6q9QAuOKu0n0h4rJ4+Az
+    aEm8nPNPIVz5UIToqvtFQhTM86SPS1vfUpuQjC7oTY2qVDTN7RKx75XJ10JKYmzz
+    Y1SfOVkCgYEAw8arkfTvcvhnDQc1+SHHkQ8iAYkbpooN6KlmXgR40qogn9i9Cjy/
+    umcgAUk5BHYRGWK5vjD0b4ff7lkf/6/UtdEanT/+u//9U0sVYIoBw1gxIu6MVs6y
+    Y4k2BZ0ARekWPLFE7lmvWIWIuQXbiyvF3Z9vgVsPvay9DeRqhVbB3W8CgYEAsqH2
+    ggTNVCbZqUi5MiFBq9n6+fbXrEIV1LnWu5ITqu3OOFuDQi0t1rN2dlprMoJHoY+q
+    2Bf4j4E/d8kyQ5dfY6mpi0ttP+jWotC8OLKXbK5eoxPYPewf5zaRtd8Q38VGpCUj
+    HJ5tH/JMd2002AqEBOcCh3+xus9qVeC0qH/qCSMCgYBFzyzUodtUSsEsQxr62BG6
+    ZwQAOiyy6N1mzijjc4LF08ZIWVenM9xGEom2C68aKSOVwr9q0zgGIRQ3gG5JlSAr
+    KQHteqlRzkk9jzNzNiLEzkjPJPLD7XZsybuKqt4zD5dPUwK6Xx6IWS1UlIMhkB1B
+    Fp4DKT5mqxbKwl09aJ8+XwKBgQCE8TDKVtSRGlDHQc5CVqnPQe0c9u5Pzub8aEo9
+    Ulu8zDq7iq/HImSI8wroziYVcwvoW0mkhUKBWolnlp8H2rItM+lwN3RZKeoDRiGu
+    eItlYOghqfU3MHIV23DZz+d5AhKuuszE0csZCXSLNQUs+7aBB4PEX+5fv1m+C/un
+    o3sDzQKBgHRBgWxt+Xi3rGQ/5ZH45JPmnQqFfFopRXLbu8Qgue33KXQjsGkGTXYa
+    EV4QSSRQUSAgaB8b/wgONaM+5gnrCktBfl9HM/AM4Aev6vHNW0IJFsSPumz03Dzm
+    Kpw0hTC9B/9Q5Xmp9y2cDJKBe0gtna1fJUjBqeHomVjQJtL/8HUy
+  publicKey: |
+    MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAiJv/wbqHCyUR5g4nRqTu
+    R9RsEWd4glxKE6Vi9on7+GzqwIO/UR/NXrp0VV5dP8kLWe4zSudBFYiFxzshThP4
+    mY65tVaHj8g0G1BzU3Mb4/Lj7LF3Q8iVKV/gdYPmGavQfmK1R5LZvY7ra/u4mYs3
+    PAew0NPlT2oDDHkpsYycG4RqLLzat+x0RzIPH+DtduhT1r/5hfgTn0y883xPxki7
+    sBqqLJk+wgaPetOvKkPcmr5+ccsK5o3tsFtmyM4AZ9b0f37zuixRiMQX/3QmJ9hK
+    FyIxXIMrPA8X7d4v+H2iwRtxVVjrR5wetecap5sNLnE58TEKhgPyqJZM8BcuJcAt
+    LQIDAQAB
