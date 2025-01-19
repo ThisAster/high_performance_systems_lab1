@@ -1,11 +1,14 @@
 package com.example.clinic.appointment;
 
+import com.example.clinic.appointment.integration.DoctorService;
+import com.example.clinic.appointment.integration.EmailService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
@@ -26,6 +29,10 @@ class AppointmentTypeControllerTest {
 
     @Autowired
     MockMvc mockMvc;
+    @MockBean
+    DoctorService doctorService;
+    @MockBean
+    EmailService emailService;
 
     @Test
     void createAppointmentType(@Value("classpath:/appointments/createtype.json") Resource json) throws Exception {

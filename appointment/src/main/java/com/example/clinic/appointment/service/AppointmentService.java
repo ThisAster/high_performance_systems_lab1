@@ -3,6 +3,7 @@ package com.example.clinic.appointment.service;
 import com.example.clinic.appointment.dto.AppointmentCreationDTO;
 import com.example.clinic.appointment.entity.Appointment;
 import com.example.clinic.appointment.entity.AppointmentsType;
+import com.example.clinic.appointment.integration.EmailService;
 import com.example.clinic.appointment.mapper.AppointmentMapper;
 import com.example.clinic.appointment.repository.AppointmentRepository;
 import com.example.clinic.appointment.exception.EntityNotFoundException;
@@ -23,6 +24,7 @@ public class AppointmentService {
     private final AppointmentRepository appointmentRepository;
     private final AppointmentMapper appointmentMapper;
     private final AppointmentsTypeService appointmentsTypeService;
+    private final EmailService emailService;
 
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     public Appointment createAppointment(AppointmentCreationDTO appointmentDto) {
@@ -37,7 +39,8 @@ public class AppointmentService {
         if (testForAppointmentCollision(appointmentsType.getDoctor(), appointment)) {
             throw new IllegalArgumentException("Appointment collision");
         }
-        
+        emailService.sendAppointmentEmail(appointment, "You have signed up for an appointment");
+
         return appointmentRepository.save(appointment);
     }
 
@@ -52,15 +55,17 @@ public class AppointmentService {
         if (testForAppointmentCollision(appointment.getAppointmentType().getDoctor(), appointment)) {
             throw new IllegalArgumentException("Appointment collision");
         }
+        var saved = appointmentRepository.save(appointment);
+        emailService.sendAppointmentEmail(appointment, "Information about your appointment has been updated.");
 
-        return appointmentRepository.save(appointment);
+        return saved;
     }
 
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     public void deleteAppointment(Long id) {
-        if (!appointmentRepository.existsById(id)) {
-            throw new EntityNotFoundException("Appointment with id " + id + " not found");
-        }
+        var appointment = getAppointmentById(id);
+
+        emailService.sendAppointmentEmail(appointment, "Your appointment has been canceled.");
         appointmentRepository.deleteById(id);
     }
 
