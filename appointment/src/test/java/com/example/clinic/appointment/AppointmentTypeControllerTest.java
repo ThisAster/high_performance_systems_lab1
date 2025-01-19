@@ -2,6 +2,7 @@ package com.example.clinic.appointment;
 
 import com.example.clinic.appointment.integration.DoctorService;
 import com.example.clinic.appointment.integration.EmailService;
+import com.example.clinic.appointment.integration.PatientService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,6 +34,8 @@ class AppointmentTypeControllerTest {
     DoctorService doctorService;
     @MockBean
     EmailService emailService;
+    @MockBean
+    PatientService patientService;
 
     @Test
     void createAppointmentType(@Value("classpath:/appointments/createtype.json") Resource json) throws Exception {

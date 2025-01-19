@@ -1,7 +1,10 @@
 package com.example.clinic.appointment;
 
+import com.example.clinic.appointment.dto.DoctorDto;
+import com.example.clinic.appointment.dto.PatientDto;
 import com.example.clinic.appointment.integration.DoctorService;
 import com.example.clinic.appointment.integration.EmailService;
+import com.example.clinic.appointment.integration.PatientService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,6 +18,9 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static java.util.Optional.of;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -35,6 +41,9 @@ class AppointmentControllerTest {
 
     @MockBean
     EmailService emailService;
+
+    @MockBean
+    PatientService patientService;
 
     @Test
     void createAppointmentWithCollision(@Value("classpath:/appointments/createcollision.json") Resource json) throws Exception {
@@ -61,6 +70,10 @@ class AppointmentControllerTest {
 
     @Test
     void createAppointment(@Value("classpath:/appointments/create.json") Resource json) throws Exception {
+        when(doctorService.getDoctorById(anyLong()))
+                .thenReturn(new DoctorDto(2L, "Doctor", "Spce"));
+        when(patientService.findById(anyLong()))
+                .thenReturn(of(new PatientDto("patient@email.com", "Test name")));
 
         mockMvc.perform(post("/api/appointments")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -74,6 +87,11 @@ class AppointmentControllerTest {
     void updateAppointment(@Value("classpath:/appointments/update.json") Resource json) throws Exception {
         Long appointmentId = 2L;
 
+        when(doctorService.getDoctorById(anyLong()))
+                .thenReturn(new DoctorDto(2L, "Doctor", "Spce"));
+        when(patientService.findById(anyLong()))
+                .thenReturn(of(new PatientDto("patient@email.com", "Test name")));
+
         mockMvc.perform(put("/api/appointments/{id}", appointmentId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json.getContentAsByteArray())
@@ -84,6 +102,11 @@ class AppointmentControllerTest {
     @Test
     void deleteAppointment() throws Exception {
         Long appointmentId = 1L;
+
+        when(patientService.findById(anyLong()))
+                .thenReturn(of(new PatientDto("patient@email.com", "Test name")));
+        when(doctorService.getDoctorById(anyLong()))
+                .thenReturn(new DoctorDto(2L, "Doctor", "Spce"));
 
         mockMvc.perform(delete("/api/appointments/{id}", appointmentId))
                 .andExpect(status().isOk())

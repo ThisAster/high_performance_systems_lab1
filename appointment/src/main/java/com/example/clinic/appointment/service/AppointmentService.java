@@ -1,9 +1,13 @@
 package com.example.clinic.appointment.service;
 
 import com.example.clinic.appointment.dto.AppointmentCreationDTO;
+import com.example.clinic.appointment.dto.EmailDto;
+import com.example.clinic.appointment.dto.PatientDto;
 import com.example.clinic.appointment.entity.Appointment;
 import com.example.clinic.appointment.entity.AppointmentsType;
+import com.example.clinic.appointment.integration.DoctorService;
 import com.example.clinic.appointment.integration.EmailService;
+import com.example.clinic.appointment.integration.PatientService;
 import com.example.clinic.appointment.mapper.AppointmentMapper;
 import com.example.clinic.appointment.repository.AppointmentRepository;
 import com.example.clinic.appointment.exception.EntityNotFoundException;
@@ -16,15 +20,19 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 @RequiredArgsConstructor
 public class AppointmentService {
+    private static final String EMAIL_TITLE = "Information about your appointment at ITMO clinic";
 
     private final AppointmentRepository appointmentRepository;
     private final AppointmentMapper appointmentMapper;
     private final AppointmentsTypeService appointmentsTypeService;
     private final EmailService emailService;
+    private final PatientService patientService;
+    private final DoctorService doctorService;
 
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     public Appointment createAppointment(AppointmentCreationDTO appointmentDto) {
@@ -39,7 +47,7 @@ public class AppointmentService {
         if (testForAppointmentCollision(appointmentsType.getDoctor(), appointment)) {
             throw new IllegalArgumentException("Appointment collision");
         }
-        emailService.sendAppointmentEmail(appointment, "You have signed up for an appointment");
+        sendAppointmentEmail(appointment, "You have signed up for an appointment");
 
         return appointmentRepository.save(appointment);
     }
@@ -56,7 +64,7 @@ public class AppointmentService {
             throw new IllegalArgumentException("Appointment collision");
         }
         var saved = appointmentRepository.save(appointment);
-        emailService.sendAppointmentEmail(appointment, "Information about your appointment has been updated.");
+        sendAppointmentEmail(appointment, "Information about your appointment has been updated.");
 
         return saved;
     }
@@ -65,7 +73,7 @@ public class AppointmentService {
     public void deleteAppointment(Long id) {
         var appointment = getAppointmentById(id);
 
-        emailService.sendAppointmentEmail(appointment, "Your appointment has been canceled.");
+        sendAppointmentEmail(appointment, "Your appointment has been canceled.");
         appointmentRepository.deleteById(id);
     }
 
@@ -95,5 +103,21 @@ public class AppointmentService {
         collisionCandidates
                 .removeIf(a -> a.getId().equals(appointment.getId()));
         return !collisionCandidates.isEmpty();
+    }
+
+    private void sendAppointmentEmail(Appointment appointment, String text){
+        var patient = patientService.findById(appointment.getPatient())
+                .orElseThrow(()-> new EntityNotFoundException("Patient missed"));
+        var doctor = doctorService.getDoctorById(appointment.getAppointmentType().getDoctor());
+
+        String emailText = String.format(
+                "Dear %s,\n%s\nYour appointment information:\nDate: %s\nDoctor: %s\n%s",
+                patient.name(),
+                text,
+                appointment.getAppointmentDate(),
+                doctor.name(),
+                appointment.getAppointmentType().getDescription()
+        );
+        emailService.sendEmail(new EmailDto(patient.email(), EMAIL_TITLE, emailText));
     }
 }

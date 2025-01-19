@@ -1,7 +1,7 @@
 package com.example.clinic.appointment.integration;
 
-import com.example.clinic.appointment.entity.Appointment;
+import com.example.clinic.appointment.dto.EmailDto;
 
 public interface EmailService {
-    void sendAppointmentEmail(Appointment appointment, String s);
+    void sendEmail(EmailDto emailDto);
 }
