@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.util.List;
@@ -34,16 +36,14 @@ public class DoctorController {
     private final DoctorMapper doctorMapper;
 
     @PostMapping
-    public ResponseEntity<DoctorCreationDTO> createDoctor(@Valid @RequestBody DoctorCreationDTO doctorDto) {
-        Doctor doctor = doctorService.createDoctor(doctorDto);
-        return ResponseEntity.created(URI.create("/api/doctors/" + doctor.getId())).body(doctorDto);
+    public Mono<ResponseEntity<DoctorDto>> createDoctor(@Valid @RequestBody DoctorCreationDTO doctorDto) {
+        return doctorService.createDoctor(doctorDto)
+                .map(doc -> ResponseEntity.created(URI.create("/api/doctors/" + doc.id())).body(doc));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<DoctorDto> updateDoctor(@PathVariable Long id, @Valid @RequestBody DoctorCreationDTO doctorDto) {
-        Doctor doctor = doctorService.updateDoctor(id, doctorDto);
-        DoctorDto updatedDoctorDto = doctorMapper.entityToDoctorDto(doctor);
-        return ResponseEntity.ok(updatedDoctorDto);
+    public Mono<DoctorDto> updateDoctor(@PathVariable Long id, @Valid @RequestBody DoctorCreationDTO doctorDto) {
+        return doctorService.updateDoctor(id, doctorDto);
     }
 
     @DeleteMapping("/{id}")
@@ -53,24 +53,17 @@ public class DoctorController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<DoctorDto> getDoctorById(@PathVariable Long id) {
-        Doctor doctor = doctorService.getDoctorById(id);
-        DoctorDto doctorDto = doctorMapper.entityToDoctorDto(doctor);
-        return ResponseEntity.ok(doctorDto);
+    public Mono<DoctorDto> getDoctorById(@PathVariable Long id) {
+        return doctorService.getDoctorById(id);
     }
 
     @GetMapping
-    public ResponseEntity<List<DoctorDto>> getDoctors(
+    public Mono<ResponseEntity<List<DoctorDto>>> getDoctors(
             PageArgument page
     ) {
-        Page<Doctor> doctorPage = doctorService.getDoctors(page.getPageRequest());
-
-        List<DoctorDto> doctorDtos = doctorPage.getContent().stream()
-                .map(doctorMapper::entityToDoctorDto)
-                .collect(Collectors.toList());
-
-        HttpHeaders headers = HeaderUtils.createPaginationHeaders(doctorPage);
-
-        return ResponseEntity.ok().headers(headers).body(doctorDtos);
+        return doctorService.getDoctors(page.getPageRequest())
+                .map(docPage -> ResponseEntity.ok()
+                        .headers(HeaderUtils.createPaginationHeaders(docPage))
+                        .body(docPage.getContent()));
     }
 }

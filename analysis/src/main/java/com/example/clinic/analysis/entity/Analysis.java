@@ -1,41 +1,36 @@
 package com.example.clinic.analysis.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.LocalDate;
 
 @Getter
 @Setter
-@Entity
 @Table(name = "analyses")
 @NoArgsConstructor
 @AllArgsConstructor
 public class Analysis {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "analysis_type", nullable = false)
+    @Column("analysis_type")
     private String type;
 
-    @Column(name = "sample_date", nullable = false)
+    @Column("sample_date")
     private LocalDate sampleDate;
 
-    @Column(name = "result", length = 200)
+    @Column("result")
     private String result;
 
-    @Column(name = "status", nullable = false)
+    @Column("status")
     private String status;
 
-    @Column(name = "patient_id")
+    @Column("patient_id")
     private Long patient;
 }

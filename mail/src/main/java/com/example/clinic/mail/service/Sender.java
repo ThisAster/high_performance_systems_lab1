@@ -14,6 +14,7 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Date;
+import java.util.Map;
 import java.util.Properties;
 
 
@@ -36,14 +37,18 @@ public class Sender {
 
     @SneakyThrows
     private Session buildSession() {
-        Properties prop = new Properties() {{
-            put("mail.smtp.host", configEmail.getHost());
-            put("mail.smtp.ssl.enable", "true");
-            put("mail.smtp.port", configEmail.getPort());
-            put("mail.smtp.auth", "true");
-        }};
 
-        return Session.getDefaultInstance(prop, new Authenticator() {
+        Properties props = new Properties();
+        props.putAll(Map.of(
+                "mail.smtp.host", configEmail.getHost(),
+                "mail.smtp.ssl.enable", "true",
+                "mail.smtp.port", configEmail.getPort(),
+                "mail.smtp.auth", "true",
+                "mail.smtp.timeout", "2000",
+                "mail.smtp.connectiontimeout", "2000"
+        ));
+
+        return Session.getDefaultInstance(props, new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(configEmail.getSender(), configEmail.getPassword());

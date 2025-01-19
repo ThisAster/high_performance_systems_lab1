@@ -14,11 +14,6 @@ spring:
         multiplier: 2
         max-attempts: 10
 
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: ${EUREKA_URL:http://eureka:8761/eureka/}
-
 management:
   endpoints:
     web:

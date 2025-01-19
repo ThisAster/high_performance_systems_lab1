@@ -4,6 +4,8 @@ spring:
   application:
     name: analysis
   cloud:
+    discovery:
+      enabled: false
     config:
       name: ${spring.application.name}
       uri: ${CONFIG_URL}
