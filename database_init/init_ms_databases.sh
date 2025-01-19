@@ -1,6 +1,6 @@
 set -e
 
-psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-EOSQL
+psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<EOSQL
 	CREATE USER analysis WITH PASSWORD 'analysis';
 	CREATE DATABASE analysis_db WITH OWNER analysis;
 	GRANT ALL PRIVILEGES ON DATABASE analysis_db TO analysis;
