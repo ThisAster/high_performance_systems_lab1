@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: billing
+    page-size: 5
+  devtools.restart.enabled: true
+  jackson.property-naming-strategy: SNAKE_CASE
+
+springdoc.api-docs.path: /api-docs
+
+springdoc.swagger-ui.path: /api
+
+server:
+  port: 8888
+  servlet.context-path: /

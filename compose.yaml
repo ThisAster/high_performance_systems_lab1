@@ -7,7 +7,7 @@ services:
       - 'POSTGRES_PASSWORD=clinic'
       - 'POSTGRES_USER=clinic'
     ports:
-      - '5432:5432'
+      - '5433:5432'
     healthcheck:
       test: "pg_isready -d clinic_db -U clinic"
       interval: 5s
@@ -40,12 +40,14 @@ services:
       CONFIG_URL: http://config:8800
       ACTIVE_PROFILE: dev
       SPRING_PAGE: 5
-      SPRING_DATASOURCE_URL: 'jdbc:postgresql://postgres-db:5432/clinic_db'
-      SPRING_DATASOURCE_USERNAME: 'clinic'
-      SPRING_DATASOURCE_PASSWORD: 'clinic'
       SPRING_FLYWAY_ENABLED: 'true'
       API_PREFIX: '/api/v1'
       JWT_SECRET: 'aboba'
+      DB_HOST: postgres-db
+      DB_NAME: clinic_db
+      DB_PORT: 5432
+      DB_USER: clinic
+      DB_PASSWORD: clinic
     healthcheck:
       test: "curl --silent --fail config:8800/actuator/health | grep UP || exit 1"
       interval: 10s
@@ -77,6 +79,11 @@ services:
     environment:
       EUREKA_URL: http://eureka:8761/eureka/
       CONFIG_URL: http://config:8800
+      DB_HOST: postgres-db
+      DB_NAME: clinic_db
+      DB_PORT: 5432
+      DB_USER: clinic
+      DB_PASSWORD: clinic
   analysis:
     build:
       context: ./analysis
@@ -90,6 +97,11 @@ services:
     environment:
       EUREKA_URL: http://eureka:8761/eureka/
       CONFIG_URL: http://config:8800
+      DB_HOST: postgres-db
+      DB_NAME: clinic_db
+      DB_PORT: 5432
+      DB_USER: clinic
+      DB_PASSWORD: clinic
   doctor:
     build: ./doctor
     depends_on:
@@ -100,6 +112,11 @@ services:
     environment:
       EUREKA_URL: http://eureka:8761/eureka/
       CONFIG_URL: http://config:8800
+      DB_HOST: postgres-db
+      DB_NAME: clinic_db
+      DB_PORT: 5432
+      DB_USER: clinic
+      DB_PASSWORD: clinic
   document:
     build: ./document
     depends_on:
@@ -112,6 +129,11 @@ services:
     environment:
       EUREKA_URL: http://eureka:8761/eureka/
       CONFIG_URL: http://config:8800
+      DB_HOST: postgres-db
+      DB_NAME: clinic_db
+      DB_PORT: 5432
+      DB_USER: clinic
+      DB_PASSWORD: clinic
   mail:
     build: ./mail
     depends_on:
@@ -134,6 +156,11 @@ services:
     environment:
       EUREKA_URL: http://eureka:8761/eureka/
       CONFIG_URL: http://config:8800
+      DB_HOST: postgres-db
+      DB_NAME: clinic_db
+      DB_PORT: 5432
+      DB_USER: clinic
+      DB_PASSWORD: clinic
   timetable:
     build: ./timetable
     depends_on:
@@ -156,6 +183,11 @@ services:
     environment:
       EUREKA_URL: http://eureka:8761/eureka/
       CONFIG_URL: http://config:8800
+      DB_HOST: postgres-db
+      DB_NAME: clinic_db
+      DB_PORT: 5432
+      DB_USER: clinic
+      DB_PASSWORD: clinic
   billing:
     build: ./billing
     depends_on:
@@ -178,5 +210,10 @@ services:
     environment:
       EUREKA_URL: http://eureka:8761/eureka/
       CONFIG_URL: http://config:8800
+      DB_HOST: postgres-db
+      DB_NAME: clinic_db
+      DB_PORT: 5432
+      DB_USER: clinic
+      DB_PASSWORD: clinic
 volumes:
   postgres_data:

@@ -1,0 +1,126 @@
+spring:
+  application:
+    name: gateway
+  cloud:
+    gateway:
+      routes:
+        - id: analysis
+          uri: lb://analysis
+          predicates:
+            - Path=/api/analysis/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: analysisCB
+                fallbackUri: forward:/fallback
+        - id: appointment
+          uri: lb://appointment
+          predicates:
+            - Path=/api/appointment/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: appointmentCB
+                fallbackUri: forward:/fallback
+        - id: billing
+          uri: lb://billing
+          predicates:
+            - Path=/api/billing/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: billingCB
+                fallbackUri: forward:/fallback
+        - id: doctor
+          uri: lb://doctor
+          predicates:
+            - Path=/api/doctor/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: doctorCB
+                fallbackUri: forward:/fallback
+        - id: document
+          uri: lb://document
+          predicates:
+            - Path=/api/document/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: documentCB
+                fallbackUri: forward:/fallback
+        - id: mail
+          uri: lb://mail
+          predicates:
+            - Path=/api/mail/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: mailCB
+                fallbackUri: forward:/fallback
+        - id: patient
+          uri: lb://patient
+          predicates:
+            - Path=/api/patient/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: patientCB
+                fallbackUri: forward:/fallback
+        - id: recipe
+          uri: lb://recipe
+          predicates:
+            - Path=/api/recipe/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: recipeCB
+                fallbackUri: forward:/fallback
+        - id: timetable
+          uri: lb://timetable
+          predicates:
+            - Path=/api/timetable/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: timetableCB
+                fallbackUri: forward:/fallback
+server:
+  port: 8080
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_URL:http://eureka:8761/eureka/}
+
+resilience4j:
+  circuitbreaker:
+    configs:
+      clinic:
+        slidingWindowSize: 10
+        slidingWindowType: COUNT_BASED
+        failureRateThreshold: 52
+        slowCallRateThreshold: 75
+        waitDurationInOpenState: 15s
+        permittedNumberOfCallsInHalfOpenState: 2
+        minimumNumberOfCalls: 10
+        slowCallDurationThreshold: 15s
+    instances:
+      analysisCB:
+        base-config: clinic
+      appointmentCB:
+        base-config: clinic
+      billingCB:
+        base-config: clinic
+      doctorCB:
+        base-config: clinic
+      documentCB:
+        base-config: clinic
+      mailCB:
+        base-config: clinic
+      patientCB:
+        base-config: clinic
+      recipeCB:
+        base-config: clinic
+      timetableCB:
+        base-config: clinic

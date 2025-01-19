@@ -30,7 +30,6 @@ public class JwtService {
     private String publicKey;
 
 
-
     public String extractUserName(String token) {
         return extractClaim(token, Claims::getSubject);
     }
