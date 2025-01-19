@@ -1,0 +1,7 @@
+{
+  "name": "testtype",
+  "description": "testdesc",
+  "duration": 100,
+  "price": 400,
+  "doctor_id": 1
+}
