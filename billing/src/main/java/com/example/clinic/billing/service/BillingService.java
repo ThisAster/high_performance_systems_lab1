@@ -24,7 +24,7 @@ public class BillingService {
 
     public InvoiceDTO generateInvoice(List<Long> patientIds) {
 
-        Set<Long> patientIdSet = new HashSet<>(patientIds);
+        var patientIdSet = patientIds.stream().distinct().collect(Collectors.toList());
 
         List<PatientDto> patients = patientService.getPatientsWithAppointmentsByIds(patientIdSet);
         if(patients.isEmpty()){

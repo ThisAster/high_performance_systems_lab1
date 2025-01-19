@@ -2,7 +2,7 @@ spring:
   config:
     import: configserver:${CONFIG_URL:http://localhost:8800}/
   application:
-    name: auth-service
+    name: patient
   cloud:
     config:
       name: ${spring.application.name}

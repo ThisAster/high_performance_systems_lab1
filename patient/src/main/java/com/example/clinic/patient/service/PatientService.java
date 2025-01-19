@@ -1,6 +1,7 @@
 package com.example.clinic.patient.service;
 
 import com.example.clinic.patient.dto.PatientCreationDTO;
+import com.example.clinic.patient.dto.PatientDto;
 import com.example.clinic.patient.entity.Patient;
 import com.example.clinic.patient.mapper.PatientMapper;
 import com.example.clinic.patient.repository.PatientRepository;
@@ -11,6 +12,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -53,5 +56,9 @@ public class PatientService {
 
     public Page<Patient> getPatients(Pageable page) {
         return patientRepository.findAll(page);
+    }
+
+    public List<PatientDto> getPatientsByIds(List<Long> ids){
+        return patientRepository.findAllById(ids).stream().map(patientMapper::entityToPatientDto).toList();
     }
 }

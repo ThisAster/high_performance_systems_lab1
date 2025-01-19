@@ -82,10 +82,6 @@ public class AppointmentService {
                 .orElseThrow(() -> new EntityNotFoundException("Appointment with id " + id + " not found"));
     }
 
-    public List<Appointment> getAppointmentsByDoctorIdAndTimeInterval(Long doctorId, LocalDateTime start, LocalDateTime end) {
-        return appointmentRepository.findByDoctorIdAndTimeInterval(doctorId, start, end);
-    }
-
     public Page<Appointment> getAppointments(Pageable page) {
         return appointmentRepository.findAll(page);
     }
@@ -132,7 +128,7 @@ public class AppointmentService {
                     .toList();
         }
         if (filter.patients() != null && !filter.patients().isEmpty()) {
-            return appointmentRepository.findByPatients(filter.patients())
+            return appointmentRepository.findByPatientIn(filter.patients())
                     .stream()
                     .map(appointmentMapper::entityToAppointmentDto)
                     .toList();

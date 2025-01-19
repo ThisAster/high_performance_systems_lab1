@@ -139,9 +139,25 @@ class AppointmentControllerTest {
     @Test
     void filter() throws Exception {
         mockMvc.perform(
-                get("/api/appointments/filter")
-                        .param("doctor", String.valueOf(1L))
-                        .param("appointmentTimeFrom", LocalDateTime.now().toString())
-        ).andExpect(status().isOk());
+                        get("/api/appointments/filter")
+                                .param("doctor", String.valueOf(2L))
+                                .param("appointmentTimeFrom",
+                                        LocalDateTime.of(2023, 6, 15, 0, 0, 0).toString())
+                                .param("appointmentTimeTo",
+                                        LocalDateTime.of(2023, 6, 15, 23, 59, 59).toString())
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(2));
+    }
+
+    @Test
+    void filterByPatients() throws Exception {
+        mockMvc.perform(
+                        get("/api/appointments/filter")
+                                .param("patients", String.valueOf(2L))
+                                .param("patients", String.valueOf(3L))
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(3));
     }
 }

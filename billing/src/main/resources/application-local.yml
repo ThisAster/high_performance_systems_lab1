@@ -1,4 +1,9 @@
 spring:
+  cloud:
+    import-check:
+      enabled: false
+    config:
+      enable: false
   application:
     name: billing
     page-size: 5
@@ -10,8 +15,9 @@ springdoc.api-docs.path: /api-docs
 springdoc.swagger-ui.path: /api
 
 server:
-  port: 8888
+  port: 8889
   servlet.context-path: /
 
-patient.service.url: http://patient:8888/api/patients/
-appointment.service.url: http://patient:8888/api/appointments/
+
+appointment.service.url: http://localhost:8888/api/appointments/
+patient.service.url: http://localhost:8080/api/patients/

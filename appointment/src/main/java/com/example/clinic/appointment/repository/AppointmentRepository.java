@@ -28,5 +28,5 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
                                                    @Param("start") LocalDateTime start,
                                                    @Param("end") LocalDateTime end);
 
-    List<Appointment> findByPatients(List<Long> patients);
+    List<Appointment> findByPatientIn(List<Long> patients);
 }

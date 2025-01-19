@@ -2,17 +2,18 @@ package com.example.clinic.appointment.integration.feign;
 
 import com.example.clinic.appointment.dto.PatientDto;
 import com.example.clinic.appointment.integration.PatientService;
+import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.Optional;
 
-import static java.util.Optional.of;
-
 @Service
-public class PatientClient implements PatientService {
+@FeignClient(name = "patient-client", url = "${patient.service.url}")
+public interface PatientClient extends PatientService {
+
     @Override
-    public Optional<PatientDto> findById(Long id) {
-        //TODO: replace with feign client
-        return of(new PatientDto("test@email.ru", "Name"));
-    }
+    @GetMapping("/{id}")
+    Optional<PatientDto> findById(@PathVariable Long id);
 }

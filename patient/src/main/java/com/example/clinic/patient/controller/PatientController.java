@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/patients")
@@ -58,5 +59,10 @@ public class PatientController {
         Page<Patient> patientPage = patientService.getPatients(page.getPageRequest());
         Page<PatientDto> response = patientPage.map(patientMapper::entityToPatientDto);
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/some")
+    public ResponseEntity<List<PatientDto>> getPatientsByIds(@RequestParam List<Long> patients){
+        return ResponseEntity.ok(patientService.getPatientsByIds(patients));
     }
 }

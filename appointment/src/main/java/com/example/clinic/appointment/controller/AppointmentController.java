@@ -80,8 +80,6 @@ public class AppointmentController {
     @GetMapping("/filter")
     public ResponseEntity<List<AppointmentDto>> filterAppointments(AppointmentFilterRequest filter){
         return ResponseEntity.ok(appointmentService.filter(filter));
-        //TODO: filter appointments by batch of patients
-        //TODO: filter Appointments by date time and doctor
     }
 
 }

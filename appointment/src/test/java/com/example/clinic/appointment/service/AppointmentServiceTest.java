@@ -81,7 +81,7 @@ class AppointmentServiceTest {
                                 .duration(15)
                                 .build())
                         .build()
-        )).when(mockAppointmentRepository).findByPatients(anyList());
+        )).when(mockAppointmentRepository).findByPatientIn(anyList());
 
         var result = service.filter(fiter);
 

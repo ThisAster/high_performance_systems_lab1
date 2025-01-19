@@ -31,6 +31,8 @@ services:
         condition: service_healthy
   config:
     build: ./config
+    volumes:
+      - "./config/src/main/resources/config-repo:/app/config-repo"
     ports:
       - "8800:8800"
     depends_on:

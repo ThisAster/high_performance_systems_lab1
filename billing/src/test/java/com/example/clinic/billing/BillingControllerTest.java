@@ -75,7 +75,7 @@ class BillingControllerTest {
                 )
         );
 
-        when(patientService.getPatientsWithAppointmentsByIds(Set.of(2L))).thenReturn(test);
+        when(patientService.getPatientsWithAppointmentsByIds(List.of(2L))).thenReturn(test);
 
         List<Integer> patientIds = List.of(2);
 

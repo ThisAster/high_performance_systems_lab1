@@ -25,3 +25,7 @@ springdoc.swagger-ui.path: /api
 server:
   port: 8888
   servlet.context-path: /
+
+doctor.service.url: ${DOCTOR_SERVICE:http://doctor:8888/api/doctors}
+patient.service.url: ${PATIENT_SERVICE:http://patient:8888/api/patients}
+mail.service.url: ${MAIL_SERVICE:http://mail:8888/api/mail}

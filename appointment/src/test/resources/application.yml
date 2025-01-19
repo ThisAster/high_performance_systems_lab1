@@ -4,7 +4,7 @@ server:
     context-path: /
 spring:
   cloud:
-    eureka:
+    discovery:
       enabled: false
     config:
       import-check:
@@ -34,3 +34,7 @@ springdoc:
     path: /api-docs
   swagger-ui:
     path: /api
+
+doctor.service.url: http://locahost:8080/api/doctor
+patient.service.url: http://locahost:8080/api/patient
+mail.service.url: http://locahost:8080/api/mail

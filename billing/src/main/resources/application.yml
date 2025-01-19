@@ -1,6 +1,6 @@
 spring:
   config:
-    import: configserver:${CONFIG_URL:http://localhost:8800}/
+    import: optional:configserver:${CONFIG_URL:http://localhost:8800}/
   application:
     name: billing
   cloud:
@@ -13,7 +13,6 @@ spring:
         max-interval: 10000
         multiplier: 2
         max-attempts: 10
-
 eureka:
   client:
     serviceUrl:

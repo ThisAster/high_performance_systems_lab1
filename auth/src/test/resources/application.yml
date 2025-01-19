@@ -1,6 +1,6 @@
 spring:
   application:
-    name: auth-service
+    name: auth
     page: 5
   datasource:
     driver-class-name: org.postgresql.Driver

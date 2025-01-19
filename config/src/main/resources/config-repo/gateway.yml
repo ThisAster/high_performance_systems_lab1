@@ -65,14 +65,14 @@ spring:
         - id: patient
           uri: lb://patient
           predicates:
-            - Path=/api/patient/**
+            - Path=/api/patients/**
           filters:
             - name: CircuitBreaker
               args:
                 name: patientCB
                 fallbackUri: forward:/fallback
         - id: recipe
-          uri: http://recipe:8080/
+          uri: lb://recipe
           predicates:
             - Path=/api/recipes/**
           filters:
