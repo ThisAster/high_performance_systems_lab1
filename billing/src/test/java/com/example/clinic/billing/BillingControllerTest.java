@@ -35,7 +35,7 @@ class BillingControllerTest {
 
     @Test
     void getAppointments() throws Exception {
-        final var test = Set.of(
+        final var test = List.of(
                 new PatientDto(
                         2L, "Jane Smith", null, "jane@example.com",
                         List.of(

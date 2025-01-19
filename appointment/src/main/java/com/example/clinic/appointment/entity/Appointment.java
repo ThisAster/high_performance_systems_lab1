@@ -3,6 +3,7 @@ package com.example.clinic.appointment.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,6 +15,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "appointments")
 @NoArgsConstructor
+@Builder
 @AllArgsConstructor
 public class Appointment {
     @Id

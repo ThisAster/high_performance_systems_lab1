@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 public class EmailClient implements EmailService {
     @Override
     public void sendEmail(EmailDto dto) {
+        //TODO: replace with feign client
         System.out.println(dto);
     }
 }

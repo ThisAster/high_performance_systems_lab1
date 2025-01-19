@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 public class DoctorClient implements DoctorService {
     @Override
     public DoctorDto getDoctorById(Long doctor) {
+        //TODO: replace with feign client
         return new DoctorDto(2L, "Super doc", "Super spec");
     }
 }

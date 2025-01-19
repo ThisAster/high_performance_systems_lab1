@@ -18,6 +18,8 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.time.LocalDateTime;
+
 import static java.util.Optional.of;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
@@ -28,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @Sql(value = {
-    "/sql/test.sql"
+        "/sql/test.sql"
 }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 class AppointmentControllerTest {
@@ -79,7 +81,7 @@ class AppointmentControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json.getContentAsByteArray())
                         .accept(MediaType.APPLICATION_JSON))
-                        .andExpect(status().isCreated());
+                .andExpect(status().isCreated());
 
     }
 
@@ -96,7 +98,7 @@ class AppointmentControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json.getContentAsByteArray())
                         .accept(MediaType.APPLICATION_JSON))
-                        .andExpect(status().isOk());
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -132,5 +134,14 @@ class AppointmentControllerTest {
                         .param("size", String.valueOf(size)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(size));
+    }
+
+    @Test
+    void filter() throws Exception {
+        mockMvc.perform(
+                get("/api/appointments/filter")
+                        .param("doctor", String.valueOf(1L))
+                        .param("appointmentTimeFrom", LocalDateTime.now().toString())
+        ).andExpect(status().isOk());
     }
 }

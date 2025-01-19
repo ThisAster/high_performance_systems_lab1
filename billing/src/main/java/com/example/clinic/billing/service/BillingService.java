@@ -26,7 +26,7 @@ public class BillingService {
 
         Set<Long> patientIdSet = new HashSet<>(patientIds);
 
-        Set<PatientDto> patients = patientService.getPatientsWithAppointmentsByIds(patientIdSet);
+        List<PatientDto> patients = patientService.getPatientsWithAppointmentsByIds(patientIdSet);
         if(patients.isEmpty()){
             throw new EntityNotFoundException("No patients found for the provided IDs");
         }

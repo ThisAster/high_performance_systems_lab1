@@ -2,7 +2,10 @@ package com.example.clinic.appointment.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
@@ -11,6 +14,9 @@ import java.math.BigDecimal;
 @Setter
 @Entity
 @Table(name = "appointments_types")
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class AppointmentsType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

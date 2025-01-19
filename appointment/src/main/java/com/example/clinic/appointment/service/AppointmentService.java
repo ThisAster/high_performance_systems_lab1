@@ -1,16 +1,17 @@
 package com.example.clinic.appointment.service;
 
 import com.example.clinic.appointment.dto.AppointmentCreationDTO;
+import com.example.clinic.appointment.dto.AppointmentDto;
+import com.example.clinic.appointment.dto.AppointmentFilterRequest;
 import com.example.clinic.appointment.dto.EmailDto;
-import com.example.clinic.appointment.dto.PatientDto;
 import com.example.clinic.appointment.entity.Appointment;
 import com.example.clinic.appointment.entity.AppointmentsType;
+import com.example.clinic.appointment.exception.EntityNotFoundException;
 import com.example.clinic.appointment.integration.DoctorService;
 import com.example.clinic.appointment.integration.EmailService;
 import com.example.clinic.appointment.integration.PatientService;
 import com.example.clinic.appointment.mapper.AppointmentMapper;
 import com.example.clinic.appointment.repository.AppointmentRepository;
-import com.example.clinic.appointment.exception.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 @Service
 @RequiredArgsConstructor
@@ -40,7 +40,7 @@ public class AppointmentService {
                 .getAppointmentsType(appointmentDto.getAppointmentTypeId());
 
         Appointment appointment = appointmentMapper.appointmentDtoToEntity(appointmentDto);
-    
+
         appointment.setPatient(appointmentDto.getPatientId());
         appointment.setAppointmentType(appointmentsType);
 
@@ -105,9 +105,9 @@ public class AppointmentService {
         return !collisionCandidates.isEmpty();
     }
 
-    private void sendAppointmentEmail(Appointment appointment, String text){
+    private void sendAppointmentEmail(Appointment appointment, String text) {
         var patient = patientService.findById(appointment.getPatient())
-                .orElseThrow(()-> new EntityNotFoundException("Patient missed"));
+                .orElseThrow(() -> new EntityNotFoundException("Patient missed"));
         var doctor = doctorService.getDoctorById(appointment.getAppointmentType().getDoctor());
 
         String emailText = String.format(
@@ -119,5 +119,24 @@ public class AppointmentService {
                 appointment.getAppointmentType().getDescription()
         );
         emailService.sendEmail(new EmailDto(patient.email(), EMAIL_TITLE, emailText));
+    }
+
+    public List<AppointmentDto> filter(AppointmentFilterRequest filter) {
+        if (filter.doctor() != null) {
+            return appointmentRepository.findByDoctorIdAndTimeInterval(
+                            filter.doctor(),
+                            filter.appointmentTimeFrom(),
+                            filter.appointmentTimeTo()
+                    ).stream()
+                    .map(appointmentMapper::entityToAppointmentDto)
+                    .toList();
+        }
+        if (filter.patients() != null && !filter.patients().isEmpty()) {
+            return appointmentRepository.findByPatients(filter.patients())
+                    .stream()
+                    .map(appointmentMapper::entityToAppointmentDto)
+                    .toList();
+        }
+        throw new IllegalArgumentException("Invalid filter\n" + filter);
     }
 }

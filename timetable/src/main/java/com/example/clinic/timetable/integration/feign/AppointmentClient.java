@@ -11,6 +11,7 @@ import java.util.List;
 public class AppointmentClient implements AppointmentService {
     @Override
     public List<AppointmentDto> getAppointmentsByDoctorIdAndTimeInterval(Long doctorId, LocalDateTime start, LocalDateTime end) {
+        //TODO: replace with feign client
         return List.of();
     }
 }
