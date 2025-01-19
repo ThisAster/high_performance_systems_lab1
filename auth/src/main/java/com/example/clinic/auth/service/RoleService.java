@@ -1,9 +1,9 @@
 package com.example.clinic.auth.service;
 
 
-import lombok.RequiredArgsConstructor;
 import com.example.clinic.auth.entity.RoleEntity;
 import com.example.clinic.auth.repository.RoleRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service

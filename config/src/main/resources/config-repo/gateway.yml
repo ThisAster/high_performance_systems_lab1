@@ -8,6 +8,15 @@ spring:
           enabled: true
           lower-case-service-id: true
       routes:
+        - id: auth
+          uri: lb://auth
+          predicates:
+            - Path=/api/v1/auth/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: authCB
+                fallbackUri: forward:/fallback
         - id: analysis
           uri: lb://analysis
           predicates:
@@ -20,7 +29,7 @@ spring:
         - id: appointment
           uri: lb://appointment
           predicates:
-            - Path=/api/appointments/**
+            - Path=/api/appointments/**, /api/appointments-type/**
           filters:
             - name: CircuitBreaker
               args:
@@ -114,6 +123,8 @@ resilience4j:
         minimumNumberOfCalls: 10
         slowCallDurationThreshold: 15s
     instances:
+      authCB:
+        base-config: clinic
       analysisCB:
         base-config: clinic
       appointmentCB:

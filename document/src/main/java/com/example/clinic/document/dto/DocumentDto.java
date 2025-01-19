@@ -6,15 +6,16 @@
 package com.example.clinic.document.dto;
 
 /**
- *
  * @author thisaster
  */
+
 import java.time.LocalDate;
 
 public record DocumentDto(
-    Long id,
-    String type,
-    LocalDate date,
-    String content,
-    String status
-) {}
+        Long id,
+        String type,
+        LocalDate date,
+        String content,
+        String status
+) {
+}

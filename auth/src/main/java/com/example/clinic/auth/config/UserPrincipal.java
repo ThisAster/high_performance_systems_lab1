@@ -1,8 +1,8 @@
 package com.example.clinic.auth.config;
 
+import com.example.clinic.auth.entity.User;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import com.example.clinic.auth.entity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

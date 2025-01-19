@@ -17,7 +17,7 @@ public class Controller {
     private final Sender sender;
 
     @PostMapping("/send")
-    public ResponseEntity<Void> sendMessage(@RequestBody EmailDto dto){
+    public ResponseEntity<Void> sendMessage(@RequestBody EmailDto dto) {
         sender.sendEmail(dto);
         return ResponseEntity.ok().build();
     }

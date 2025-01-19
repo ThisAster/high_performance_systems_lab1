@@ -6,6 +6,7 @@ import com.example.clinic.billing.integration.PatientService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,7 +23,7 @@ public class PatientClient implements PatientService {
                 .stream()
                 .collect(Collectors.groupingBy(AppointmentDto::getPatientId));
         return patients.stream().map(p -> new PatientDto(
-                p.id(), p.name(), p.dateOfBirth(), p.email(), appointments.get(p.id())
+                p.id(), p.name(), p.dateOfBirth(), p.email(), appointments.getOrDefault(p.id(), Collections.emptyList())
         )).toList();
     }
 }

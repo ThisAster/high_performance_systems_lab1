@@ -2,9 +2,9 @@ package com.example.clinic.appointment.service;
 
 import com.example.clinic.appointment.dto.AppointmentTypeCreationDTO;
 import com.example.clinic.appointment.entity.AppointmentsType;
+import com.example.clinic.appointment.exception.EntityNotFoundException;
 import com.example.clinic.appointment.mapper.AppoinmentsTypeMapper;
 import com.example.clinic.appointment.repository.AppointmentsTypeRepository;
-import com.example.clinic.appointment.exception.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

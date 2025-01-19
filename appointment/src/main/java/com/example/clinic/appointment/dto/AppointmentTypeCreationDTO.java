@@ -27,4 +27,5 @@ public record AppointmentTypeCreationDTO(
         @NotNull(message = "Doctor ID is required")
         @Positive(message = "Doctor ID must be a positive number")
         @JsonProperty("doctor_id") Long doctorId
-) {}
+) {
+}

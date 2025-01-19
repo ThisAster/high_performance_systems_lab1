@@ -15,7 +15,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 /**
- *
  * @author thisaster
  */
 @Repository
@@ -25,8 +24,8 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
             "WHERE t.doctor = :id " +
             "AND a.appointmentDate BETWEEN :start AND :end")
     List<Appointment> findByDoctorIdAndTimeInterval(@Param("id") Long doctorId,
-                                                   @Param("start") LocalDateTime start,
-                                                   @Param("end") LocalDateTime end);
+                                                    @Param("start") LocalDateTime start,
+                                                    @Param("end") LocalDateTime end);
 
     List<Appointment> findByPatientIn(List<Long> patients);
 }

@@ -1,5 +1,11 @@
 package com.example.clinic.auth.controller;
 
+import com.example.clinic.auth.dto.UserDTO;
+import com.example.clinic.auth.entity.User;
+import com.example.clinic.auth.repository.RoleRepository;
+import com.example.clinic.auth.repository.UserRepository;
+import com.example.clinic.auth.service.AuthService;
+import com.example.clinic.auth.service.JwtService;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
@@ -9,12 +15,6 @@ import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import com.example.clinic.auth.dto.UserDTO;
-import com.example.clinic.auth.entity.User;
-import com.example.clinic.auth.repository.RoleRepository;
-import com.example.clinic.auth.repository.UserRepository;
-import com.example.clinic.auth.service.AuthService;
-import com.example.clinic.auth.service.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -30,28 +30,21 @@ import static io.restassured.RestAssured.given;
 @Testcontainers
 class AuthControllerTest {
 
-    @Autowired
-    private AuthService authService;
-
-    @Autowired
-    JwtService jwtService;
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private RoleRepository roleRepository;
-
     static UserDTO userDTO;
     static User user;
-
+    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:latest");
+    @Autowired
+    JwtService jwtService;
     @Value("${auth-service.token}")
     String token;
-
+    @Autowired
+    private AuthService authService;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private RoleRepository roleRepository;
     @LocalServerPort
     private Integer port;
-
-    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:latest");
 
     @DynamicPropertySource
     static void configureProperties(DynamicPropertyRegistry registry) {

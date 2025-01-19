@@ -12,13 +12,13 @@ public class AnalysisMapper {
         if (analysis == null) {
             return null;
         }
-        
+
         return new AnalysisDto(
-            analysis.getId(),
-            analysis.getType(),
-            analysis.getSampleDate(),
-            analysis.getResult(),
-            analysis.getStatus()
+                analysis.getId(),
+                analysis.getType(),
+                analysis.getSampleDate(),
+                analysis.getResult(),
+                analysis.getStatus()
         );
     }
 

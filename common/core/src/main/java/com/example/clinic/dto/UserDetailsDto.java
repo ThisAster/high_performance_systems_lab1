@@ -3,7 +3,6 @@ package com.example.clinic.dto;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.Collection;
-import java.util.UUID;
 
 public class UserDetailsDto {
     private final Long id;

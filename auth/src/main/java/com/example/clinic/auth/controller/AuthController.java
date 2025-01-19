@@ -1,9 +1,8 @@
 package com.example.clinic.auth.controller;
 
-import lombok.RequiredArgsConstructor;
 import com.example.clinic.auth.dto.UserDTO;
 import com.example.clinic.auth.service.AuthService;
-import com.example.clinic.auth.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

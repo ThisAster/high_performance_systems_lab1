@@ -22,7 +22,7 @@ public class DoctorService {
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     public Doctor createDoctor(DoctorCreationDTO doctorDto) {
         Doctor doctor = doctorMapper.doctorDtoToEntity(doctorDto);
-    
+
         return doctorRepository.save(doctor);
     }
 
@@ -42,7 +42,7 @@ public class DoctorService {
         if (!doctorRepository.existsById(id)) {
             throw new EntityNotFoundException("Doctor with id " + id + " not found");
         }
-        
+
         doctorRepository.deleteById(id);
     }
 

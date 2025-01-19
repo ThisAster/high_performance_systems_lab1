@@ -1,5 +1,7 @@
 spring:
   cloud:
+    discovery:
+      enabled: false
     config:
       import-check:
         enabled: false
@@ -14,7 +16,7 @@ springdoc:
   swagger-ui.path: /swagger-ui
 
 server:
-  port: 8888
+  port: 8887
   servlet.context-path: /
 
 email:

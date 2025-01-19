@@ -5,9 +5,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,7 +25,7 @@ public class Recipe {
     private Long id;
 
     @Column(name = "recipe_date", nullable = false)
-    private LocalDate recipeDate; 
+    private LocalDate recipeDate;
 
     @Column(name = "medication", nullable = false)
     private String medication;

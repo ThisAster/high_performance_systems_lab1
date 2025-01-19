@@ -23,4 +23,5 @@ public record PatientCreationDTO(
         @Email(message = "Invalid email format")
         @Size(max = 100, message = "Email should not exceed 100 characters")
         String email
-) {}
+) {
+}

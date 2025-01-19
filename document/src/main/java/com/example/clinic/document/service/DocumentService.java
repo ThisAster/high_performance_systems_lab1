@@ -32,7 +32,7 @@ public class DocumentService {
     public Document updateDocument(Long id, DocumentCreationDTO documentDto) {
         Document document = documentRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Document with id " + id + " not found"));
-                
+
         document.setType(documentDto.type());
         document.setDate(documentDto.date());
         document.setContent(documentDto.content());

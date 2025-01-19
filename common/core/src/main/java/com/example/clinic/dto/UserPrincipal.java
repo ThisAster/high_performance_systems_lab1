@@ -3,7 +3,6 @@ package com.example.clinic.dto;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-
 import java.util.Collection;
 
 public class UserPrincipal implements UserDetails {

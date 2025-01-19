@@ -23,6 +23,7 @@ public record RecipeCreationDTO(
         String dose,
 
         @NotBlank(message = "Duration is required")
-        @Size(max = 50, message = "Duration should not exceed 50 characters")  
+        @Size(max = 50, message = "Duration should not exceed 50 characters")
         String duration
-) {}
+) {
+}

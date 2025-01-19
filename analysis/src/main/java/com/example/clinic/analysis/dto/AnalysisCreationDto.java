@@ -24,4 +24,5 @@ public record AnalysisCreationDto(
         @NotBlank(message = "Status is required")
         @Size(max = 50, message = "Status should not exceed 50 characters")
         String status
-) {}
+) {
+}

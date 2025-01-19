@@ -3,7 +3,6 @@ package com.example.clinic.appointment.mapper;
 import com.example.clinic.appointment.dto.AppointmentCreationDTO;
 import com.example.clinic.appointment.dto.AppointmentDto;
 import com.example.clinic.appointment.entity.Appointment;
-import com.example.clinic.appointment.mapper.AppoinmentsTypeMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -19,13 +18,13 @@ public class AppointmentMapper {
         }
 
         return new AppointmentDto(
-            appointment.getId(),
-            appointment.getAppointmentDate(),
-            appointment.getPatient() != null ? appointment.getPatient() : null,
-            appoinmentsTypeMapper.entityToAppointmentTypeDTO(appointment.getAppointmentType())
+                appointment.getId(),
+                appointment.getAppointmentDate(),
+                appointment.getPatient() != null ? appointment.getPatient() : null,
+                appoinmentsTypeMapper.entityToAppointmentTypeDTO(appointment.getAppointmentType())
         );
     }
- 
+
     public Appointment appointmentDtoToEntity(AppointmentCreationDTO appointmentDto) {
         if (appointmentDto == null) {
             return null;

@@ -12,9 +12,10 @@ import java.time.LocalDate;
 
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public record RecipeDto(
-    Long id,
-    LocalDate recipeDate,
-    String medication,
-    String dose,
-    String duration
-) {}
+        Long id,
+        LocalDate recipeDate,
+        String medication,
+        String dose,
+        String duration
+) {
+}

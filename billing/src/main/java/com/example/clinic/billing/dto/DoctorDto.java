@@ -6,12 +6,12 @@
 package com.example.clinic.billing.dto;
 
 /**
- *
  * @author thisaster
  */
 
- public record DoctorDto(
-     Long id,
-     String name,
-     String speciality
- ) {}
+public record DoctorDto(
+        Long id,
+        String name,
+        String speciality
+) {
+}

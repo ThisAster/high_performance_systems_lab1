@@ -14,7 +14,7 @@ import org.springframework.data.relational.core.mapping.Table;
 @NoArgsConstructor
 @ToString
 @Table("user_")
-public class User  {
+public class User {
     @Id
     private long id;
     private String login;

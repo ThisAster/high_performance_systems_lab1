@@ -1,15 +1,13 @@
 package com.example.clinic.timetable.service;
 
-import com.example.clinic.timetable.dto.AppointmentDto;
-import com.example.clinic.timetable.integration.AppointmentService;
 import com.example.clinic.timetable.dto.TimeTableDTO;
+import com.example.clinic.timetable.integration.AppointmentService;
 import com.example.clinic.timetable.mapper.TimeTableMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor

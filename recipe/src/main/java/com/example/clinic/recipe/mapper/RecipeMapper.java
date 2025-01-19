@@ -13,11 +13,11 @@ public class RecipeMapper {
             return null;
         }
         return new RecipeDto(
-            recipe.getId(),
-            recipe.getRecipeDate(),
-            recipe.getMedication(),
-            recipe.getDose(),
-            recipe.getDuration()
+                recipe.getId(),
+                recipe.getRecipeDate(),
+                recipe.getMedication(),
+                recipe.getDose(),
+                recipe.getDuration()
         );
     }
 
@@ -30,7 +30,7 @@ public class RecipeMapper {
         recipe.setMedication(recipeDto.medication());
         recipe.setDose(recipeDto.dose());
         recipe.setDuration(recipeDto.duration());
-        
+
         return recipe;
     }
 }

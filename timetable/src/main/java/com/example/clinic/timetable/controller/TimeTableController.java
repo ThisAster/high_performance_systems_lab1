@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.time.LocalDateTime;
 
 @RestController()
 @RequestMapping("/api/timetable")
@@ -21,8 +21,8 @@ public class TimeTableController {
     private final TimeTableMapper timeTableMapper;
 
     @GetMapping("/doctor/{doctorId}/date/{date}")
-    public TimeTableDTO getTimeTableForDoctorAndDate(@PathVariable Long doctorId, @PathVariable LocalDate date) {
-        return timeTableService.getTimeTableForDoctorAndDate(doctorId, date);
+    public TimeTableDTO getTimeTableForDoctorAndDate(@PathVariable Long doctorId, @PathVariable String date) {
+        return timeTableService.getTimeTableForDoctorAndDate(doctorId, LocalDate.parse(date));
     }
 
 }

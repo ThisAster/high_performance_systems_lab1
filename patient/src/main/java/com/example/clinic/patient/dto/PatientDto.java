@@ -7,8 +7,9 @@ import java.time.LocalDate;
 
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public record PatientDto(
-    Long id,
-    String name,
-    LocalDate dateOfBirth,
-    String email
-) {}
+        Long id,
+        String name,
+        LocalDate dateOfBirth,
+        String email
+) {
+}

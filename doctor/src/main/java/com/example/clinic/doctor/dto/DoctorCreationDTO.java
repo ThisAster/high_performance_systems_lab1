@@ -12,4 +12,5 @@ public record DoctorCreationDTO(
         @NotBlank(message = "Speciality is required")
         @Size(max = 50, message = "Speciality should not exceed 50 characters")
         String speciality
-) {}
+) {
+}

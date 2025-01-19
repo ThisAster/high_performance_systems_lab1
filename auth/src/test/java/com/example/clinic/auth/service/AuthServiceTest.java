@@ -1,12 +1,12 @@
 package com.example.clinic.auth.service;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import com.example.clinic.auth.dto.UserDTO;
 import com.example.clinic.auth.entity.User;
 import com.example.clinic.auth.repository.RoleRepository;
 import com.example.clinic.auth.repository.UserRepository;
 import com.example.clinic.auth.util.UserAlreadyExistException;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -22,22 +22,17 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @Testcontainers
 class AuthServiceTest {
 
-    @Autowired
-    private AuthService authService;
-
-    @Autowired
-    JwtService jwtService;
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private RoleRepository roleRepository;
-
     static UserDTO userDTO;
     static User user;
-
     static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:latest");
+    @Autowired
+    JwtService jwtService;
+    @Autowired
+    private AuthService authService;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private RoleRepository roleRepository;
 
     @DynamicPropertySource
     static void configureProperties(DynamicPropertyRegistry registry) {
@@ -79,10 +74,10 @@ class AuthServiceTest {
 
         assertThat(userRepository.findByLogin(userDTO.getLogin())).isNotNull()
                 .satisfies(
-                    a -> {
-                        assertThat(a.get().getLogin()).isEqualTo(userDTO.getLogin());
-                        assertThat(a.get().getEmail()).isEqualTo(userDTO.getEmail());
-                });
+                        a -> {
+                            assertThat(a.get().getLogin()).isEqualTo(userDTO.getLogin());
+                            assertThat(a.get().getEmail()).isEqualTo(userDTO.getEmail());
+                        });
 
         assertThrows(UserAlreadyExistException.class, () -> authService.registerUser(userDTO));
     }

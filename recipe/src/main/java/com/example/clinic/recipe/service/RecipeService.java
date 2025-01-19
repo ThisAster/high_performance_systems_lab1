@@ -2,9 +2,9 @@ package com.example.clinic.recipe.service;
 
 import com.example.clinic.recipe.dto.RecipeCreationDTO;
 import com.example.clinic.recipe.entity.Recipe;
+import com.example.clinic.recipe.exception.EntityNotFoundException;
 import com.example.clinic.recipe.mapper.RecipeMapper;
 import com.example.clinic.recipe.repository.RecipeRepository;
-import com.example.clinic.recipe.exception.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -33,7 +33,7 @@ public class RecipeService {
     public Recipe updateRecipe(Long id, RecipeCreationDTO recipeDto) {
         Recipe recipe = recipeRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Recipe with id " + id + " not found"));
-        
+
         recipe.setRecipeDate(recipeDto.recipeDate());
         recipe.setMedication(recipeDto.medication());
         recipe.setDose(recipeDto.dose());

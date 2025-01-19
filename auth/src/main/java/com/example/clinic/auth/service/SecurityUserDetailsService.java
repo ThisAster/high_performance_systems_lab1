@@ -1,8 +1,7 @@
 package com.example.clinic.auth.service;
 
-import lombok.RequiredArgsConstructor;
 import com.example.clinic.auth.config.UserPrincipal;
-import org.springframework.security.core.userdetails.User;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

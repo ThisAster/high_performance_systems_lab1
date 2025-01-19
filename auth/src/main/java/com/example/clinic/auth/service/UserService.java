@@ -1,12 +1,9 @@
 package com.example.clinic.auth.service;
 
-import lombok.RequiredArgsConstructor;
-import com.example.clinic.auth.entity.RoleEntity;
 import com.example.clinic.auth.entity.User;
-import com.example.clinic.auth.repository.RoleRepository;
 import com.example.clinic.auth.repository.UserRepository;
 import com.example.clinic.auth.util.UserAlreadyExistException;
-import org.springframework.data.crossstore.ChangeSetPersister;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

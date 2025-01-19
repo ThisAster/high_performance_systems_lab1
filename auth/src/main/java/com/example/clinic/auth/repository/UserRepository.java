@@ -1,7 +1,6 @@
 package com.example.clinic.auth.repository;
 
 
-
 import com.example.clinic.auth.entity.User;
 import org.springframework.data.repository.CrudRepository;
 

@@ -1,15 +1,15 @@
 package com.example.clinic;
 
 
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import io.jsonwebtoken.Claims;
 import com.example.clinic.dto.UserDetailsDto;
 import com.example.clinic.security.JwtUtils;
 import com.example.clinic.security.SecurityHelper;
 import com.example.clinic.security.SecurityHelperClass;
+import io.jsonwebtoken.Claims;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,7 +26,6 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     private final String HEADER = "Authorization";
     private final String PREFIX = "Bearer ";
     private final SecurityHelper securityHelper = new SecurityHelperClass();
-
 
 
     @Override

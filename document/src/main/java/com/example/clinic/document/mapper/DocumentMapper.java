@@ -13,11 +13,11 @@ public class DocumentMapper {
             return null;
         }
         return new DocumentDto(
-            document.getId(),
-            document.getType(),
-            document.getDate(),
-            document.getContent(),
-            document.getStatus()
+                document.getId(),
+                document.getType(),
+                document.getDate(),
+                document.getContent(),
+                document.getStatus()
         );
     }
 
@@ -30,7 +30,7 @@ public class DocumentMapper {
         document.setDate(documentDto.date());
         document.setContent(documentDto.content());
         document.setStatus(documentDto.status());
-        
+
         return document;
     }
 }

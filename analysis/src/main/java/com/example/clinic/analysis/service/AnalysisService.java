@@ -7,9 +7,9 @@ package com.example.clinic.analysis.service;
 
 import com.example.clinic.analysis.dto.AnalysisCreationDto;
 import com.example.clinic.analysis.entity.Analysis;
+import com.example.clinic.analysis.exception.EntityNotFoundException;
 import com.example.clinic.analysis.mapper.AnalysisMapper;
 import com.example.clinic.analysis.repository.AnalysisRepository;
-import com.example.clinic.analysis.exception.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,7 +31,7 @@ public class AnalysisService {
         analysis.setPatient(patientId);
 
         return analysisRepository.save(analysis);
-    }   
+    }
 
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     public Analysis updateAnalysis(Long id, AnalysisCreationDto analysisDto) {

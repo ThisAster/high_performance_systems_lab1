@@ -4,16 +4,14 @@ import com.example.clinic.billing.dto.AppointmentDto;
 import com.example.clinic.billing.dto.ConsultationDTO;
 import com.example.clinic.billing.dto.InvoiceDTO;
 import com.example.clinic.billing.dto.PatientDto;
-import com.example.clinic.billing.integration.PatientService;
 import com.example.clinic.billing.exception.EntityNotFoundException;
+import com.example.clinic.billing.integration.PatientService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,7 +25,7 @@ public class BillingService {
         var patientIdSet = patientIds.stream().distinct().collect(Collectors.toList());
 
         List<PatientDto> patients = patientService.getPatientsWithAppointmentsByIds(patientIdSet);
-        if(patients.isEmpty()){
+        if (patients.isEmpty()) {
             throw new EntityNotFoundException("No patients found for the provided IDs");
         }
 
@@ -35,7 +33,7 @@ public class BillingService {
         patientIdSet.removeAll(patients.stream().map(PatientDto::id).collect(Collectors.toSet()));
 
         if (!patientIdSet.isEmpty()) {
-            throw new EntityNotFoundException("Patients with ids " + StringUtils.join(patientIdSet, ',') +  " not found.");
+            throw new EntityNotFoundException("Patients with ids " + StringUtils.join(patientIdSet, ',') + " not found.");
         }
 
         List<AppointmentDto> appointments = patients.stream().flatMap((patient) -> patient.appointments().stream()).collect(Collectors.toList());

@@ -85,6 +85,8 @@ services:
   analysis:
     build:
       context: ./analysis
+    volumes:
+      - '${HOME}/.m2:/root/.m2'
     depends_on:
       eureka:
         condition: service_healthy

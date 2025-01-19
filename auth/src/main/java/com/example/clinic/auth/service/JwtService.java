@@ -1,11 +1,13 @@
 package com.example.clinic.auth.service;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.stereotype.Service;
 import com.example.clinic.auth.config.UserPrincipal;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
+
 import java.security.KeyFactory;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -16,7 +18,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
-import org.springframework.security.core.userdetails.UserDetails;
 
 
 @Service
@@ -43,7 +44,7 @@ public class JwtService {
             claims.put("username", customUserDetails.getUsername());
             claims.put("enabled", customUserDetails.isEnabled());
         }
-        System.out.println("auth clainms " + claims );
+        System.out.println("auth clainms " + claims);
         return generateToken(claims, userDetails);
     }
 

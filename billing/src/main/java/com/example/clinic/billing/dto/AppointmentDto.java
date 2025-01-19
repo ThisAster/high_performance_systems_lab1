@@ -6,9 +6,9 @@
 package com.example.clinic.billing.dto;
 
 /**
- *
  * @author thisaster
  */
+
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.AllArgsConstructor;

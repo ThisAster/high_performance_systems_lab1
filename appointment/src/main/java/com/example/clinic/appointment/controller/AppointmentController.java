@@ -78,7 +78,7 @@ public class AppointmentController {
     }
 
     @GetMapping("/filter")
-    public ResponseEntity<List<AppointmentDto>> filterAppointments(AppointmentFilterRequest filter){
+    public ResponseEntity<List<AppointmentDto>> filterAppointments(AppointmentFilterRequest filter) {
         return ResponseEntity.ok(appointmentService.filter(filter));
     }
 

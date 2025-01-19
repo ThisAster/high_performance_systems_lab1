@@ -1,11 +1,9 @@
 package com.example.clinic.appointment.integration.feign;
 
 import com.example.clinic.appointment.dto.EmailDto;
-import com.example.clinic.appointment.entity.Appointment;
 import com.example.clinic.appointment.integration.EmailService;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 

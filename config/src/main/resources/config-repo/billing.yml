@@ -14,4 +14,4 @@ server:
   servlet.context-path: /
 
 patient.service.url: http://patient:8888/api/patients/
-appointment.service.url: http://patient:8888/api/appointments/
+appointment.service.url: http://appointment:8888/api/appointments/

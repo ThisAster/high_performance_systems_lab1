@@ -13,10 +13,10 @@ public class PatientMapper {
             return null;
         }
         return new PatientDto(
-            patient.getId(),
-            patient.getName(),
-            patient.getDateOfBirth(),
-            patient.getEmail()
+                patient.getId(),
+                patient.getName(),
+                patient.getDateOfBirth(),
+                patient.getEmail()
         );
     }
 
@@ -28,7 +28,7 @@ public class PatientMapper {
         patient.setName(patientDto.name());
         patient.setDateOfBirth(patientDto.dateOfBirth());
         patient.setEmail(patientDto.email());
-        
+
         return patient;
     }
 }
