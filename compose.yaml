@@ -3,9 +3,9 @@ services:
     image: 'postgres:latest'
     container_name: 'postgres-db'
     environment:
-      - 'POSTGRES_DB=clinic_db'
-      - 'POSTGRES_PASSWORD=clinic'
-      - 'POSTGRES_USER=clinic'
+      - 'POSTGRES_DB=postgres'
+      - 'POSTGRES_PASSWORD=postgres'
+      - 'POSTGRES_USER=postgres'
     ports:
       - '5433:5432'
     healthcheck:
@@ -15,6 +15,7 @@ services:
       retries: 5
     volumes:
       - 'postgres_data:/var/lib/postgresql/data'
+      - './database_init/:/docker-entrypoint-initdb.d'
   eureka:
     build: ./eureka
     ports:
@@ -43,11 +44,6 @@ services:
       SPRING_FLYWAY_ENABLED: 'true'
       API_PREFIX: '/api/v1'
       JWT_SECRET: 'aboba'
-      DB_HOST: postgres-db
-      DB_NAME: clinic_db
-      DB_PORT: 5432
-      DB_USER: clinic
-      DB_PASSWORD: clinic
     healthcheck:
       test: "curl --silent --fail config:8800/actuator/health | grep UP || exit 1"
       interval: 10s
@@ -80,10 +76,10 @@ services:
       EUREKA_URL: http://eureka:8761/eureka/
       CONFIG_URL: http://config:8800
       DB_HOST: postgres-db
-      DB_NAME: clinic_db
+      DB_NAME: auth_db
       DB_PORT: 5432
-      DB_USER: clinic
-      DB_PASSWORD: clinic
+      DB_USER: auth
+      DB_PASSWORD: auth
   analysis:
     build:
       context: ./analysis
@@ -98,10 +94,10 @@ services:
       EUREKA_URL: http://eureka:8761/eureka/
       CONFIG_URL: http://config:8800
       DB_HOST: postgres-db
-      DB_NAME: clinic_db
+      DB_NAME: analysis_db
       DB_PORT: 5432
-      DB_USER: clinic
-      DB_PASSWORD: clinic
+      DB_USER: analysis
+      DB_PASSWORD: analysis
   doctor:
     build: ./doctor
     depends_on:
@@ -113,10 +109,10 @@ services:
       EUREKA_URL: http://eureka:8761/eureka/
       CONFIG_URL: http://config:8800
       DB_HOST: postgres-db
-      DB_NAME: clinic_db
+      DB_NAME: doctor_db
       DB_PORT: 5432
-      DB_USER: clinic
-      DB_PASSWORD: clinic
+      DB_USER: doctor
+      DB_PASSWORD: doctor
   document:
     build: ./document
     depends_on:
@@ -130,10 +126,10 @@ services:
       EUREKA_URL: http://eureka:8761/eureka/
       CONFIG_URL: http://config:8800
       DB_HOST: postgres-db
-      DB_NAME: clinic_db
+      DB_NAME: document_db
       DB_PORT: 5432
-      DB_USER: clinic
-      DB_PASSWORD: clinic
+      DB_USER: document
+      DB_PASSWORD: document
   mail:
     build: ./mail
     depends_on:
@@ -157,10 +153,10 @@ services:
       EUREKA_URL: http://eureka:8761/eureka/
       CONFIG_URL: http://config:8800
       DB_HOST: postgres-db
-      DB_NAME: clinic_db
+      DB_NAME: appointment_db
       DB_PORT: 5432
-      DB_USER: clinic
-      DB_PASSWORD: clinic
+      DB_USER: appointment
+      DB_PASSWORD: appointment
   timetable:
     build: ./timetable
     depends_on:
@@ -184,10 +180,10 @@ services:
       EUREKA_URL: http://eureka:8761/eureka/
       CONFIG_URL: http://config:8800
       DB_HOST: postgres-db
-      DB_NAME: clinic_db
+      DB_NAME: patient_db
       DB_PORT: 5432
-      DB_USER: clinic
-      DB_PASSWORD: clinic
+      DB_USER: patient
+      DB_PASSWORD: patient
   billing:
     build: ./billing
     depends_on:
@@ -211,9 +207,9 @@ services:
       EUREKA_URL: http://eureka:8761/eureka/
       CONFIG_URL: http://config:8800
       DB_HOST: postgres-db
-      DB_NAME: clinic_db
+      DB_NAME: recipe_db
       DB_PORT: 5432
-      DB_USER: clinic
-      DB_PASSWORD: clinic
+      DB_USER: recipe
+      DB_PASSWORD: recipe
 volumes:
   postgres_data:

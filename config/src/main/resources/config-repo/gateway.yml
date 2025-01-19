@@ -3,11 +3,15 @@ spring:
     name: gateway
   cloud:
     gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
       routes:
         - id: analysis
           uri: lb://analysis
           predicates:
-            - Path=/api/analysis/**
+            - Path=/api/analyses/**
           filters:
             - name: CircuitBreaker
               args:
@@ -16,7 +20,7 @@ spring:
         - id: appointment
           uri: lb://appointment
           predicates:
-            - Path=/api/appointment/**
+            - Path=/api/appointments/**
           filters:
             - name: CircuitBreaker
               args:
@@ -34,7 +38,7 @@ spring:
         - id: doctor
           uri: lb://doctor
           predicates:
-            - Path=/api/doctor/**
+            - Path=/api/doctors/**
           filters:
             - name: CircuitBreaker
               args:
@@ -43,7 +47,7 @@ spring:
         - id: document
           uri: lb://document
           predicates:
-            - Path=/api/document/**
+            - Path=/api/documents/**
           filters:
             - name: CircuitBreaker
               args:
@@ -68,9 +72,9 @@ spring:
                 name: patientCB
                 fallbackUri: forward:/fallback
         - id: recipe
-          uri: lb://recipe
+          uri: http://recipe:8080/
           predicates:
-            - Path=/api/recipe/**
+            - Path=/api/recipes/**
           filters:
             - name: CircuitBreaker
               args:
@@ -90,6 +94,10 @@ server:
 
 eureka:
   client:
+    instance:
+      preferIpAddress: true
+    fetchRegistry: true
+    registerWithEureka: false
     serviceUrl:
       defaultZone: ${EUREKA_URL:http://eureka:8761/eureka/}
 

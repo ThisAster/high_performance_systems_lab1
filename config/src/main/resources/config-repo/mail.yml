@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: mail
+    page-size: 5
+  devtools.restart.enabled: true
+  jackson.property-naming-strategy: SNAKE_CASE
+
+springdoc:
+  api-docs.path: /api-docs
+  swagger-ui.path: /swagger-ui
+
+server:
+  port: 8888
+  servlet.context-path: /
+
+email:
+  sender: ilya.minyaeff@yandex.ru
+  host: smtp.yandex.ru
+  port: 465
+  password: dyrdtgkrhajjptlh
