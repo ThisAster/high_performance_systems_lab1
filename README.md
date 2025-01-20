@@ -36,3 +36,21 @@ docker compose up -d
 docker rmi $(docker images --format "{{.ID}}")
 ```
 Эта комадна удаляет ВСЕ образы
+
+### Тесты
+
+Запуск тестов и генерация общего Jacoco-репорта происходит в 2 этапа:
+
+1) Компиляция кода, запуск тестов и генерация Jacoco репортов для каждого модуля (`target/jacoco.exec`)
+
+2) Слияние всех репортов в один (`target/site/jacoco-aggregate/index.html`). На этапе слияния (`mvn verify -DskipTests`) важно **не** вызывать команду clean чтобы она не удалила репорты в каждом модуле
+
+```bash
+cd lab2_rus
+mvn clean package
+mvn verify -DskipTests
+```
+
+Общий репорт генерируется в модуле `code-coverage`, его можно открыть в браузере, например:
+
+`/home/username/lab2_rus/code-coverage/target/site/jacoco-aggregate/index.html`

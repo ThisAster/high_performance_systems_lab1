@@ -1,6 +1,5 @@
 package com.example.clinic.timetable;
 
-
 import com.example.clinic.timetable.integration.AppointmentService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
