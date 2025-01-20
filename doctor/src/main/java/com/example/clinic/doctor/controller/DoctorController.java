@@ -47,9 +47,9 @@ public class DoctorController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteDoctor(@PathVariable Long id) {
-        doctorService.deleteDoctor(id);
-        return ResponseEntity.ok("Doctor with id " + id + " successfully deleted.");
+    public Mono<ResponseEntity<String>> deleteDoctor(@PathVariable Long id) {
+        return doctorService.deleteDoctor(id)
+                .thenReturn(ResponseEntity.ok("Doctor with id " + id + " successfully deleted."));
     }
 
     @GetMapping("/{id}")
