@@ -4,7 +4,7 @@ import com.example.clinic.appointment.dto.AppointmentTypeCreationDTO;
 import com.example.clinic.appointment.dto.AppointmentTypeDTO;
 import com.example.clinic.appointment.entity.AppointmentsType;
 import com.example.clinic.appointment.mapper.AppoinmentsTypeMapper;
-import com.example.clinic.appointment.model.PageArgument;
+import com.example.clinic.model.PageArgument;
 import com.example.clinic.appointment.service.AppointmentsTypeService;
 import com.example.clinic.appointment.util.HeaderUtils;
 import jakarta.validation.Valid;

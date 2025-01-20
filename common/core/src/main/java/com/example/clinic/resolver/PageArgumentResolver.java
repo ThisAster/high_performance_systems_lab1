@@ -1,6 +1,6 @@
-package com.example.clinic.recipe.config.resolver;
+package com.example.clinic.resolver;
 
-import com.example.clinic.recipe.model.PageArgument;
+import com.example.clinic.model.PageArgument;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.coyote.BadRequestException;

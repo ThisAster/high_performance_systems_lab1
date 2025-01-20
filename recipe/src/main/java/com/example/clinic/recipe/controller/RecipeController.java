@@ -4,7 +4,7 @@ import com.example.clinic.recipe.dto.RecipeCreationDTO;
 import com.example.clinic.recipe.dto.RecipeDto;
 import com.example.clinic.recipe.entity.Recipe;
 import com.example.clinic.recipe.mapper.RecipeMapper;
-import com.example.clinic.recipe.model.PageArgument;
+import com.example.clinic.model.PageArgument;
 import com.example.clinic.recipe.service.RecipeService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

@@ -4,7 +4,7 @@ import com.example.clinic.patient.dto.PatientCreationDTO;
 import com.example.clinic.patient.dto.PatientDto;
 import com.example.clinic.patient.entity.Patient;
 import com.example.clinic.patient.mapper.PatientMapper;
-import com.example.clinic.patient.model.PageArgument;
+import com.example.clinic.model.PageArgument;
 import com.example.clinic.patient.service.PatientService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

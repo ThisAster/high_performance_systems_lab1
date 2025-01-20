@@ -1,7 +1,8 @@
-package com.example.clinic.doctor.model;
+package com.example.clinic.model;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,6 +18,7 @@ public class PageArgument {
     Integer page;
     Integer size;
 
+    @Schema(hidden = true)
     public PageRequest getPageRequest() {
         return PageRequest.of(page, size);
     }
