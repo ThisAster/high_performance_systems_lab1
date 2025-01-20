@@ -33,28 +33,25 @@ public class DoctorService {
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     public Mono<DoctorDto> updateDoctor(Long id, DoctorCreationDTO doctorDto) {
         return doctorRepository.findById(id)
-                .doOnSuccess(doc -> {
-                    if(doc == null){
-                        throw new EntityNotFoundException("Doctor not found. Id " + id);
-                    }
+                .switchIfEmpty(Mono.error(new EntityNotFoundException("Doctor not found. Id " + id)))
+                .flatMap(doc -> {
                     doc.setName(doctorDto.name());
                     doc.setSpeciality(doctorDto.speciality());
-                    doctorRepository.save(doc);
+                    return doctorRepository.save(doc);
                 })
                 .map(doctorMapper::entityToDoctorDto);
     }
 
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     public Mono<Void> deleteDoctor(Long id) {
-        doctorRepository.existsById(id)
-                .doOnSuccess(exists -> {
+        return doctorRepository.existsById(id)
+                .flatMap(exists -> {
                     if(exists){
-                        doctorRepository.deleteById(id);
+                        return doctorRepository.deleteById(id);
                     } else {
-                        throw new EntityNotFoundException("Doctor with id " + id + " not found");
+                        return Mono.error(new EntityNotFoundException("Doctor with id " + id + " not found"));
                     }
                 });
-        return Mono.empty();
     }
 
     public Mono<DoctorDto> getDoctorById(Long id) {
