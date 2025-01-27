@@ -5,7 +5,6 @@ import com.example.clinic.doctor.service.DoctorService;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
-import io.jsonwebtoken.Jwts;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.http.Header;
@@ -27,15 +26,6 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.ext.ScriptUtils;
 import org.testcontainers.jdbc.JdbcDatabaseDelegate;
 import org.testcontainers.junit.jupiter.Testcontainers;
-
-import java.security.KeyFactory;
-import java.security.PrivateKey;
-import java.security.spec.PKCS8EncodedKeySpec;
-import java.time.Instant;
-import java.util.Base64;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
@@ -164,7 +154,7 @@ public class DoctorControllerTest {
                 .get("/api/doctors")
                 .then()
                 .statusCode(200)
-                .body("[0].name", equalTo("Dr. Alice Brown"))
+                .body("[0].name", equalTo("Dr. Bob Lee"))
                 .body("size()", is(size));
     }
 }

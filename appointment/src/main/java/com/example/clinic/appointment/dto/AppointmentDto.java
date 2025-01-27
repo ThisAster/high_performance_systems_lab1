@@ -5,9 +5,6 @@
 
 package com.example.clinic.appointment.dto;
 
-/**
- * @author thisaster
- */
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;

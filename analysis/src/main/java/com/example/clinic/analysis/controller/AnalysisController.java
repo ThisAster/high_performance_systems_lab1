@@ -2,12 +2,14 @@ package com.example.clinic.analysis.controller;
 
 import com.example.clinic.analysis.dto.AnalysisCreationDto;
 import com.example.clinic.analysis.dto.AnalysisDto;
+import com.example.clinic.analysis.exception.EntityNotFoundException;
 import com.example.clinic.analysis.mapper.AnalysisMapper;
 import com.example.clinic.analysis.model.PageArgument;
 import com.example.clinic.analysis.service.AnalysisService;
 import com.example.clinic.analysis.util.HeaderUtils;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,9 +48,13 @@ public class AnalysisController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteAnalysis(@PathVariable Long id) {
-        analysisService.deleteAnalysis(id);
-        return ResponseEntity.ok("Analysis with id " + id + " successfully deleted.");
+    public Mono<ResponseEntity<String>> deleteAnalysis(@PathVariable Long id) {
+        try {
+            analysisService.deleteAnalysis(id);
+        } catch (EntityNotFoundException e) {
+            return Mono.just(ResponseEntity.status(HttpStatus.NOT_FOUND).body("Analysis with id " + id + " not found."));
+        }
+        return Mono.just(ResponseEntity.ok("Analysis with id " + id + " successfully deleted."));
     }
 
     @GetMapping("/{id}")

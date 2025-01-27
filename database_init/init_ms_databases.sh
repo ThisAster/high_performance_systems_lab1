@@ -1,6 +1,9 @@
 set -e
 
 psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-EOSQL
+  CREATE USER clinic WITH PASSWORD 'clinic';
+  CREATE DATABASE clinic_db WITH OWNER clinic;
+  GRANT ALL PRIVILEGES ON DATABASE clinic_db TO clinic;
 	CREATE USER analysis WITH PASSWORD 'analysis';
 	CREATE DATABASE analysis_db WITH OWNER analysis;
 	GRANT ALL PRIVILEGES ON DATABASE analysis_db TO analysis;

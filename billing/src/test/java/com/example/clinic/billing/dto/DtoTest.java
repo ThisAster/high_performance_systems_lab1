@@ -58,12 +58,12 @@ public class DtoTest {
 
         ConsultationDTO dto1 = new ConsultationDTO();
         dto1.setDoctor(doctorDto);
-        dto1.setPatient(patientDto);
+        dto1.setPatient(patientDto.id());
         dto1.setPrice(BigDecimal.valueOf(99));
 
         ConsultationDTO dto2 = new ConsultationDTO();
         dto2.setDoctor(doctorDto);
-        dto2.setPatient(patientDto);
+        dto2.setPatient(patientDto.id());
         dto2.setPrice(BigDecimal.valueOf(99));
 
         Assertions.assertTrue(dto1.equals(dto2));
@@ -93,12 +93,12 @@ public class DtoTest {
 
         ConsultationDTO dto1 = new ConsultationDTO();
         dto1.setDoctor(doctorDto);
-        dto1.setPatient(patientDto);
+        dto1.setPatient(patientDto.id());
         dto1.setPrice(BigDecimal.valueOf(11));
 
         ConsultationDTO dto2 = new ConsultationDTO();
         dto2.setDoctor(doctorDto);
-        dto2.setPatient(patientDto);
+        dto2.setPatient(patientDto.id());
         dto2.setPrice(BigDecimal.valueOf(22));
 
         List<ConsultationDTO> list = new ArrayList<>();

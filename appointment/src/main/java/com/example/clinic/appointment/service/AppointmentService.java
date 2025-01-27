@@ -47,7 +47,7 @@ public class AppointmentService {
         if (testForAppointmentCollision(appointmentsType.getDoctor(), appointment)) {
             throw new IllegalArgumentException("Appointment collision");
         }
-        sendAppointmentEmail(appointment, "You have signed up for an appointment");
+
 
         return appointmentRepository.save(appointment);
     }
@@ -64,7 +64,6 @@ public class AppointmentService {
             throw new IllegalArgumentException("Appointment collision");
         }
         var saved = appointmentRepository.save(appointment);
-        sendAppointmentEmail(appointment, "Information about your appointment has been updated.");
 
         return saved;
     }
@@ -73,7 +72,6 @@ public class AppointmentService {
     public void deleteAppointment(Long id) {
         var appointment = getAppointmentById(id);
 
-        sendAppointmentEmail(appointment, "Your appointment has been canceled.");
         appointmentRepository.deleteById(id);
     }
 

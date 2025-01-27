@@ -1,25 +1,23 @@
-auth - http://localhost:8080/api/v1/auth/docs/swagger-ui
+auth - http://localhost:8080/api/v1/auth/docs/swagger-ui    swagger +
 
 ————————————————————————————-
 
-*analysis - http://localhost:8080/api/analyses/docs/swagger-ui
+analysis - http://localhost:8080/api/analyses/docs/swagger-ui    swagger +
 
-appointment - http://localhost:8080/api/appointments/docs/swagger-ui
+appointment - http://localhost:8080/api/appointments/docs/swagger-ui (controller swagger + / type swagger +)
 
-billing - http://localhost:8080/api/billing/docs/swagger-ui
+billing - http://localhost:8080/api/billing/docs/swagger-ui    swagger +
 
-doctor - http://localhost:8080/api/doctors/docs/swagger-ui
+doctor - http://localhost:8080/api/doctors/docs/swagger-ui    swagger +
 
-document - http://localhost:8080/api/documents/docs/swagger-ui
+document - http://localhost:8080/api/documents/docs/swagger-ui    swagger +
 
-mail - http://localhost:8080/api/mail/docs/swagger-ui
+mail - http://localhost:8080/api/mail/docs/swagger-ui    delete
 
-patient - http://localhost:8080/api/patients/docs/swagger-ui
+patient - http://localhost:8080/api/patients/docs/swagger-ui swagger +
 
-recipe - http://localhost:8080/api/recipes/docs/swagger-ui
+recipe - http://localhost:8080/api/recipes/docs/swagger-ui    swagger +
 
-timetable - http://localhost:8080/api/timetable/docs/swagger-ui
+timetable - http://localhost:8080/api/timetable/docs/swagger-ui    swagger +
 
-minio - http://localhost:8089/api/minio/docs/swagger-ui
-
-* значит не работает
+minio - http://localhost:8089/api/minio/docs/swagger-ui    swagger down & delete + update -

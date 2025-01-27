@@ -64,6 +64,7 @@ public class BillingService {
 
         consultationDTO.setPrice(appointment.getAppointmentType().price());
         consultationDTO.setDoctor(appointment.getAppointmentType().doctor());
+        consultationDTO.setPatient(appointment.getPatientId());
 
         return consultationDTO;
     }
