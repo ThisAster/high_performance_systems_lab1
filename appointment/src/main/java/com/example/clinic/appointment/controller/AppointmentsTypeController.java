@@ -42,6 +42,7 @@ public class AppointmentsTypeController {
         } catch (Exception e) {
             throw new EntityNotFoundException("Doctor not found");
         }
+//        doctorService.getDoctorById(appointmentTypeDTO.doctorId());
         AppointmentsType appointmentsType = appointmentsTypeService.createAppointmentsType(appointmentTypeDTO);
         return ResponseEntity.created(URI.create("/api/appointments/" + appointmentsType.getId()))
                 .body(appointmentTypeDTO);
@@ -55,11 +56,12 @@ public class AppointmentsTypeController {
 
     @PutMapping("/{id}")
     public ResponseEntity<AppointmentTypeCreationDTO> updateAppointmentType(@PathVariable Long id, @Valid @RequestBody AppointmentTypeCreationDTO appointmentTypeDTO) {
-        try {
-            doctorService.getDoctorById(appointmentTypeDTO.doctorId());
-        } catch (Exception e) {
-            throw new EntityNotFoundException("Doctor not found");
-        }
+//        try {
+//            doctorService.getDoctorById(appointmentTypeDTO.doctorId());
+//        } catch (Exception e) {
+//            throw new EntityNotFoundException("Doctor not found");
+//        }
+        doctorService.getDoctorById(appointmentTypeDTO.doctorId());
         appointmentsTypeService.updateAppointmentsType(id, appointmentTypeDTO);
         return ResponseEntity.ok(appointmentTypeDTO);
     }

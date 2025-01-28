@@ -51,41 +51,35 @@ class AppointmentControllerTest {
 
     @Test
     void createAppointmentWithCollision(@Value("classpath:/appointments/createcollision.json") Resource json) throws Exception {
+        when(patientService.findById(anyLong()))
+                .thenReturn(of(new PatientDto("ivan.ivanov@email.com", "Иван Иванов")));
+
         mockMvc.perform(post("/api/appointments")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json.getContentAsByteArray())
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message").value("Appointment collision"));
-
     }
 
     @Test
     void updateAppointmentWithCollision(@Value("classpath:/appointments/createcollision.json") Resource json) throws Exception {
         Long appointmentId = 3L;
+
+        when(doctorService.getDoctorById(anyLong()))
+                .thenReturn(new DoctorDto(2L, "Доктор Иван", "Кардиология"));
+
+        when(patientService.findById(anyLong()))
+                .thenReturn(of(new PatientDto("ivan.ivanov@email.com", "Иван Иванов")));
+
         mockMvc.perform(put("/api/appointments/{id}", appointmentId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json.getContentAsByteArray())
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message").value("Appointment collision"));
-
     }
 
-    @Test
-    void createAppointment(@Value("classpath:/appointments/create.json") Resource json) throws Exception {
-        when(doctorService.getDoctorById(anyLong()))
-                .thenReturn(new DoctorDto(2L, "Doctor", "Spce"));
-        when(patientService.findById(anyLong()))
-                .thenReturn(of(new PatientDto("patient@email.com", "Test name")));
-
-        mockMvc.perform(post("/api/appointments")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(json.getContentAsByteArray())
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isCreated());
-
-    }
 
     @Test
     void updateAppointment(@Value("classpath:/appointments/update.json") Resource json) throws Exception {

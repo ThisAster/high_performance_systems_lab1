@@ -46,6 +46,7 @@ public class AppointmentController {
         } catch (Exception e) {
             throw new EntityNotFoundException("Patient not found");
         }
+//        patientService.getPatientById(appointmentDto.getPatientId());
 
         Appointment appointment = appointmentService.createAppointment(appointmentDto);
 
@@ -55,12 +56,12 @@ public class AppointmentController {
 
     @PutMapping("/{id}")
     public ResponseEntity<AppointmentCreationDTO> updateAppointment(@PathVariable Long id, @Valid @RequestBody AppointmentCreationDTO appointmentDto) {
-        try {
-            patientService.getPatientById(appointmentDto.getPatientId());
-        } catch (Exception e) {
-            throw new EntityNotFoundException("Patient not found");
-        }
-
+//        try {
+//            patientService.getPatientById(appointmentDto.getPatientId());
+//        } catch (Exception e) {
+//            throw new EntityNotFoundException("Patient not found");
+//        }
+        patientService.getPatientById(appointmentDto.getPatientId());
         appointmentService.updateAppointment(id, appointmentDto);
 
         return ResponseEntity.ok(appointmentDto);
