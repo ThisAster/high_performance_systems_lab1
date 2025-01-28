@@ -36,6 +36,8 @@ public class AppointmentsTypeService {
         AppointmentsType existAppontmentsType = this.getAppointmentsType(id);
         existAppontmentsType.setName(dto.name());
         existAppontmentsType.setDescription(dto.description());
+        existAppontmentsType.setDuration(dto.duration());
+        existAppontmentsType.setPrice(dto.price());
         existAppontmentsType.setDoctor(dto.doctorId());
         return appointmentsTypeRepository.save(existAppontmentsType);
     }
