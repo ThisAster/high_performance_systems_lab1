@@ -56,12 +56,12 @@ public class AppointmentsTypeController {
 
     @PutMapping("/{id}")
     public ResponseEntity<AppointmentTypeCreationDTO> updateAppointmentType(@PathVariable Long id, @Valid @RequestBody AppointmentTypeCreationDTO appointmentTypeDTO) {
-//        try {
-//            doctorService.getDoctorById(appointmentTypeDTO.doctorId());
-//        } catch (Exception e) {
-//            throw new EntityNotFoundException("Doctor not found");
-//        }
-        doctorService.getDoctorById(appointmentTypeDTO.doctorId());
+        try {
+            doctorService.getDoctorById(appointmentTypeDTO.doctorId());
+        } catch (Exception e) {
+            throw new EntityNotFoundException("Doctor not found");
+        }
+//        doctorService.getDoctorById(appointmentTypeDTO.doctorId());
         appointmentsTypeService.updateAppointmentsType(id, appointmentTypeDTO);
         return ResponseEntity.ok(appointmentTypeDTO);
     }
