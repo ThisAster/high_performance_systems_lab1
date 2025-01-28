@@ -39,6 +39,9 @@ public class AppointmentService {
         AppointmentsType appointmentsType = appointmentsTypeService
                 .getAppointmentsType(appointmentDto.getAppointmentTypeId());
 
+        patientService.findById(appointmentDto.getPatientId())
+                .orElseThrow(() -> new EntityNotFoundException("Patient with id " + appointmentDto.getPatientId() + " not found"));
+
         Appointment appointment = appointmentMapper.appointmentDtoToEntity(appointmentDto);
 
         appointment.setPatient(appointmentDto.getPatientId());
@@ -55,6 +58,9 @@ public class AppointmentService {
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     public Appointment updateAppointment(Long id, AppointmentCreationDTO appointmentDto) {
         Appointment appointment = this.getAppointmentById(id);
+
+        patientService.findById(appointmentDto.getPatientId())
+                .orElseThrow(() -> new EntityNotFoundException("Patient with id " + appointmentDto.getPatientId() + " not found"));
 
         appointment.setAppointmentDate(appointmentDto.getAppointmentDate());
         appointment.setPatient(appointmentDto.getPatientId());

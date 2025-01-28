@@ -6,4 +6,5 @@ import java.util.Optional;
 
 public interface PatientService {
     Optional<PatientDto> findById(Long id);
+    PatientDto getPatientById(Long id);
 }

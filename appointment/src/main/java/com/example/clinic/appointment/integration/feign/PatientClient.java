@@ -1,5 +1,6 @@
 package com.example.clinic.appointment.integration.feign;
 
+import com.example.clinic.appointment.dto.DoctorDto;
 import com.example.clinic.appointment.dto.PatientDto;
 import com.example.clinic.appointment.integration.PatientService;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -16,4 +17,8 @@ public interface PatientClient extends PatientService {
     @Override
     @GetMapping("/{id}")
     Optional<PatientDto> findById(@PathVariable Long id);
+
+    @Override
+    @GetMapping("/{id}")
+    PatientDto getPatientById(@PathVariable Long id);
 }

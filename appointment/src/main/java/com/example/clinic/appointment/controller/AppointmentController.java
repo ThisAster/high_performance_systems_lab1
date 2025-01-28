@@ -4,6 +4,8 @@ import com.example.clinic.appointment.dto.AppointmentCreationDTO;
 import com.example.clinic.appointment.dto.AppointmentDto;
 import com.example.clinic.appointment.dto.AppointmentFilterRequest;
 import com.example.clinic.appointment.entity.Appointment;
+import com.example.clinic.appointment.exception.EntityNotFoundException;
+import com.example.clinic.appointment.integration.PatientService;
 import com.example.clinic.appointment.mapper.AppointmentMapper;
 import com.example.clinic.appointment.model.PageArgument;
 import com.example.clinic.appointment.service.AppointmentService;
@@ -34,10 +36,16 @@ import java.util.stream.Collectors;
 public class AppointmentController {
 
     private final AppointmentService appointmentService;
+    private final PatientService patientService;
     private final AppointmentMapper appointmentMapper;
 
     @PostMapping
     public ResponseEntity<AppointmentCreationDTO> createAppointment(@Valid @RequestBody AppointmentCreationDTO appointmentDto) {
+        try {
+            patientService.getPatientById(appointmentDto.getPatientId());
+        } catch (Exception e) {
+            throw new EntityNotFoundException("Patient not found");
+        }
 
         Appointment appointment = appointmentService.createAppointment(appointmentDto);
 
@@ -47,6 +55,12 @@ public class AppointmentController {
 
     @PutMapping("/{id}")
     public ResponseEntity<AppointmentCreationDTO> updateAppointment(@PathVariable Long id, @Valid @RequestBody AppointmentCreationDTO appointmentDto) {
+        try {
+            patientService.getPatientById(appointmentDto.getPatientId());
+        } catch (Exception e) {
+            throw new EntityNotFoundException("Patient not found");
+        }
+
         appointmentService.updateAppointment(id, appointmentDto);
 
         return ResponseEntity.ok(appointmentDto);

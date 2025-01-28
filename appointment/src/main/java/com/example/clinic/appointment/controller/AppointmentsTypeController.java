@@ -3,6 +3,8 @@ package com.example.clinic.appointment.controller;
 import com.example.clinic.appointment.dto.AppointmentTypeCreationDTO;
 import com.example.clinic.appointment.dto.AppointmentTypeDTO;
 import com.example.clinic.appointment.entity.AppointmentsType;
+import com.example.clinic.appointment.exception.EntityNotFoundException;
+import com.example.clinic.appointment.integration.DoctorService;
 import com.example.clinic.appointment.mapper.AppoinmentsTypeMapper;
 import com.example.clinic.appointment.model.PageArgument;
 import com.example.clinic.appointment.service.AppointmentsTypeService;
@@ -30,10 +32,16 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class AppointmentsTypeController {
     private final AppointmentsTypeService appointmentsTypeService;
+    private final DoctorService doctorService;
     private final AppoinmentsTypeMapper appointmentsTypeMapper;
 
     @PostMapping
     public ResponseEntity<AppointmentTypeCreationDTO> createAppointmentType(@Valid @RequestBody AppointmentTypeCreationDTO appointmentTypeDTO) {
+        try {
+            doctorService.getDoctorById(appointmentTypeDTO.doctorId());
+        } catch (Exception e) {
+            throw new EntityNotFoundException("Doctor not found");
+        }
         AppointmentsType appointmentsType = appointmentsTypeService.createAppointmentsType(appointmentTypeDTO);
         return ResponseEntity.created(URI.create("/api/appointments/" + appointmentsType.getId()))
                 .body(appointmentTypeDTO);
@@ -47,6 +55,11 @@ public class AppointmentsTypeController {
 
     @PutMapping("/{id}")
     public ResponseEntity<AppointmentTypeCreationDTO> updateAppointmentType(@PathVariable Long id, @Valid @RequestBody AppointmentTypeCreationDTO appointmentTypeDTO) {
+        try {
+            doctorService.getDoctorById(appointmentTypeDTO.doctorId());
+        } catch (Exception e) {
+            throw new EntityNotFoundException("Doctor not found");
+        }
         appointmentsTypeService.updateAppointmentsType(id, appointmentTypeDTO);
         return ResponseEntity.ok(appointmentTypeDTO);
     }
